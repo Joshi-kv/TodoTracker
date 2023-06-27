@@ -89,4 +89,50 @@ $(document).ready(()=>{
     </ul>
     `
     )
+
+    //ajax for signup
+    $('#signup-form').submit((e)=>{
+        e.preventDefault()
+        let name = $('#yourName').val()
+        let username = $('#yourUsername').val()
+        let email = $('#yourEmail').val()
+        let password = $('#yourPassword').val()
+        let confirmPassword = $('#confirmPassword').val()
+        
+        if(name != '' && username != '' && email != '' && password != '' && confirmPassword != '' && $('#acceptTerms').is(':checked') ){
+            
+            $.ajax({
+                type:'post',
+                url:'/user/register/',
+                data:{
+                    csrfmiddlewaretoken:getCookie('csrftoken'),
+                    name:$('#yourName').val().trim(),
+                    username:$('#yourUsername').val().trim(),
+                    email:$('#yourEmail').val().trim(),
+                    password:$('#yourPassword').val().trim()
+                },
+                success:function(response){
+                    console.log(response)
+                }
+            })
+        }else{
+            return false
+        }
+    })
+
+    // fetching csrf token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 })
