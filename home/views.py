@@ -6,3 +6,8 @@ from django.views.generic import View
 class HomePageView(View) : 
     def get(self,request) : 
         return render(request,'index.html')
+
+#view to render todo page
+class TodoPageView(View) : 
+    def get(self, request) : 
+        return render(request, 'todo.html')
