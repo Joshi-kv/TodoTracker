@@ -17,6 +17,29 @@ $(document).ready(()=>{
                 required:'Please enter your password!'
             }
         },
+        submitHandler:function(form){
+            $.ajax({
+                type:form.method,
+                url:'/user/login/',
+                data:{
+                    csrfmiddlewaretoken:getCookie('csrftoken'),
+                    email:$('#yourEmail').val().trim(),
+                    password:$('#yourPassword').val().trim()
+                },
+                success:function(response){
+                    if(response.success === false){
+                        let loginErrorDiv = $('.login-error')
+                        console.log(loginErrorDiv)
+                        loginErrorDiv.html('Invalid username or password!')
+                    }else{
+                        window.location.href = '/'
+                    }
+                },
+
+            })
+            form.reset()
+            return false
+        },
         errorElement: "div",
         errorClass: "invalid-feedback",
         highlight: function(element) {
@@ -43,4 +66,20 @@ $(document).ready(()=>{
     Please enter a valid email address!
     `
     )
+
+    // fetching csrf token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 })

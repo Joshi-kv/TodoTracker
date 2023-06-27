@@ -7,9 +7,35 @@ $(document).ready(()=>{
             email:{
                 required:true,
                 checkEmail:true,
+                remote:{
+                    url:'/user/check-email/',
+                    type:'get',
+                    dataType:'json',
+                    dataFilter:function(data){
+                        let response = JSON.parse(data)
+                        if(response.is_available === false){
+                            return false
+                        }else{
+                            return true
+                        }
+                    }
+                }
             },
             username:{
-                required:true
+                required:true,
+                remote:{
+                    url:'/user/check-username/',
+                    type:'get',
+                    dataType:'json',
+                    dataFilter:function(data){
+                        let response = JSON.parse(data)
+                        if(response.is_available === false){
+                            return false
+                        }else{
+                            return true
+                        }
+                    }
+                }
             },
             password:{
                 required:true,
@@ -30,10 +56,12 @@ $(document).ready(()=>{
                 required:'Please enter your name!'
             },
             email:{
-                required:'Please enter your email address!'
+                required:'Please enter your email address!',
+                remote:'Entered email already registered!'
             },
             username:{
-                required:'Please enter your username!'
+                required:'Please enter your username!',
+                remote:'Entered username is already registered!'
             },
             password:{
                 required:'Please enter your password!'
@@ -45,6 +73,27 @@ $(document).ready(()=>{
             terms:{
                 required:'Please agree terms to proceed'
             }
+        },
+        submitHandler:function(form){
+            $.ajax({
+                type:form.method,
+                url:'/user/register/',
+                data:{
+                    csrfmiddlewaretoken:getCookie('csrftoken'),
+                    name:$('#yourName').val().trim(),
+                    username:$('#yourUsername').val().trim(),
+                    email:$('#yourEmail').val().trim(),
+                    password:$('#yourPassword').val().trim()
+                },
+                success:function(response){
+                    if(response.success === true){
+                        window.location.href = '/user/login/'
+                    }
+                }
+            })
+            //form.submit()
+            form.reset()
+            return false
         },
         errorElement: "div",
         errorClass: "invalid-feedback",
@@ -89,37 +138,7 @@ $(document).ready(()=>{
     </ul>
     `
     )
-
-    //ajax for signup
-    $('#signup-form').submit((e)=>{
-        e.preventDefault()
-        let name = $('#yourName').val()
-        let username = $('#yourUsername').val()
-        let email = $('#yourEmail').val()
-        let password = $('#yourPassword').val()
-        let confirmPassword = $('#confirmPassword').val()
-        
-        if(name != '' && username != '' && email != '' && password != '' && confirmPassword != '' && $('#acceptTerms').is(':checked') ){
-            
-            $.ajax({
-                type:'post',
-                url:'/user/register/',
-                data:{
-                    csrfmiddlewaretoken:getCookie('csrftoken'),
-                    name:$('#yourName').val().trim(),
-                    username:$('#yourUsername').val().trim(),
-                    email:$('#yourEmail').val().trim(),
-                    password:$('#yourPassword').val().trim()
-                },
-                success:function(response){
-                    console.log(response)
-                }
-            })
-        }else{
-            return false
-        }
-    })
-
+    
     // fetching csrf token
     function getCookie(name) {
         let cookieValue = null;

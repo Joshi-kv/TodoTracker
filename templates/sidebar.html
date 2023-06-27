@@ -46,6 +46,17 @@
         </a>
       </li><!-- End Contact Page Nav -->
       
+      {% if request.user.is_authenticated %}
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'users:logout' %}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Logout</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+      {% else %}
+
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'users:register' %}">
           <i class="bi bi-card-list"></i>
@@ -59,6 +70,8 @@
           <span>Login</span>
         </a>
       </li><!-- End Login Page Nav -->
+
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'home:news' %}">

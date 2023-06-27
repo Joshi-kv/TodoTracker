@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.views.generic import View
-
+from users.models import UserProfile
 # Create your views here.
 
 class HomePageView(View) : 
     def get(self,request) : 
-        return render(request,'index.html')
+        try : 
+            user_model = request.user
+            current_user = UserProfile.objects.get(user=user_model)
+            return render(request,'index.html',{'current_user':current_user})
+        except : 
+            return render(request,'index.html')
 
 #view to render todo page
 class TodoPageView(View) : 
