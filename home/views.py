@@ -21,3 +21,9 @@ class UserProfilePage(View) :
 class FaqPageView(View) : 
     def get(self,request) : 
         return render(request,'faq.html')
+    
+#views to render feedback page
+
+class FeedbackPageView(View) : 
+    def get(self,request) : 
+        return render(request,'feedback.html')
