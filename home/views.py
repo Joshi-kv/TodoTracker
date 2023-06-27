@@ -16,3 +16,8 @@ class TodoPageView(View) :
 class UserProfilePage(View) : 
     def get(self,request) : 
         return render(request,'profile-page.html')
+    
+#view to render faq page
+class FaqPageView(View) : 
+    def get(self,request) : 
+        return render(request,'faq.html')
