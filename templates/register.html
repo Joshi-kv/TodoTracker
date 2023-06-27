@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}User Registration{% endblock title %}
 
@@ -28,7 +29,7 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 " id="signup-form">
                     <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>
                       <input type="text" name="name" class="form-control" id="yourName" >
@@ -41,7 +42,7 @@
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
-                      <div class="input-group has-validation">
+                      <div class="input-group ">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                         <input type="text" name="username" class="form-control" id="yourUsername" >
                       </div>
@@ -54,7 +55,7 @@
 
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Confirm Password</label>
-                      <input type="password" name="confirm_password" class="form-control" id="yourPassword" >
+                      <input type="password" name="confirm_password" class="form-control" id="confirmPassword" >
                     </div>
 
                     <div class="col-12">
@@ -91,5 +92,6 @@
     </div>
   </main><!-- End #main -->
 
+<script src="{% static 'assets/js/validate-signup.js' %}"></script>
 
 {% endblock content %}
