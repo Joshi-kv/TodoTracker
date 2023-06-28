@@ -67,6 +67,66 @@ class UserProfilePage(View) :
         }
         return render(request,'profile-page.html',context)
     
+    
+#view to change profile settings
+class UserSettingsView(View) : 
+    def post(self,request) : 
+        user_model = request.user
+        user_object = User.objects.get(username=user_model.username)
+        current_user = UserProfile.objects.get(user=user_model)
+        
+        profile_picture = request.FILES.get('profile_picture')
+        full_name = request.POST.get('full_name')
+        about = request.POST.get('about')
+        job = request.POST.get('job_title')
+        company = request.POST.get('company_name')
+        country = request.POST.get('country')
+        address = request.POST.get('address')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        twitter_link = request.POST.get('twitter_link')
+        facebook_link = request.POST.get('facebook_link')
+        instagram_link = request.POST.get('instagram_link')
+        linkedin_link = request.POST.get('linkedin_link')
+        
+        #UserProfile model changes
+        current_user.phone_number = phone_number
+        current_user.about = about
+        current_user.job = job
+        current_user.company = company
+        current_user.country = country
+        current_user.address = address
+        current_user.twitter_profile = twitter_link
+        current_user.facebook_profile = facebook_link
+        current_user.instagram_profile = instagram_link
+        current_user.linkedin_profile = linkedin_link
+        current_user.save()
+        
+        #user model changes
+        user_object.first_name = full_name
+        user_object.email = email
+        user_object.save()
+        
+        context = {
+            'full_name' : user_object.first_name,
+            'about' : current_user.about,
+            'job_title':current_user.job,
+            'company':current_user.company,
+            'country':current_user.country,
+            'address':current_user.address,
+            'email':user_object.email,
+            'phone_number':current_user.phone_number,
+            'twitter_link':current_user.twitter_profile,
+            'facebook_link':current_user.facebook_profile,
+            'instagram_link':current_user.instagram_profile,
+            'linkedin_link':current_user.linkedin_profile
+        }
+        
+        print(context)
+        return JsonResponse(context,safe=False)
+
+        
+    
 #view to check email already exist 
 class CheckEmail(View) : 
     def get(self,request) : 
