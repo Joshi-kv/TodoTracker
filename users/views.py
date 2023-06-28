@@ -60,7 +60,12 @@ class UserLogoutView(View) :
 #view to render user profile page 
 class UserProfilePage(View) : 
     def get(self,request) : 
-        return render(request,'profile-page.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        context = {
+            'current_user' : current_user
+        }
+        return render(request,'profile-page.html',context)
     
 #view to check email already exist 
 class CheckEmail(View) : 

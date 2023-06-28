@@ -31,9 +31,9 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-              <h2>Kevin Anderson</h2>
-              <h3>Web Designer</h3>
+              <img src="{{current_user.profile_picture.url}}" alt="Profile" class="rounded-circle">
+              <h2>{{current_user.user.first_name}}</h2>
+              <h3>{{current_user.job}}</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -73,43 +73,67 @@
 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">About</h5>
-                  <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+                  {% if current_user.about %}
+                  <p class="small fst-italic">{{current_user.about}}</p>
+                  {% else %}
+                  <p class="small fst-italic">No details provided.</p>
+                  {% endif %}
 
                   <h5 class="card-title">Profile Details</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                    <div class="col-lg-9 col-md-8">{{current_user.user.first_name}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Company</div>
-                    <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                    {% if current_user.company %}
+                    <div class="col-lg-9 col-md-8">{{current_user.company}}</div>
+                    {% else %}                    
+                    <div class="col-lg-9 col-md-8">Company details not provided yet.</div>
+                    {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Job</div>
-                    <div class="col-lg-9 col-md-8">Web Designer</div>
+                    {% if current_user.job %}
+                    <div class="col-lg-9 col-md-8">{{current_user.job}}</div>
+                    {% else %}
+                    <div class="col-lg-9 col-md-8">Job title not provided</div>
+                    {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Country</div>
-                    <div class="col-lg-9 col-md-8">USA</div>
+                    {% if current_user.country %}
+                    <div class="col-lg-9 col-md-8">{{current_user.country}}</div>
+                    {% else %}
+                    <div class="col-lg-9 col-md-8">No details.</div>
+                    {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Address</div>
-                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                    {% if current_user.address %}
+                    <div class="col-lg-9 col-md-8">{{current_user.address}}</div>
+                    {% else %}
+                    <div class="col-lg-9 col-md-8">Address not provided.</div>
+                    {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                    <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                    {% if current_user.phone_number %}
+                    <div class="col-lg-9 col-md-8">{{current_user.phone_number}}</div>
+                    {% else %}
+                    <div class="col-lg-9 col-md-8">Phone number not provided.</div>
+                    {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                    <div class="col-lg-9 col-md-8">{{current_user.user.email}}</div>
                   </div>
 
                 </div>

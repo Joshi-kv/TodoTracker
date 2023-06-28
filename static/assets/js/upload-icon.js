@@ -3,8 +3,12 @@ $(document).ready(function(){
     uploadBtn.click(function(){
         $('#uploadProfile').trigger('click')
     })
-    $('#uploadProfile').change(function(){
-        let val = $(this).val()
-        console.log($('#profilePicture').attr('src'))
+    $('#uploadProfile').change(function(e){
+        let file = e.target.files[0]
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = function(e){
+           $('#profilePicture').attr('src',reader.result)
+        }
     })
 })

@@ -12,8 +12,9 @@ class UserProfile(models.Model) :
     job = models.CharField(max_length=256,blank=True,null=True)
     country = models.CharField(max_length=256,blank=True,null=True)
     address = models.TextField(blank=True,null=True)
-    phone = models.CharField(max_length=12,blank=True,null=True)
+    phone_number = models.CharField(max_length=12,blank=True,null=True)
     twitter_profile = models.URLField(max_length=500,blank=True,null=True)
+    facebook_profile = models.URLField(max_length=500,blank=True,null=True)
     instagram_profile = models.URLField(max_length=500,blank=True,null=True)
     linkedin_profile = models.URLField(max_length=500,blank=True,null=True)
     
