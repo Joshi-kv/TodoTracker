@@ -32,8 +32,8 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="{{current_user.profile_picture.url}}" alt="Profile" class="rounded-circle">
-              <h2>{{current_user.user.first_name}}</h2>
-              <h3>{{current_user.job}}</h3>
+              <h2 id="overviewFullNameMain">{{current_user.user.first_name}}</h2>
+              <h3 id="overviewJobTitleMain">{{current_user.job}}</h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -74,66 +74,66 @@
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">About</h5>
                   {% if current_user.about %}
-                  <p class="small fst-italic">{{current_user.about}}</p>
+                  <p class="small fst-italic" id="overviewAbout">{{current_user.about}}</p>
                   {% else %}
-                  <p class="small fst-italic">No details provided.</p>
+                  <p class="small fst-italic" id="overviewAbout">No details provided.</p>
                   {% endif %}
 
                   <h5 class="card-title">Profile Details</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">{{current_user.user.first_name}}</div>
+                    <div id="overviewFullName" class="col-lg-9 col-md-8">{{current_user.user.first_name}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Company</div>
                     {% if current_user.company %}
-                    <div class="col-lg-9 col-md-8">{{current_user.company}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewCompanyName">{{current_user.company}}</div>
                     {% else %}                    
-                    <div class="col-lg-9 col-md-8">Company details not provided yet.</div>
+                    <div class="col-lg-9 col-md-8" id="overviewCompanyName">Company details not provided.</div>
                     {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Job</div>
                     {% if current_user.job %}
-                    <div class="col-lg-9 col-md-8">{{current_user.job}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewJobTitle">{{current_user.job}}</div>
                     {% else %}
-                    <div class="col-lg-9 col-md-8">Job title not provided</div>
+                    <div class="col-lg-9 col-md-8" id="overviewJobTitle">No details provided.</div>
                     {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Country</div>
                     {% if current_user.country %}
-                    <div class="col-lg-9 col-md-8">{{current_user.country}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewCountryName">{{current_user.country}}</div>
                     {% else %}
-                    <div class="col-lg-9 col-md-8">No details.</div>
+                    <div class="col-lg-9 col-md-8" id="overviewCountryName">No details provided.</div>
                     {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Address</div>
                     {% if current_user.address %}
-                    <div class="col-lg-9 col-md-8">{{current_user.address}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewAddress">{{current_user.address}}</div>
                     {% else %}
-                    <div class="col-lg-9 col-md-8">Address not provided.</div>
+                    <div class="col-lg-9 col-md-8" id="overviewAddress">No details provided.</div>
                     {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Phone</div>
                     {% if current_user.phone_number %}
-                    <div class="col-lg-9 col-md-8">{{current_user.phone_number}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewPhoneNumber">{{current_user.phone_number}}</div>
                     {% else %}
-                    <div class="col-lg-9 col-md-8">Phone number not provided.</div>
+                    <div class="col-lg-9 col-md-8" id="overviewPhoneNumber">No details provided.</div>
                     {% endif %}
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">{{current_user.user.email}}</div>
+                    <div class="col-lg-9 col-md-8" id="overviewEmailAddress">{{current_user.user.email}}</div>
                   </div>
 
                 </div>
@@ -148,8 +148,8 @@
                       <div class="col-md-8 col-lg-9">
                         <img src="{{current_user.profile_picture.url}}" id="profilePicture" alt="Profile">
                         <div class="pt-2">
-                          <a href="#" id="uploadBtn" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                          <input type="file" name="" id="uploadProfile">
+                          <button id="uploadBtn" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></button>
+                          <input type="file" name="profile_picture" id="uploadProfile">
                           <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                         </div>
                       </div>

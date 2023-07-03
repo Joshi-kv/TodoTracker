@@ -19,8 +19,20 @@ $(document).ready(() =>{
                 }
             },
             phone_number:{
-                required:false,
                 checkPhoneNumber:true,
+                required:false,
+            },
+            twitter:{
+                url:true
+            },
+            facebook:{
+                url:true,
+            },
+            instagram:{
+                url:true,
+            },
+            linkedin:{
+                url:true,
             }
         },
         messages:{
@@ -36,9 +48,14 @@ $(document).ready(() =>{
         submitHandler:function(form){
             let uploadedProfileImage = $('#uploadProfile')[0].files[0]
             let profile_picture = uploadedProfileImage.name
+            // let fd = new FormData()
+            // fd.append('file',uploadedProfileImage)
+            // console.log(fd)
             $.ajax({
+                
                 type:form.method,
                 url:'/user/settings/',
+                mimeType:'multipart/form-data',
                 data:{
                     csrfmiddlewaretoken:getCookie('csrftoken'),
                     profile_picture:profile_picture,
@@ -57,14 +74,53 @@ $(document).ready(() =>{
 
                 },
                 success:function(response){
-                    console.log(response)
-                    let currentUserAvatar = $('#currentUserAvatar')
-                    currentUserAvatar.src = response.profile_picture
-                }
 
+
+                    // updating overview profile content
+                    $('#overviewFullNameMain').html(response.full_name)
+                    $('#overviewJobTitleMain').html(response.job_title)
+                    $('#overviewFullName').html(response.full_name)
+                    $('#overviewPhoneNumber').html(response.phone_number)
+                    $('#overviewEmailAddress').html(response.email)
+
+                    if(response.about == ''){
+                        $('#overviewAbout').html('No details provided.')
+                    }else{
+                        $('#overviewAbout').html(response.about)
+                    }
+
+                    if(response.company == ''){
+                        $('#overviewCompanyName').html('Company details not provided.')
+                    }else{
+                        $('#overviewCompanyName').html(response.company)
+                    }
+
+                    if(response.job_title == ''){
+                        $('#overviewJobTitle').html('No details provided.')
+                    }else{
+                        $('#overviewJobTitle').html(response.job_title)
+                    }
+
+                    if(response.country == ''){
+                        $('#overviewCountryName').html('No details provided.')
+                    }else{
+                        $('#overviewCountryName').html(response.country)
+                    }
+
+                    if(response.address == ''){
+                        $('#overviewAddress').html('No details provided.')
+                    }else{
+                        $('#overviewAddress').html(response.address)
+                    }
+
+                    //updating edit profile page content
+                    $('#fullName').val(response.full_name)
+                    $('#about').val(response.about)
+
+                },
             })
+            
             return false
-
         },
         errorElement:'div',
         errorClass: "invalid-feedback",
@@ -115,3 +171,4 @@ $(document).ready(() =>{
         return cookieValue;
     }
 })
+

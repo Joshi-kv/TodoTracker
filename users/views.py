@@ -1,10 +1,13 @@
+import os
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.contrib.auth.models import User
 from . models import UserProfile
 from django.contrib import auth
-
+import io
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 #user registration
@@ -46,7 +49,6 @@ class UserLoginView(View) :
             except User.DoesNotExist : 
                 return JsonResponse({'success':False})
             
-            #username = User.objects.get(email=email).username
             
             
             if user is not None : 
@@ -95,8 +97,12 @@ class UserSettingsView(View) :
         instagram_link = request.POST.get('instagram_link')
         linkedin_link = request.POST.get('linkedin_link')
         
+
+       
+
+        
         #UserProfile model changes
-        current_user.profile_picture = f'Profile_Images/{profile_picture}'
+        current_user.profile_picture = 'Profile_Images/'+profile_picture
         current_user.phone_number = phone_number
         current_user.about = about
         current_user.job = job
@@ -115,7 +121,7 @@ class UserSettingsView(View) :
         user_object.save()
         
         context = {
-            'profile_picture' : current_user.profile_picture.url,
+            # 'profile_picture' : current_user.profile_picture.url,
             'full_name' : user_object.first_name,
             'about' : current_user.about,
             'job_title':current_user.job,
