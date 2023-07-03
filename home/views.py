@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 class HomePageView(View) : 
@@ -13,9 +14,17 @@ class HomePageView(View) :
             return render(request,'index.html')
 
 #view to render todo page
-class TodoPageView(View) : 
+class TodoPageView(LoginRequiredMixin,View) : 
+    login_url = 'users:login'
     def get(self, request) : 
-        return render(request, 'todo.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        return render(request, 'todo.html',{'current_user':current_user})
+    
+#view to create todo 
+class TodoCreateView(View) : 
+    def post(self,request) : 
+        pass
     
 #view to render faq page
 class FaqPageView(View) : 

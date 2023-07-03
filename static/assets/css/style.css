@@ -1236,3 +1236,7 @@ h6 {
 #uploadProfile{
   display: none;
 }
+
+.datatable-sorter {
+  margin-right: 4rem!important;
+}
