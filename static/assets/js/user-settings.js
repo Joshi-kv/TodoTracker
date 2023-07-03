@@ -1,9 +1,6 @@
 $(document).ready(() =>{
-    // $('#uploadProfile').change((e)=>{
-    //     console.log(e.target.files[0])
-    // })
+    console.log($('#profilePicture'));
     $('#userSettingsForm').validate({
-        onkeyup:false,
         rules:{
             email:{
                 checkEmail:true,
@@ -22,6 +19,7 @@ $(document).ready(() =>{
                 }
             },
             phone_number:{
+                required:false,
                 checkPhoneNumber:true,
             }
         },
@@ -36,16 +34,14 @@ $(document).ready(() =>{
             }
         },
         submitHandler:function(form){
-            // let uploadedProfileImage = $('#uploadProfile').files[0]
-            // let reader = new FileReader()
-            // let profile_picture = reader.readAsDataURL(uploadedProfileImage)
-
+            let uploadedProfileImage = $('#uploadProfile')[0].files[0]
+            let profile_picture = uploadedProfileImage.name
             $.ajax({
                 type:form.method,
                 url:'/user/settings/',
                 data:{
                     csrfmiddlewaretoken:getCookie('csrftoken'),
-                    // profile_image:profile_picture,
+                    profile_picture:profile_picture,
                     full_name : $('input[name ="fullName"]').val().trim(),
                     about : $('textarea[name ="about"]').val().trim(),
                     country: $('input[name ="country"]').val().trim(),
@@ -61,9 +57,13 @@ $(document).ready(() =>{
 
                 },
                 success:function(response){
-                    console.log(response.full_name)
+                    console.log(response)
+                    let currentUserAvatar = $('#currentUserAvatar')
+                    currentUserAvatar.src = response.profile_picture
                 }
+
             })
+            return false
 
         },
         errorElement:'div',

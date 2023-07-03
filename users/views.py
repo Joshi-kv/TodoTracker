@@ -39,10 +39,16 @@ class UserLoginView(View) :
             email = request.POST.get('email')
             password = request.POST.get('password')
             
-            username = User.objects.get(email=email).username
+            try : 
+                user = User.objects.get(email=email)
+                username = user.username
+                user = auth.authenticate(username=username,password=password)
+            except User.DoesNotExist : 
+                return JsonResponse({'success':False})
+            
+            #username = User.objects.get(email=email).username
             
             
-            user = auth.authenticate(username=username,password=password)
             if user is not None : 
                 auth.login(request,user)
                 return JsonResponse({'success':True})
@@ -75,7 +81,7 @@ class UserSettingsView(View) :
         user_object = User.objects.get(username=user_model.username)
         current_user = UserProfile.objects.get(user=user_model)
         
-        profile_picture = request.FILES.get('profile_picture')
+        profile_picture = request.POST.get('profile_picture')
         full_name = request.POST.get('full_name')
         about = request.POST.get('about')
         job = request.POST.get('job_title')
@@ -90,6 +96,7 @@ class UserSettingsView(View) :
         linkedin_link = request.POST.get('linkedin_link')
         
         #UserProfile model changes
+        current_user.profile_picture = f'Profile_Images/{profile_picture}'
         current_user.phone_number = phone_number
         current_user.about = about
         current_user.job = job
@@ -108,6 +115,7 @@ class UserSettingsView(View) :
         user_object.save()
         
         context = {
+            'profile_picture' : current_user.profile_picture.url,
             'full_name' : user_object.first_name,
             'about' : current_user.about,
             'job_title':current_user.job,
@@ -124,6 +132,23 @@ class UserSettingsView(View) :
         
         print(context)
         return JsonResponse(context,safe=False)
+
+#view to change password
+class ChangePasswordView(View) : 
+    def post(self,request) : 
+        user = request.user
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        
+        if not user.check_password(old_password,) :
+            return JsonResponse({'success':False})
+        else : 
+            user.set_password(new_password)
+            user.save()
+            current_user = auth.authenticate(username=user.username,password=new_password)
+            if current_user is not None : 
+                auth.login(request,current_user)
+            return JsonResponse({'success':True})
 
         
     
