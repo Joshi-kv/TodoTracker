@@ -6,8 +6,7 @@ from django.views.generic import View
 from django.contrib.auth.models import User
 from . models import UserProfile
 from django.contrib import auth
-import io
-from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 
 #user registration
@@ -77,13 +76,15 @@ class UserProfilePage(View) :
     
     
 #view to change profile settings
+
 class UserSettingsView(View) : 
+
     def post(self,request) : 
         user_model = request.user
         user_object = User.objects.get(username=user_model.username)
         current_user = UserProfile.objects.get(user=user_model)
         
-        profile_picture = request.POST.get('profile_picture')
+        profile_picture = request.FILES.get('profile_picture')
         full_name = request.POST.get('full_name')
         about = request.POST.get('about')
         job = request.POST.get('job_title')
@@ -97,12 +98,13 @@ class UserSettingsView(View) :
         instagram_link = request.POST.get('instagram_link')
         linkedin_link = request.POST.get('linkedin_link')
         
+        print(profile_picture)
 
        
 
         
         #UserProfile model changes
-        current_user.profile_picture = 'Profile_Images/'+profile_picture
+        # current_user.profile_picture = 'Profile_Images/'+profile_picture
         current_user.phone_number = phone_number
         current_user.about = about
         current_user.job = job
@@ -136,7 +138,6 @@ class UserSettingsView(View) :
             'linkedin_link':current_user.linkedin_profile
         }
         
-        print(context)
         return JsonResponse(context,safe=False)
 
 #view to change password
