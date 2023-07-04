@@ -1,7 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
+from . models import Todo
 # Create your views here.
 
 class HomePageView(View) : 
@@ -21,10 +23,45 @@ class TodoPageView(LoginRequiredMixin,View) :
         current_user = UserProfile.objects.get(user=user_model)
         return render(request, 'todo.html',{'current_user':current_user})
     
+#view to list tasks
+class TaskListView(View) : 
+    def get(self,request) : 
+        user_obj = request.user
+        tasks = Todo.objects.filter(user=user_obj)
+        context = []
+        for task in tasks : 
+            context.append({
+                'task_id':task.id,
+                'task_title':task.task_title,
+                'task_description':task.task_description,
+                'task_duedate':task.task_duedate,
+                'task_priority':task.task_priority,
+                'task_status':task.task_status
+            })
+        return JsonResponse({'tasks':context},safe=False)
+    
 #view to create todo 
 class TodoCreateView(View) : 
     def post(self,request) : 
-        pass
+        user = request.user
+        task_title = request.POST.get('task_title')
+        task_description = request.POST.get('task_description')
+        task_duedate = request.POST.get('task_duedate')
+        task_status = request.POST.get('task_status')
+        task_priority = request.POST.get('task_priority')
+        
+        #creating new task
+        new_task = Todo.objects.create(
+                    user=user,
+                    task_title=task_title,
+                    task_description=task_description,
+                    task_duedate=task_duedate,
+                    task_status=task_status,
+                    task_priority=task_priority
+                )
+        new_task.save()
+        
+        return JsonResponse({'status':'success'})
     
 #view to render faq page
 class FaqPageView(View) : 

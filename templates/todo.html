@@ -53,35 +53,37 @@
               <h5 class="card-title">Add Item</h5>
 
               <!-- Vertical Form -->
-              <form class="row g-3" id="taskForm">
+              <form class="row g-3" id="taskForm" method='post'>
+                {% csrf_token %}
                 <div class="col-12">
                   <label for="taskTitle" class="form-label">Task Title</label>
-                  <input type="text" class="form-control" id="taskTitle">
+                  <input type="text" name="title" class="form-control" id="taskTitle">
                 </div>
                 <div class="col-12">
                   <label for="taskDescription" class="form-label">Task Description</label>
-                  <textarea class="form-control" name="taskDescription" placeholder="Description" id="floatingTextarea" style="height: 100px;"></textarea>
+                  <textarea class="form-control" name="description" placeholder="Description" id="taskDescription" style="height: 100px;"></textarea>
                 </div>
                 <div class="col-12">
                   <label for="inputPassword4" class="form-label">Due Date</label>
-                  <input type="date" name="dueDate" class="form-control">
+                  <input type="date" name="duedate" class="form-control">
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Priority</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected="" >select priority of the task</option>
-                        <option value="1" name="priority">1</option>
-                        <option value="2" name="priority">2</option>
-                        <option value="3" name="priority">3</option>
+                    <select class="form-select" name="priority" aria-label="Default select example">
+                        <option value="" >select priority of the task</option>
+                        <option value="1" >1</option>
+                        <option value="2" >2</option>
+                        <option value="3" >3</option>
                       </select>
                 </div>
             
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Status</label>
                     <select class="form-select" name="status" aria-label="Default select example">
-                        <option selected="">select status of the task</option>
+                        <option value=''>select status of the task</option>
                         <option value="Upcoming" >Upcoming</option>
                         <option value="In progress">In progress</option>
+                        <option value="Completed">Completed</option>
                       </select>
                 </div>
                 
@@ -103,7 +105,7 @@
 		  
 		  
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table datatable" id="taskTable">
                 <thead>
                   <tr>
                     <th scope="col">Task Title</th>
@@ -114,33 +116,6 @@
                     <th scope="col">Actions</th>					
                   </tr>
                 </thead>
-                <tbody>
-                   
-                  <tr>
-                    <td>Sample Heading</td>
-                    <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore cumque excepturi modi ex. Repudiandae nam nostrum vitae hic praesentium fugit ducimus temporibus maiores esse cumque, minus perferendis! Perspiciatis, tenetur aliquid.</td>
-                    <td>28/06/2023</td>
-                    <td>One</td>
-                    <td>Upcoming</td>
-                    <td>
-                        <button class="btn btn-danger"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-primary my-1"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Todo</td>
-                    <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore cumque excepturi modi ex. Repudiandae nam nostrum vitae hic praesentium fugit ducimus temporibus maiores esse cumque, minus perferendis! Perspiciatis, tenetur aliquid.</td>
-                    <td>28/06/2023</td>
-                    <td>Two</td>
-                    <td>Upcoming</td>
-                    <td>
-                        <button class="btn btn-danger"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-primary my-1"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                    
-                   
-                </tbody>
               </table>
               <!-- End Table with stripped rows -->
 
@@ -155,7 +130,8 @@
 
   {% include 'footer.html' %}
 
-<script src="{% static 'assets/js/todo.js' %}"></script>
+<script src="{% static 'assets/js/todo-list.js' %}"></script>
+<script src="{% static 'assets/js/task-add.js' %}"></script>
 
 {% endblock content %}
 
