@@ -98,23 +98,6 @@ $(document).ready(() =>{
             beforeSend:function(xhr){
                 xhr.setRequestHeader('X-CSRFToken',csrftoken)
             },
-            // data:{
-            //     csrfmiddlewaretoken:csrftoken,
-            //     profile_picture:new ArrayBuffer(file),
-            //     full_name : $('input[name ="fullName"]').val().trim(),
-            //     about : $('textarea[name ="about"]').val().trim(),
-            //     country: $('input[name ="country"]').val().trim(),
-            //     job_title : $('input[name ="job"]').val().trim(),
-            //     company_name : $('input[name ="company"]').val().trim(),
-            //     email : $('input[name ="email"]').val().trim(),
-            //     phone_number : $('input[name ="phone_number"]').val().trim(),
-            //     address : $('input[name ="address"]').val().trim(),
-            //     twitter_link : $('input[name ="twitter"]').val().trim(),
-            //     facebook_link : $('input[name ="facebook"]').val().trim(),
-            //     instagram_link : $('input[name ="instagram"]').val().trim(),
-            //     linkedin_link : $('input[name ="linkedin"]').val().trim(),
-
-            // },
             data:formData,
 
             success:function(response){
@@ -122,6 +105,7 @@ $(document).ready(() =>{
 
                 //header avatar changing
                 $('#userAvatar').attr('src',response.profile_picture)
+                
                 // updating overview profile content
                 $('#overviewProfileImage').attr('src',response.profile_picture)
                 $('#overviewFullNameMain').html(response.full_name)
