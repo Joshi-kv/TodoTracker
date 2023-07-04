@@ -104,7 +104,7 @@ class UserSettingsView(View) :
 
         
         #UserProfile model changes
-        # current_user.profile_picture = 'Profile_Images/'+profile_picture
+        current_user.profile_picture = profile_picture
         current_user.phone_number = phone_number
         current_user.about = about
         current_user.job = job
@@ -123,7 +123,7 @@ class UserSettingsView(View) :
         user_object.save()
         
         context = {
-            # 'profile_picture' : current_user.profile_picture.url,
+            'profile_picture' : current_user.profile_picture.url,
             'full_name' : user_object.first_name,
             'about' : current_user.about,
             'job_title':current_user.job,

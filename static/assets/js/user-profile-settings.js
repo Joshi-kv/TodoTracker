@@ -71,35 +71,59 @@ $(document).ready(() =>{
         e.preventDefault()
 
         let file = $('#uploadProfile')[0].files[0]
-    
+        let formData = new FormData()
+        formData.append('csrfmiddlewaretoken',csrftoken)
+        formData.append('profile_picture',file)
+        formData.append('full_name',$('input[name ="fullName"]').val().trim())
+        formData.append('about',$('textarea[name ="about"]').val().trim())
+        formData.append('country',$('input[name ="country"]').val().trim())
+        formData.append('job_title',$('input[name ="job"]').val().trim())
+        formData.append('company_name',$('input[name ="company"]').val().trim())
+        formData.append('email',$('input[name ="email"]').val().trim())
+        formData.append('phone_number',$('input[name ="phone_number"]').val().trim())
+        formData.append('address',$('input[name ="address"]').val().trim())
+        formData.append('twitter_link',$('input[name ="twitter"]').val().trim())
+        formData.append('facebook_link',$('input[name ="facebook"]').val().trim())
+        formData.append('instagram_link',$('input[name ="instagram"]').val().trim())
+        formData.append('linkedin_link',$('input[name ="linkedin"]').val().trim())
+
         $.ajax({
             type:'post',
             url:'/user/settings/',
             headers:{'X-CSRFToken':csrftoken},
             dataType:'json',
             mimeType:'multipart/form-data',
-            data:{
-                csrfmiddlewaretoken:csrftoken,
-                // profile_picture:file,
-                full_name : $('input[name ="fullName"]').val().trim(),
-                about : $('textarea[name ="about"]').val().trim(),
-                country: $('input[name ="country"]').val().trim(),
-                job_title : $('input[name ="job"]').val().trim(),
-                company_name : $('input[name ="company"]').val().trim(),
-                email : $('input[name ="email"]').val().trim(),
-                phone_number : $('input[name ="phone_number"]').val().trim(),
-                address : $('input[name ="address"]').val().trim(),
-                twitter_link : $('input[name ="twitter"]').val().trim(),
-                facebook_link : $('input[name ="facebook"]').val().trim(),
-                instagram_link : $('input[name ="instagram"]').val().trim(),
-                linkedin_link : $('input[name ="linkedin"]').val().trim(),
-
+            contentType:false,
+            processData:false,
+            beforeSend:function(xhr){
+                xhr.setRequestHeader('X-CSRFToken',csrftoken)
             },
+            // data:{
+            //     csrfmiddlewaretoken:csrftoken,
+            //     profile_picture:new ArrayBuffer(file),
+            //     full_name : $('input[name ="fullName"]').val().trim(),
+            //     about : $('textarea[name ="about"]').val().trim(),
+            //     country: $('input[name ="country"]').val().trim(),
+            //     job_title : $('input[name ="job"]').val().trim(),
+            //     company_name : $('input[name ="company"]').val().trim(),
+            //     email : $('input[name ="email"]').val().trim(),
+            //     phone_number : $('input[name ="phone_number"]').val().trim(),
+            //     address : $('input[name ="address"]').val().trim(),
+            //     twitter_link : $('input[name ="twitter"]').val().trim(),
+            //     facebook_link : $('input[name ="facebook"]').val().trim(),
+            //     instagram_link : $('input[name ="instagram"]').val().trim(),
+            //     linkedin_link : $('input[name ="linkedin"]').val().trim(),
+
+            // },
+            data:formData,
 
             success:function(response){
+                console.log(response)
 
-
+                //header avatar changing
+                $('#userAvatar').attr('src',response.profile_picture)
                 // updating overview profile content
+                $('#overviewProfileImage').attr('src',response.profile_picture)
                 $('#overviewFullNameMain').html(response.full_name)
                 $('#overviewJobTitleMain').html(response.job_title)
                 $('#overviewFullName').html(response.full_name)
