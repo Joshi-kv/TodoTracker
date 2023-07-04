@@ -60,8 +60,16 @@ class TodoCreateView(View) :
                     task_priority=task_priority
                 )
         new_task.save()
+        context = {
+            'task_id':new_task.id,
+            'task_title':new_task.task_title,
+            'task_description':new_task.task_description,
+            'task_duedate':new_task.task_duedate,
+            'task_status':new_task.task_status,
+            'task_priority':new_task.task_priority
+        }
         
-        return JsonResponse({'status':'success'})
+        return JsonResponse({'status':'success','task':context})
     
 #view to render faq page
 class FaqPageView(View) : 
