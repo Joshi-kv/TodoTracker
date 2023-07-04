@@ -71,6 +71,29 @@ class TodoCreateView(View) :
         
         return JsonResponse({'status':'success','task':context})
     
+#view to update task 
+class UpdateTaskView(View) : 
+    def get(self,request) : 
+        task_id = request.GET.get('task_id')
+        task = Todo.objects.get(id=task_id)
+        context = {
+            'task_id':task.id,
+            'task_title':task.task_title,
+            'task_description':task.task_description,
+            'task_duedate':task.task_duedate,
+            'task_status':task.task_status,
+            'task_priority':task.task_priority
+        }
+        return JsonResponse({'task':context})
+    def post(self,request) : 
+        task_id = request.POST.get('task_id')
+        task_title = request.POST.get('task_title')
+        task_description = request.POST.get('task_description')
+        task_duedate = request.POST.get('task_duedate')
+        task_priority = request.POST.get('task_priority')
+        task_to_update = Todo.objects.get(id=task_id)
+        
+    
 #view to render faq page
 class FaqPageView(View) : 
     def get(self,request) : 

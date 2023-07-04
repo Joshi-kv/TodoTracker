@@ -45,12 +45,12 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Add Item</h5>
+                      <h5 class="modal-title">Add Task</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                      <div class="card-body">
-              <h5 class="card-title">Add Item</h5>
+              <h5 class="card-title">Add Task</h5>
 
               <!-- Vertical Form -->
               <form class="row g-3" id="taskForm" method='post'>
@@ -120,6 +120,70 @@
               <!-- End Table with stripped rows -->
 
             </div>
+
+            <!--update modal -->
+            <div class="card-body">
+          
+              <div class="modal fade" id="updateModal" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Update Task</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                     <div class="card-body">
+              <h5 class="card-title">Update Task</h5>
+
+              <!-- Vertical Form -->
+              <form class="row g-3" id="updateTaskForm" method='post'>
+                {% csrf_token %}
+                <div class="col-12">
+                  <label for="taskTitle" class="form-label">Task Title</label>
+                  <input type="text" name="updateTitle" class="form-control" id="taskUpdateTitle">
+                </div>
+                <div class="col-12">
+                  <label for="taskDescription" class="form-label">Task Description</label>
+                  <textarea class="form-control" name="updateDescription" placeholder="Description" id="taskUpdateDescription" style="height: 100px;"></textarea>
+                </div>
+                <div class="col-12">
+                  <label for="inputPassword4" class="form-label">Due Date</label>
+                  <input type="date" name="updateDuedate" class="form-control" id="taskUpdateDuedate">
+                </div>
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Priority</label>
+                    <select class="form-select" name="updatePriority" aria-label="Default select example" id="taskUpdatePriority">
+                        <option value="" >select priority of the task</option>
+                        <option value="1" >1</option>
+                        <option value="2" >2</option>
+                        <option value="3" >3</option>
+                      </select>
+                </div>
+            
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Status</label>
+                    <select class="form-select" name="updateStatus" aria-label="Default select example" id="taskUpdateStatus">
+                        <option value=''>select status of the task</option>
+                        <option value="Upcoming" >Upcoming</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                </div>
+                
+              </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- End Basic Modal-->
+  
+              </div>
+              </form><!-- Vertical Form -->
+
+            </div>
           </div>
 
         </div>
@@ -132,6 +196,7 @@
 
 <script src="{% static 'assets/js/todo-list.js' %}"></script>
 <script src="{% static 'assets/js/task-add.js' %}"></script>
+<script src="{% static 'assets/js/task-action.js' %}"></script>
 
 {% endblock content %}
 
