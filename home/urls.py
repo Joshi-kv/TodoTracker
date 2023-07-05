@@ -12,6 +12,7 @@ urlpatterns = [
     path('update-task/',views.UpdateTaskView.as_view(),name='update-task'),
     path('delete-task/',views.TaskDeleteView.as_view(),name='delete-task'),
     path('faq/',views.FaqPageView.as_view(),name='faq'),
+    path('faq-list/',views.FaqListView.as_view(),name='faq-list'),
     path('feedback/',views.FeedbackPageView.as_view(),name='feedback'),
     path('news/',views.NewsPageView.as_view(),name='news')
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo
+from . models import Todo,FAQ
 
 # Register your models here.
 class TaskAdmin(admin.ModelAdmin) : 
@@ -7,3 +7,9 @@ class TaskAdmin(admin.ModelAdmin) :
     list_per_page = 10
     
 admin.site.register(Todo,TaskAdmin)
+
+class FaqAdmin(admin.ModelAdmin) : 
+    list_display = ['question','answer']
+    list_per_page = 10
+    
+admin.site.register(FAQ,FaqAdmin) 

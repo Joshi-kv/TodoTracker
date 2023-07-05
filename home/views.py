@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo
+from . models import Todo,FAQ
 # Create your views here.
 
 class HomePageView(View) : 
@@ -68,9 +68,7 @@ class TodoCreateView(View) :
             'task_status':new_task.task_status,
             'task_priority':new_task.task_priority
         }
-        
-        print(new_task.id)
-        
+
         return JsonResponse({'status':'success','task':context})
     
 #view to update page view
@@ -135,13 +133,29 @@ class TaskDeleteView(View) :
 #view to render faq page
 class FaqPageView(View) : 
     def get(self,request) : 
-        return render(request,'faq.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)        
+        return render(request, 'faq.html',{'current_user':current_user})
     
+#view to fetch faq from admin
+class FaqListView(View) : 
+    def get(self,request) : 
+        faqs = FAQ.objects.all()
+        context = []
+        for faq in faqs : 
+            context.append({
+                'faq_id':faq.id,
+                'question':faq.question,
+                'answer' : faq.answer,
+            })
+        return JsonResponse({'faqs':context})
 #views to render feedback page
 
 class FeedbackPageView(View) : 
     def get(self,request) : 
-        return render(request,'feedback.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model) 
+        return render(request,'feedback.html',{'current_user':current_user})
     
 #view to render newspage 
 class NewsPageView(View) : 
