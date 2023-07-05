@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ
+from . models import Todo,FAQ,Feedback
 # Create your views here.
 
 class HomePageView(View) : 
@@ -149,13 +149,33 @@ class FaqListView(View) :
                 'answer' : faq.answer,
             })
         return JsonResponse({'faqs':context})
-#views to render feedback page
 
+#views to render feedback page
 class FeedbackPageView(View) : 
     def get(self,request) : 
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model) 
         return render(request,'feedback.html',{'current_user':current_user})
+    
+#view to create feedback
+class FeedbackCreateView(View) : 
+    def post(self,request) : 
+        feedback_username = request.POST.get('feedback_username')
+        feedback_useremail = request.POST.get('feedback_useremail')
+        feedback_subject = request.POST.get('feedback_subject')
+        feedback_message = request.POST.get('feedback_message')
+        
+        new_feedback = Feedback.objects.create(
+            user_name = feedback_username,
+            user_email = feedback_useremail,
+            subject = feedback_subject,
+            message = feedback_message
+            
+        )
+        
+        new_feedback.save()
+        
+        return JsonResponse({'status':'created'})
     
 #view to render newspage 
 class NewsPageView(View) : 

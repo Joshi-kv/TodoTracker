@@ -14,5 +14,6 @@ urlpatterns = [
     path('faq/',views.FaqPageView.as_view(),name='faq'),
     path('faq-list/',views.FaqListView.as_view(),name='faq-list'),
     path('feedback/',views.FeedbackPageView.as_view(),name='feedback'),
+    path('feedback-submission/',views.FeedbackCreateView.as_view(),name='feedback-submission'),
     path('news/',views.NewsPageView.as_view(),name='news')
 ]

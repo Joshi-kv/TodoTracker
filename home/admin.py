@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo,FAQ
+from . models import Todo,FAQ,Feedback
 
 # Register your models here.
 class TaskAdmin(admin.ModelAdmin) : 
@@ -13,3 +13,10 @@ class FaqAdmin(admin.ModelAdmin) :
     list_per_page = 10
     
 admin.site.register(FAQ,FaqAdmin) 
+
+
+class FeedbackAdmin(admin.ModelAdmin) : 
+    list_display = ['user_name','user_email','subject','message','message_date']
+    list_per_page = 20
+    
+admin.site.register(Feedback,FeedbackAdmin)
