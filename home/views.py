@@ -122,6 +122,16 @@ class UpdateTaskView(View) :
         }
         return JsonResponse({'status':'updated','task':context})   
     
+#view to delete task
+class TaskDeleteView(View) : 
+    def post(self,request) : 
+        task_id = request.POST.get('task_id')
+        
+        task = Todo.objects.get(id=task_id)
+        if task.user == request.user : 
+            task.delete()
+            return JsonResponse({'status':'success'})   
+    
 #view to render faq page
 class FaqPageView(View) : 
     def get(self,request) : 

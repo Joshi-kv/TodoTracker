@@ -1,4 +1,5 @@
 $(document).ready(() =>{
+    //task updation functions start
     //function to load selected task details
     $(document).on('click','#editBtn',function(){
         let taskId = $(this).attr('data-edit')
@@ -76,7 +77,7 @@ $(document).ready(() =>{
                                 `${task.task_status}`,
                                 `
                                 <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-primary my-1" id="deleteBtn" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                 `
                               ]).draw()
                               
@@ -84,9 +85,60 @@ $(document).ready(() =>{
                     })
                 }
                 alertify.set('notifier','position','top-right')
-                alertify.success('Task edited successfully')
+                alertify.warning('Task edited successfully')
             },
         })
         $('#updateModal').modal('toggle')
+    })
+
+    //task update functions end 
+
+    //task delete functions startf
+    $(document).on('click','#deleteBtn',function(){
+        let taskId = $(this).attr('data-delete')
+        let deleteModalId = $('#deleteModal').attr('delete',taskId)
+    })
+    $('#deleteModal').on('submit',(e) => {
+        e.preventDefault()
+        let taskId = $('#deleteModal').attr('delete')
+        console.log(taskId)
+        $.ajax({
+            type:'post',
+            url:'/delete-task/',
+            dataType:'json',
+            data:{
+                csrfmiddlewaretoken:csrftoken,
+                task_id:taskId
+            },
+            success:function(response){
+                if(response.status === 'success'){
+                    let table = $('#taskTable').DataTable()
+                    table.clear().draw()
+                    const url = 'http://127.0.0.1:8000/tasks/'
+                    fetch(url)
+                    .then(response => response.json())
+                    .then((data) => {
+                        data.tasks.forEach((task) =>{
+                            let table = $('#taskTable').DataTable()
+                            table.row.add([
+                                `${task.task_title}`,
+                                `${task.task_description}`,
+                                `${task.task_duedate}`,
+                                `${task.task_priority}`,
+                                `${task.task_status}`,
+                                `
+                                <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
+                                `
+                              ]).draw()
+                              
+                        })
+                    })
+                }
+                alertify.set('notifier','position','top-right')
+                alertify.error('Task deleted!')
+            }
+        })
+        $('#deleteModal').modal('toggle')
     })
 })
