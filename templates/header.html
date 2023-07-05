@@ -171,11 +171,18 @@
         {% if request.user.is_authenticated %}
         <li class="nav-item dropdown pe-3">
 
+          {% if current_user.profile_picture %}
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img id="userAvatar" src="{{current_user.profile_picture.url}}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">@{{current_user.user.username}}</span>
           </a><!-- End Profile Iamge Icon -->
+          {% else %}
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img id="userAvatar" src="" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">@{{current_user.user.username}}</span>
+          </a><!-- End Profile Iamge Icon -->
 
+          {% endif %}
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">  
               <h6>{{request.user.first_name}}</h6>

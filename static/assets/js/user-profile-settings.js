@@ -71,9 +71,14 @@ $(document).ready(() =>{
         e.preventDefault()
 
         let file = $('#uploadProfile')[0].files[0]
+        
         let formData = new FormData()
+        if(file){
+            formData.append('profile_picture',file)
+        }else{
+            formData.append('profile_picture',$('#profilePicture').attr('src'))
+        }
         formData.append('csrfmiddlewaretoken',csrftoken)
-        formData.append('profile_picture',file)
         formData.append('full_name',$('input[name ="fullName"]').val().trim())
         formData.append('about',$('textarea[name ="about"]').val().trim())
         formData.append('country',$('input[name ="country"]').val().trim())

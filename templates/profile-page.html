@@ -31,7 +31,11 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img id="overviewProfileImage" src="{{current_user.profile_picture.url}}" alt="Profile" class="rounded-circle">
+             {% if current_user.profile_picture %}
+             <img id="overviewProfileImage" src="{{current_user.profile_picture.url}}" alt="Profile" class="rounded-circle"> 
+             {% else %}
+             <img id="overviewProfileImage" src="" alt="Profile" class="rounded-circle"> 
+             {% endif %}
               <h2 id="overviewFullNameMain">{{current_user.user.first_name}}</h2>
               <h3 id="overviewJobTitleMain">{{current_user.job}}</h3>
               <div class="social-links mt-2">
@@ -146,7 +150,11 @@
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                       <div class="col-md-8 col-lg-9">
+                        {% if current_user.profile_picture %}
                         <img src="{{current_user.profile_picture.url}}" id="profilePicture" alt="Profile">
+                        {% else %}
+                        <img src="" id="profilePicture" alt="Profile">
+                        {% endif %}
                         <div class="pt-2">
                           <a href='#' id="uploadBtn" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                           <input type="file" name="profile_picture" id="uploadProfile">

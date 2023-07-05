@@ -84,22 +84,36 @@ class UserSettingsView(View) :
         user_object = User.objects.get(username=user_model.username)
         current_user = UserProfile.objects.get(user=user_model)
         
-        profile_picture = request.FILES.get('profile_picture')
-        full_name = request.POST.get('full_name')
-        about = request.POST.get('about')
-        job = request.POST.get('job_title')
-        company = request.POST.get('company_name')
-        country = request.POST.get('country')
-        address = request.POST.get('address')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        twitter_link = request.POST.get('twitter_link')
-        facebook_link = request.POST.get('facebook_link')
-        instagram_link = request.POST.get('instagram_link')
-        linkedin_link = request.POST.get('linkedin_link')
         
-        print(profile_picture)
-
+        if request.method == 'POST' : 
+            if request.FILES.get('profile_picture') == None:
+                profile_picture = current_user.profile_picture
+                full_name = request.POST.get('full_name')
+                about = request.POST.get('about')
+                job = request.POST.get('job_title')
+                company = request.POST.get('company_name')
+                country = request.POST.get('country')
+                address = request.POST.get('address')
+                email = request.POST.get('email')
+                phone_number = request.POST.get('phone_number')
+                twitter_link = request.POST.get('twitter_link')
+                facebook_link = request.POST.get('facebook_link')
+                instagram_link = request.POST.get('instagram_link')
+                linkedin_link = request.POST.get('linkedin_link')
+            else : 
+                profile_picture = request.FILES.get('profile_picture')
+                full_name = request.POST.get('full_name')
+                about = request.POST.get('about')
+                job = request.POST.get('job_title')
+                company = request.POST.get('company_name')
+                country = request.POST.get('country')
+                address = request.POST.get('address')
+                email = request.POST.get('email')
+                phone_number = request.POST.get('phone_number')
+                twitter_link = request.POST.get('twitter_link')
+                facebook_link = request.POST.get('facebook_link')
+                instagram_link = request.POST.get('instagram_link')
+                linkedin_link = request.POST.get('linkedin_link')
        
 
         
