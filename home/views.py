@@ -69,13 +69,16 @@ class TodoCreateView(View) :
             'task_priority':new_task.task_priority
         }
         
+        print(new_task.id)
+        
         return JsonResponse({'status':'success','task':context})
     
-#view to update task 
-class UpdateTaskView(View) : 
+#view to update page view
+class UpdateTaskPageView(View) : 
     def get(self,request) : 
         task_id = request.GET.get('task_id')
         task = Todo.objects.get(id=task_id)
+        print(task)
         context = {
             'task_id':task.id,
             'task_title':task.task_title,
@@ -85,14 +88,39 @@ class UpdateTaskView(View) :
             'task_priority':task.task_priority
         }
         return JsonResponse({'task':context})
+      
+#view to update task
+class UpdateTaskView(View) : 
     def post(self,request) : 
         task_id = request.POST.get('task_id')
         task_title = request.POST.get('task_title')
         task_description = request.POST.get('task_description')
         task_duedate = request.POST.get('task_duedate')
         task_priority = request.POST.get('task_priority')
-        task_to_update = Todo.objects.get(id=task_id)
+        task_status = request.POST.get('task_status')
         
+
+        
+        task_update = Todo.objects.get(id=task_id)
+
+        #updating task
+        task_update.id = task_id
+        task_update.task_title = task_title
+        task_update.task_description = task_description
+        task_update.task_duedate = task_duedate
+        task_update.task_priority = task_priority 
+        task_update.task_status = task_status
+        task_update.save()
+        
+        context = {
+            'task_id':task_update.id,
+            'task_title':task_update.task_title,
+            'task_description':task_update.task_description,
+            'task_duedate':task_update.task_duedate,
+            'task_priority':task_update.task_priority,
+            'task_status':task_update.task_status,
+        }
+        return JsonResponse({'status':'updated','task':context})   
     
 #view to render faq page
 class FaqPageView(View) : 
