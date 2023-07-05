@@ -140,7 +140,7 @@ class FaqPageView(View) :
 #view to fetch faq from admin
 class FaqListView(View) : 
     def get(self,request) : 
-        faqs = FAQ.objects.all()
+        faqs = FAQ.objects.all().order_by('created_at')
         context = []
         for faq in faqs : 
             context.append({

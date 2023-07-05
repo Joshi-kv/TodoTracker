@@ -9,7 +9,7 @@ class TaskAdmin(admin.ModelAdmin) :
 admin.site.register(Todo,TaskAdmin)
 
 class FaqAdmin(admin.ModelAdmin) : 
-    list_display = ['question','answer']
+    list_display = ['question','answer','created_at','updated_at']
     list_per_page = 10
     
 admin.site.register(FAQ,FaqAdmin) 
