@@ -153,6 +153,18 @@ class UserSettingsView(View) :
         }
         
         return JsonResponse(context,safe=False)
+    
+#view to remove profile picture
+class ProfilePictureRemoveView(View) : 
+    def get(self,request) : 
+        requested_user = request.GET.get('requested_user')
+        user_model = User.objects.get(username=requested_user)
+        user_profile = UserProfile.objects.get(user=user_model)
+        profile_image = 'blank-profile.png'
+        user_profile.profile_picture = profile_image
+        user_profile.save()
+        
+        return JsonResponse({'status':'success','profile_image':user_profile.profile_picture.url})
 
 #view to change password
 class ChangePasswordView(View) : 

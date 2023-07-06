@@ -106,7 +106,6 @@ $(document).ready(() =>{
             data:formData,
 
             success:function(response){
-                console.log(response)
 
                 //header avatar changing
                 $('#userAvatar').attr('src',response.profile_picture)

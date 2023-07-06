@@ -152,13 +152,11 @@
                       <div class="col-md-8 col-lg-9">
                         {% if current_user.profile_picture %}
                         <img src="{{current_user.profile_picture.url}}" id="profilePicture" alt="Profile">
-                        {% else %}
-                        <img src="" id="profilePicture" alt="Profile">
                         {% endif %}
                         <div class="pt-2">
                           <a href='#' id="uploadBtn" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                           <input type="file" name="profile_picture" id="uploadProfile">
-                          <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                          <button type="button" data-user="{{request.user}}"  class="btn btn-danger btn-sm" id="removeBtn"><i class="bi bi-trash"></i></button>
                         </div>
                       </div>
                     </div>
@@ -349,6 +347,7 @@
 
 <script src="{% static 'assets/js/user-profile-settings.js' %}"></script>
 <script src="{% static 'assets/js/upload-icon.js' %}"></script>
+<script src="{% static 'assets/js/delete-profile.js' %}"></script>
 <script src="{% static 'assets/js/password-settings.js' %}"></script>
 
 {% endblock content %}
