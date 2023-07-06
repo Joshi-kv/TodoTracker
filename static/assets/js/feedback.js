@@ -93,14 +93,23 @@ $(document).ready(() =>{
                 feedback_subject:$('input[name="feedbackSubject"]').val(),
                 feedback_message:$('textarea[name="feedbackMessage"]').val()
             },
-            success:function(response){
-                if(response){
-                    alertify.set('notifier','position','top-right')
-                    alertify.success('Thank you for the feedback. Will contact you soon ')
-                }
+            beforeSend:function(){
+                $('.loading').show()
+            },
+            // success:function(response){
+            //     if(response){
+            //         alertify.set('notifier','position','top-right')
+            //         alertify.success('Thank you for the feedback. Will contact you soon ')
+            //     }
+            // },
+            complete:function(response){
+                alertify.set('notifier','position','top-right')
+                alertify.success('Thank you for the feedback. Will contact you soon ')
+                $('.loading').hide()
+                $('#feedbackForm')[0].reset()
             }
+
         })
 
-        $('#feedbackForm')[0].reset()
     })
 })

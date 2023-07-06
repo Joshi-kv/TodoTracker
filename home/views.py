@@ -1,9 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
+from core import settings
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . models import Todo,FAQ,Feedback
+from django.contrib.auth.models import User
+from django.core.mail import send_mail,EmailMessage
 # Create your views here.
 
 class HomePageView(View) : 
@@ -175,6 +178,22 @@ class FeedbackCreateView(View) :
         
         new_feedback.save()
         
+        #sending mail to admin 
+        admin_user = User.objects.get(is_superuser=True)
+        subject = f'New feedback from {feedback_username}'
+        message = f'New feedback has been submitted by {feedback_username} \n\n {feedback_subject} \n\n {feedback_message}'
+        from_mail = feedback_useremail
+        to_mail = admin_user.email
+        
+        email = EmailMessage(
+            subject,
+            message,
+            from_email=from_mail,
+            to=[to_mail],
+            reply_to=[from_mail]
+        )
+        
+        email.send()
         return JsonResponse({'status':'created'})
     
 #view to render newspage 
