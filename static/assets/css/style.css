@@ -1240,3 +1240,14 @@ h6 {
 .datatable-sorter {
   margin-right: 4rem!important;
 }
+
+.newsImage{
+  object-fit: cover;
+  width: 525px;
+}
+
+.published{
+  margin-left: 10rem;
+  color: #a9a9a9;
+  font-size: 12px;
+}

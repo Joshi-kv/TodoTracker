@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from . models import Todo,FAQ,Feedback
 from django.contrib.auth.models import User
 from django.core.mail import send_mail,EmailMessage
+from newsapi import NewsApiClient
 # Create your views here.
 
 class HomePageView(View) : 
@@ -199,4 +200,15 @@ class FeedbackCreateView(View) :
 #view to render newspage 
 class NewsPageView(View) : 
     def get(self,request) : 
-        return render(request,'news.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model) 
+        return render(request,'news.html',{'current_user':current_user})
+    
+#view to fetch news from newsapi
+class NewsListView(View) : 
+    def get(self,request) : 
+        newsapi = NewsApiClient(api_key='38569bb4f68f42e7a30be5fea761e707')
+        top_news = newsapi.get_top_headlines(sources='techcrunch')
+        news = top_news['articles']
+        return JsonResponse({'status':'success','news':news})
+    
