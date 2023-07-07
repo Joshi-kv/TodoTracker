@@ -8,8 +8,8 @@ from . models import Todo,FAQ,Feedback
 from django.contrib.auth.models import User
 from django.core.mail import send_mail,EmailMessage
 from newsapi import NewsApiClient
-from datetime import timezone
-# Create your views here.
+import datetime
+
 
 class HomePageView(View) : 
     def get(self,request) : 
@@ -25,9 +25,14 @@ class DashBoardCountView(View) :
     def get(self,request) : 
         user = request.user
         total_tasks = Todo.objects.filter(user=user).count()
-        completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count()
+        completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
+        
+        print(datetime.datetime.now())
+        current_datetime = datetime.datetime.now()
+        task = Todo.objects.filter(user=user,task_duedate__lt=current_datetime,task_status='Completed')
+        
         # pending_tasks = Todo.objects.filter(user=user,task_status='Pending')
-        print(total_tasks,completed_tasks,)
+        print(total_tasks,completed_tasks,task)
         context = {
             'total_tasks':total_tasks,
             'completed_tasks':completed_tasks,
@@ -96,7 +101,6 @@ class UpdateTaskPageView(View) :
     def get(self,request) : 
         task_id = request.GET.get('task_id')
         task = Todo.objects.get(id=task_id)
-        print(task)
         context = {
             'task_id':task.id,
             'task_title':task.task_title,
@@ -138,7 +142,16 @@ class UpdateTaskView(View) :
             'task_priority':task_update.task_priority,
             'task_status':task_update.task_status,
         }
-        return JsonResponse({'status':'updated','task':context})   
+        return JsonResponse({'status':'updated','task':context})  
+     
+    
+#view to update pending status of task
+class UpdatePendingTask(View) : 
+    def get(self,request) : 
+        user = request.user
+        current_datetime = datetime.datetime.now()
+        
+        print(current_datetime)
     
 #view to delete task
 class TaskDeleteView(View) : 

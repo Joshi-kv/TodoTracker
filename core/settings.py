@@ -17,6 +17,7 @@ import environ
 
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'users',
+    'django_crontab',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +143,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 env = environ.Env()
 environ.Env.read_env()
 
-DEFAULT_FROM_EMAIL = 'noreply@gmail.com'
+DEFAULT_FROM_EMAIL = 'joshikv3705@gmail.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
@@ -149,3 +152,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+# CRONJOBS = [
+#     ('* * * * *', 'home.cron.UpdatePendingTask')
+# ]
