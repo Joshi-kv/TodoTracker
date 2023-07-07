@@ -8,6 +8,7 @@ from . models import Todo,FAQ,Feedback
 from django.contrib.auth.models import User
 from django.core.mail import send_mail,EmailMessage
 from newsapi import NewsApiClient
+from datetime import timezone
 # Create your views here.
 
 class HomePageView(View) : 
@@ -18,6 +19,21 @@ class HomePageView(View) :
             return render(request,'index.html',{'current_user':current_user})
         except : 
             return render(request,'index.html')
+        
+#view to show counts in dashboard
+class DashBoardCountView(View) : 
+    def get(self,request) : 
+        user = request.user
+        total_tasks = Todo.objects.filter(user=user).count()
+        completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count()
+        # pending_tasks = Todo.objects.filter(user=user,task_status='Pending')
+        print(total_tasks,completed_tasks,)
+        context = {
+            'total_tasks':total_tasks,
+            'completed_tasks':completed_tasks,
+            # 'pending_tasks':pending_tasks
+        }
+        return JsonResponse(context,safe=False)
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 

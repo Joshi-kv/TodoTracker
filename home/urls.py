@@ -5,6 +5,7 @@ app_name = 'home'
 
 urlpatterns = [
     path('',views.HomePageView.as_view(),name='index'),
+    path('dashboard-count/',views.DashBoardCountView.as_view(),name='dashboard-count'),
     path('todo/',views.TodoPageView.as_view(),name='todo-page'),
     path('tasks/',views.TaskListView.as_view(),name='task-list'),
     path('create-task/',views.TodoCreateView.as_view(),name='create-task'),
