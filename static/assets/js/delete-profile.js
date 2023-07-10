@@ -13,6 +13,8 @@ $(document).ready(() => {
                     $('#userAvatar').attr('src',response.profile_image)
                     $('#overviewProfileImage').attr('src',response.profile_image)
                     $('#profilePicture').attr('src',response.profile_image)
+                    alertify.set('notifier','position','top-right')
+                    alertify.error('Profile picture deleted.')
                 }
             }
         })

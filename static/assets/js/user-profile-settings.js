@@ -111,6 +111,10 @@ $(document).ready(() =>{
                 $('#userAvatar').attr('src',response.profile_picture)
                 
                 // updating overview profile content
+                $('.twitter').attr('href',response.twitter_link)
+                $('.facebook').attr('href',response.facebook_link)
+                $('.instagram').attr('href',response.instagram_link)
+                $('.linkedin').attr('href',response.linkedin_link)
                 $('#overviewProfileImage').attr('src',response.profile_picture)
                 $('#overviewFullNameMain').html(response.full_name)
                 $('#overviewJobTitleMain').html(response.job_title)
@@ -151,7 +155,8 @@ $(document).ready(() =>{
                 //updating edit profile page content
                 $('#fullName').val(response.full_name)
                 $('#about').val(response.about)
-
+                alertify.set('notifier','position','top-right')
+                alertify.success('Profile settings updated.')
             },
         })
     })
