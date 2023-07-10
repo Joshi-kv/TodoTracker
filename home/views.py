@@ -11,7 +11,8 @@ from newsapi import NewsApiClient
 import datetime
 
 
-class HomePageView(View) : 
+class HomePageView(LoginRequiredMixin,View) :
+    login_url = 'users:login' 
     def get(self,request) : 
         try : 
             user_model = request.user
@@ -27,16 +28,12 @@ class DashBoardCountView(View) :
         total_tasks = Todo.objects.filter(user=user).count()
         completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
         
-        print(datetime.datetime.now())
-        current_datetime = datetime.datetime.now()
-        task = Todo.objects.filter(user=user,task_duedate__lt=current_datetime,task_status='Completed')
         
-        # pending_tasks = Todo.objects.filter(user=user,task_status='Pending')
-        print(total_tasks,completed_tasks,task)
+        pending_tasks = Todo.objects.filter(user=user,task_status='Pending').count()
         context = {
             'total_tasks':total_tasks,
             'completed_tasks':completed_tasks,
-            # 'pending_tasks':pending_tasks
+            'pending_tasks':pending_tasks
         }
         return JsonResponse(context,safe=False)
 
@@ -145,13 +142,14 @@ class UpdateTaskView(View) :
         return JsonResponse({'status':'updated','task':context})  
      
     
-#view to update pending status of task
-class UpdatePendingTask(View) : 
-    def get(self,request) : 
-        user = request.user
-        current_datetime = datetime.datetime.now()
-        
-        print(current_datetime)
+# #view to update pending status of task
+# class UpdatePendingTask(View) : 
+#     def get(self,request) : 
+#         user = request.user
+#         current_datetime = datetime.datetime.today()
+#         pending_tasks = Todo.objects.filter(user=user,task_duedate__lt=current_datetime).exclude(task_status='Completed')
+                
+#         print(current_datetime)
     
 #view to delete task
 class TaskDeleteView(View) : 

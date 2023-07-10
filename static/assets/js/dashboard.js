@@ -5,5 +5,6 @@ $(document).ready(() => {
     .then((data) => {
         $('#totalTask').html(data.total_tasks)
         $('#completedTask').html(data.completed_tasks)
+        $('#pendingTask').html(data.pending_tasks)
     })
 })

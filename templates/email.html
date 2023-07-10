@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h3>Pending tasks</h3>
+    {% for task in pending_tasks  %}
+    {{task.task_title}}
+    {% endfor %}
+</body>
+</html>
