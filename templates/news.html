@@ -10,6 +10,8 @@
 
 <!--main content-->
 <main id="main" class="main">
+  
+  <!--Main page-->
   <div class="search-bar mb-3">
     <form class="search-form d-flex align-items-center" method="POST" action="#">
       <input class="form-control form-control-sm search" type="text" name="query" placeholder="Search latest news here" title="Enter search keyword">
@@ -17,22 +19,39 @@
     </form>
   </div><!-- End Search Bar -->
 
-    <div class="pagetitle">
+    <div class="pagetitle tab-pane">
       <h1>Latest news and updates</h1>
       <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>
-        </ol>
+        <ul class="nav nav-tabs nav-tabs-bordered">
+
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#topNews">Top News</button>
+          </li>
+
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#generalNews">General News</button>
+          </li>
+
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#featuredNews">Featured News</button>
+          </li>
+
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#myNews">My News</button>
+          </li>
+
+        </ul>
       </nav>
     </div><!-- End Page Title -->
 
-    <section  class="section">
-      <div id="newsDiv"  class="row">
-        <!--news contents-->
-      </div>
-
-    </section>
-
+    <div class="tab-content">
+      <section  class="section">
+        <div id="newsDiv"  class="row">
+          <!--news contents-->
+        </div>
+  
+      </section>
+    </div>
   </main><!-- End #main -->
 
 {% include 'footer.html' %}

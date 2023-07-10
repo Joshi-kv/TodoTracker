@@ -37,6 +37,7 @@
 
           
             <div class="card-body">
+
             
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
                 Add 
@@ -69,12 +70,12 @@
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Priority</label>
-                    <select class="form-select" name="priority" aria-label="Default select example">
-                        <option value="" >select priority of the task</option>
-                        <option value="1" >1</option>
-                        <option value="2" >2</option>
-                        <option value="3" >3</option>
-                      </select>
+                    <select class="form-select" name="priority" aria-label="Default select example" id="taskPriority">
+                      <option value="" >select priority of the task</option>
+                      <option value="High priority" >High priority</option>
+                      <option value="Medium priority" >Medium priority</option>
+                      <option value="Low priority" >Low priority</option>
+                  </select>
                 </div>
             
                 <div class="col-12">
@@ -98,12 +99,11 @@
                 </div><!-- End Basic Modal-->
   
               </div>
-              </form><!-- Vertical Form -->
+            </form><!-- Vertical Form -->
+            
+            
 
-         
-		  
-		  
-		  
+            <div class="container mt-4">
               <!-- Table with stripped rows -->
               <table class="table datatable" id="taskTable">
                 <thead>
@@ -118,9 +118,11 @@
                 </thead>
               </table>
               <!-- End Table with stripped rows -->
-
             </div>
 
+    
+
+            </div>
             <!--update modal -->
             <div class="card-body">
           
@@ -154,10 +156,10 @@
                     <label for="inputAddress" class="form-label">Priority</label>
                     <select class="form-select" name="updatePriority" aria-label="Default select example" id="taskUpdatePriority">
                         <option value="" >select priority of the task</option>
-                        <option value="1" >1</option>
-                        <option value="2" >2</option>
-                        <option value="3" >3</option>
-                      </select>
+                        <option value="High priority" >High priority</option>
+                        <option value="Medium priority" >Medium priority</option>
+                        <option value="Low priority" >Low priority</option>
+                    </select>
                 </div>
             
                 <div class="col-12">
