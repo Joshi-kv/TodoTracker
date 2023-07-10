@@ -2,8 +2,10 @@
 <html lang="en">
 <body>
     <h3>Pending tasks</h3>
-    {% for task in pending_tasks  %}
-    {{task.task_title}}
+    {% for pending_task in pending_tasks  %}
+    <ul>
+        <li>{{pending_task.task_title}} on {{pending_task.task_duedate}}</li>
+    </ul>
     {% endfor %}
 </body>
 </html>

@@ -142,15 +142,6 @@ class UpdateTaskView(View) :
         return JsonResponse({'status':'updated','task':context})  
      
     
-# #view to update pending status of task
-# class UpdatePendingTask(View) : 
-#     def get(self,request) : 
-#         user = request.user
-#         current_datetime = datetime.datetime.today()
-#         pending_tasks = Todo.objects.filter(user=user,task_duedate__lt=current_datetime).exclude(task_status='Completed')
-                
-#         print(current_datetime)
-    
 #view to delete task
 class TaskDeleteView(View) : 
     def post(self,request) : 
