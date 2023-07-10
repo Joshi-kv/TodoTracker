@@ -3,5 +3,5 @@ from .cron import update_pending_task
 
 def start() : 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update_pending_task,'cron',hour=14,minute='59')
+    scheduler.add_job(update_pending_task,'cron',hour=15,minute='59')
     scheduler.start()

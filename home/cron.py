@@ -3,7 +3,6 @@ from core import settings
 from . models import Todo
 import datetime
 from django.template.loader import get_template
-from django.template import Context
 from django.db.models import Q
 from django.contrib.auth.models import User
 
@@ -19,7 +18,6 @@ def update_pending_task() :
             for pending_task in pending_tasks : 
                 pending_task.task_status = 'Pending'
                 pending_task.save()
-            # pending_tasks = Todo.objects.filter(user=user,task_duedate__lt=current_datetime).exclude(Q(task_status='Completed'))
             context={
                 'pending_tasks':pending_tasks
             }

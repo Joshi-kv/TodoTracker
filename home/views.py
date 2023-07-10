@@ -1,14 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
-from core import settings
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . models import Todo,FAQ,Feedback
 from django.contrib.auth.models import User
-from django.core.mail import send_mail,EmailMessage
+from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
-import datetime
+from django.template.loader import get_template
 
 
 class HomePageView(LoginRequiredMixin,View) :
@@ -197,10 +196,16 @@ class FeedbackCreateView(View) :
         
         new_feedback.save()
         
+        context = {
+            'feedback_username':feedback_username,
+            'feedback_subject':feedback_subject,
+            'feedback_message':feedback_message
+        }
+        
         #sending mail to admin 
         admin_user = User.objects.get(is_superuser=True)
-        subject = f'New feedback from {feedback_username}'
-        message = f'New feedback has been submitted by {feedback_username} \n\n {feedback_subject} \n\n {feedback_message}'
+        subject = f'{feedback_subject} - {feedback_username}'
+        message = get_template('feedback-email.html').render(context)
         from_mail = feedback_useremail
         to_mail = admin_user.email
         
@@ -211,7 +216,7 @@ class FeedbackCreateView(View) :
             to=[to_mail],
             reply_to=[from_mail]
         )
-        
+        email.content_subtype = 'html'
         email.send()
         return JsonResponse({'status':'created'})
     
