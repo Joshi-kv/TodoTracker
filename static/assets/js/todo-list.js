@@ -45,6 +45,14 @@ $(document).ready(() =>{
                     $('.pagination').show()
                 }
             })
+            $('select[name="filterStatus"]').on('change',function(){
+                let status = $(this).val()
+                table.column(4).search(status).draw()
+            })
+            $('select[name="filterPriority"]').on('change',function(){
+                let priority = $(this).val()
+                table.column(3).search(priority).draw()
+            })
         })
     })
 })

@@ -1255,3 +1255,9 @@ h6 {
 .search{
   width: 50%;
 }
+
+.filters{
+  margin-left: 20rem;
+
+  text-align: right;
+}
