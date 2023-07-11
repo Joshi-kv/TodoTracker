@@ -11,11 +11,20 @@ $(document).ready(() =>{
             data:{'task_id':taskId},
             success:function(response){
                 let task = response.task
+                console.log(task)
                 $('#taskUpdateTitle').val(task.task_title)
                 $('#taskUpdateDescription').val(task.task_description)
                 $('#taskUpdateDuedate').val(task.task_duedate)
                 $('#taskUpdatePriority').val(task.task_priority)
-                $('#taskUpdateStatus').val(task.task_status)
+                if(task.task_status == 'Pending'){
+                    console.log('Pending')
+                    let optionValue = 'Pending'
+                    $("#taskUpdateStatus").append(`<option id="pending" value="${optionValue}"></option>`)
+                    $('#pending').text('Pending')
+                    $('#taskUpdateStatus').val(optionValue)
+                }else{
+                    $('#taskUpdateStatus').val(task.task_status)
+                }
             }
 
         })

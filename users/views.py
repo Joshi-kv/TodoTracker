@@ -72,13 +72,13 @@ class UserLoginView(View) :
         
 #user logout function 
 class UserLogoutView(View) : 
-    def get(self,request) : 
-        auth.logout(request)
+    def get(self,request) :
         activity_log = ActivityLog.objects.create(
             user=request.user,
             activity='Logged out'
         )
         activity_log.save()
+        auth.logout(request)
         return redirect('home:index')
             
 #view to render user profile page 

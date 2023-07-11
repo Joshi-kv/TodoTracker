@@ -40,7 +40,8 @@ class DashBoardCountView(View) :
 class ActivityLogView(View) : 
     def get(self,request) : 
         user = request.user
-        activity_logs = ActivityLog.objects.filter(user=user)
+        activity_logs = ActivityLog.objects.filter(user=user).order_by('-activity_time')[:6]
+        print(activity_logs)
         context = []
         for activity_log in activity_logs : 
             context.append({
@@ -150,6 +151,21 @@ class UpdateTaskView(View) :
         task_update.task_status = task_status
         task_update.save()
         
+        if task_status == 'Completed' : 
+            activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{task_title}" task completed'
+            )
+        
+            activity_log.save()
+        else : 
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{task_title}" task updated'
+            )
+            
+            activity_log.save()
+        
         context = {
             'task_id':task_update.id,
             'task_title':task_update.task_title,
@@ -158,13 +174,6 @@ class UpdateTaskView(View) :
             'task_priority':task_update.task_priority,
             'task_status':task_update.task_status,
         }
-        
-        activity_log = ActivityLog.objects.create(
-            user = request.user,
-            activity = f' "{task_title}" task updated'
-        )
-        
-        activity_log.save()
         
         return JsonResponse({'status':'updated','task':context})  
      

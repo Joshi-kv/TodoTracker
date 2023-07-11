@@ -33,5 +33,6 @@ def update_pending_task() :
             )
             email.content_subtype = 'html'
             email.send()
+            print('email send')
         print(pending_tasks)
 
