@@ -24,7 +24,7 @@ admin.site.register(Feedback,FeedbackAdmin)
 
 #activity log admin 
 class ActivityLogAdmin(admin.ModelAdmin) : 
-    list_display = ['user','activity','activity_date']
+    list_display = ['user','activity','activity_date','activity_time']
     list_per_page = 20
     
 admin.site.register(ActivityLog,ActivityLogAdmin)

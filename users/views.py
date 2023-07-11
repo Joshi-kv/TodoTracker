@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from . models import UserProfile
 from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
+from home.models import ActivityLog
 # Create your views here.
 
 #user registration
@@ -26,7 +27,13 @@ class UserRegistrationView(View) :
             user_model = User.objects.get(username=username)
             new_profile = UserProfile.objects.create(user=user_model)
             new_profile.save()
-        
+
+            activity_log = ActivityLog.objects.create(
+                user=request.user,
+                activity='Profile created'
+            )
+            activity_log.save()
+            
             return JsonResponse({'success':True})
         else : 
             return JsonResponse({'success':False,'error':'invalid request method'})
@@ -52,6 +59,11 @@ class UserLoginView(View) :
             
             if user is not None : 
                 auth.login(request,user)
+                activity_log = ActivityLog(
+                    user=user,
+                    activity='Logged in'
+                )
+                activity_log.save()
                 return JsonResponse({'success':True})
             else : 
                 return JsonResponse({'success':False})
@@ -62,6 +74,11 @@ class UserLoginView(View) :
 class UserLogoutView(View) : 
     def get(self,request) : 
         auth.logout(request)
+        activity_log = ActivityLog.objects.create(
+            user=request.user,
+            activity='Logged out'
+        )
+        activity_log.save()
         return redirect('home:index')
             
 #view to render user profile page 
@@ -72,6 +89,7 @@ class UserProfilePage(View) :
         context = {
             'current_user' : current_user
         }
+        
         return render(request,'profile-page.html',context)
     
     
@@ -136,6 +154,12 @@ class UserSettingsView(View) :
         user_object.email = email
         user_object.save()
         
+        activity_log = ActivityLog.objects.create(
+            user=request.user,
+            activity='Profile settings changed'
+        )
+        activity_log.save()
+        
         context = {
             'profile_picture' : current_user.profile_picture.url,
             'full_name' : user_object.first_name,
@@ -151,6 +175,7 @@ class UserSettingsView(View) :
             'instagram_link':current_user.instagram_profile,
             'linkedin_link':current_user.linkedin_profile
         }
+        
         
         return JsonResponse(context,safe=False)
     
@@ -181,6 +206,11 @@ class ChangePasswordView(View) :
             current_user = auth.authenticate(username=user.username,password=new_password)
             if current_user is not None : 
                 auth.login(request,current_user)
+                activity_log = ActivityLog.objects.create(
+                    user=request.user,
+                    activity='Password changed'
+                )
+                activity_log.save()
             return JsonResponse({'success':True})
 
         

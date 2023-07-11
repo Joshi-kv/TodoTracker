@@ -117,6 +117,9 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Kolkata'
 
+TIME_INPUT_FORMATS = ('%I:%M %p',)
+TIME_OUTPUT_FORMATS = ('%I:%M %p',)
+
 USE_I18N = True
 
 USE_TZ = True

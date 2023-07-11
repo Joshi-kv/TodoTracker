@@ -35,6 +35,20 @@ class DashBoardCountView(View) :
             'pending_tasks':pending_tasks
         }
         return JsonResponse(context,safe=False)
+    
+#view to render activity log
+class ActivityLogView(View) : 
+    def get(self,request) : 
+        user = request.user
+        activity_logs = ActivityLog.objects.filter(user=user)
+        context = []
+        for activity_log in activity_logs : 
+            context.append({
+                'activity':activity_log.activity,
+                'activity_date':activity_log.activity_date,
+                'activity_time':activity_log.activity_time
+            })
+        return JsonResponse({'status':'success','activity':context})
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
@@ -237,6 +251,14 @@ class FeedbackCreateView(View) :
         )
         email.content_subtype = 'html'
         email.send()
+        
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = 'Feedback submitted'
+        )
+        
+        activity_log.save()
+        
         return JsonResponse({'status':'created'})
     
 #view to render newspage 
