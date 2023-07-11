@@ -36,3 +36,12 @@ class Feedback(models.Model) :
     
     def __str__(self) : 
         return f'{self.subject}'
+
+#modal to save activity log
+class ActivityLog(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    activity = models.CharField(max_length=500)
+    activity_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) : 
+        return f'{self.user} - {self.activity}'

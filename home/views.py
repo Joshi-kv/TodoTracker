@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback
+from . models import Todo,FAQ,Feedback,ActivityLog
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
@@ -89,6 +89,12 @@ class TodoCreateView(View) :
             'task_status':new_task.task_status,
             'task_priority':new_task.task_priority
         }
+        
+        activity_log = ActivityLog.objects.create(
+            user = user,
+            activity='New task added'
+        )
+        activity_log.save()
 
         return JsonResponse({'status':'success','task':context})
     
@@ -138,6 +144,14 @@ class UpdateTaskView(View) :
             'task_priority':task_update.task_priority,
             'task_status':task_update.task_status,
         }
+        
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{task_title}" task updated'
+        )
+        
+        activity_log.save()
+        
         return JsonResponse({'status':'updated','task':context})  
      
     
@@ -149,6 +163,11 @@ class TaskDeleteView(View) :
         task = Todo.objects.get(id=task_id)
         if task.user == request.user : 
             task.delete()
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{task.task_title}" deleted'
+            )
+            activity_log.save()
             return JsonResponse({'status':'success'})   
     
 #view to render faq page

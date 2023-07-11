@@ -80,7 +80,7 @@
             
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Status</label>
-                    <select class="form-select" name="status" aria-label="Default select example">
+                    <select class="form-select" name="status" id="taskStatus" aria-label="Default select example">
                         <option value=''>select status of the task</option>
                         <option value="Upcoming" >Upcoming</option>
                         <option value="In progress">In progress</option>
@@ -107,11 +107,11 @@
               <div class="row">
                 <div class="col-md-3">
                   <label for="">Date : </label>
-                  <input class="form-control dataTables_filter" type="date" name="filterDate" id="">
+                  <input class="form-control dataTables_filter" type="date" name="filterDate" >
                 </div>
                 <div class="col-md-3">
                   <label for="">Status : </label>
-                  <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" id="taskUpdateStatus">
+                  <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
                       <option value=''>Show all</option>
                       <option value="Upcoming" >Upcoming</option>
                       <option value="In progress">In progress</option>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="col-md-3">
                   <label for="">Priority : </label>
-                  <select class="form-select dataTables_filter" name="filterPriority" aria-label="Default select example" id="taskUpdateStatus">
+                  <select class="form-select dataTables_filter" name="filterPriority" aria-label="Default select example" >
                       <option value=''>Show all</option>
                       <option value="High priority" >High priority</option>
                       <option value="Medium priority" >Medium priority</option>

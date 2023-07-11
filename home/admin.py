@@ -1,5 +1,6 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback
+from . models import Todo,FAQ,Feedback,ActivityLog
+
 
 # Register your models here.
 class TaskAdmin(admin.ModelAdmin) : 
@@ -20,3 +21,10 @@ class FeedbackAdmin(admin.ModelAdmin) :
     list_per_page = 20
     
 admin.site.register(Feedback,FeedbackAdmin)
+
+#activity log admin 
+class ActivityLogAdmin(admin.ModelAdmin) : 
+    list_display = ['user','activity','activity_date']
+    list_per_page = 20
+    
+admin.site.register(ActivityLog,ActivityLogAdmin)
