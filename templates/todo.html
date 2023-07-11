@@ -105,7 +105,11 @@
             
             <div class="filters mb-5">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <label for="">Date : </label>
+                  <input class="form-control dataTables_filter" type="date" name="filterDate" id="">
+                </div>
+                <div class="col-md-3">
                   <label for="">Status : </label>
                   <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" id="taskUpdateStatus">
                       <option value=''>Show all</option>
@@ -115,7 +119,7 @@
                       <option value="Pending">Pending</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label for="">Priority : </label>
                   <select class="form-select dataTables_filter" name="filterPriority" aria-label="Default select example" id="taskUpdateStatus">
                       <option value=''>Show all</option>

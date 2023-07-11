@@ -23,20 +23,7 @@ $(document).ready(() =>{
                 $('.pagination').show()
             }
             
-            // $('#taskTable').on('change',(e) =>{
-            //     console.log('change')
-            // })
-
-            // if(data.tasks.length <= 10){
-            //     $('.dataTables_length').hide()
-            // }else{
-            //     $('.dataTables_length').show()
-            // }
-            // if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
-            //     $('.pagination').hide()
-            // }else{
-            //     $('.pagination').show()
-            // }
+            //custom filtering
             $('select[name="taskTable_length"]').on('change',() =>{
                 console.log($('select[name="taskTable_length').val())
                 if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
@@ -52,6 +39,11 @@ $(document).ready(() =>{
             $('select[name="filterPriority"]').on('change',function(){
                 let priority = $(this).val()
                 table.column(3).search(priority).draw()
+            })
+
+            $('input[name="filterDate"]').on('change',function(){
+                let date = $(this).val()
+                table.column(2).search(date).draw()
             })
         })
     })
