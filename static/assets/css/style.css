@@ -1261,3 +1261,11 @@ h6 {
 
   text-align: right;
 }
+
+.dropdown-item{
+  cursor: pointer;
+}
+
+.clear-filter-btn{
+  cursor: pointer;
+}

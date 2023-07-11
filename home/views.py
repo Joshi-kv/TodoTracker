@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
 from django.template.loader import get_template
-
+from datetime import date
 
 class HomePageView(LoginRequiredMixin,View) :
     login_url = 'users:login' 
@@ -41,7 +41,6 @@ class ActivityLogView(View) :
     def get(self,request) : 
         user = request.user
         activity_logs = ActivityLog.objects.filter(user=user).order_by('-activity_time')[:6]
-        print(activity_logs)
         context = []
         for activity_log in activity_logs : 
             context.append({
@@ -50,6 +49,51 @@ class ActivityLogView(View) :
                 'activity_time':activity_log.activity_time
             })
         return JsonResponse({'status':'success','activity':context})
+    
+#view to filter recent activities 
+class FilterRecentActivityView(View) : 
+    def get(self,request) : 
+        current_date = date.today()
+        current_day = current_date.day
+        current_month = current_date.month
+        current_year = current_date.year
+        
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        #condition checking for filter 
+        if filter_option == 'Today' : 
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year)
+            context = []
+            for filtered_recent_log in filtered_recent_logs : 
+                context.append({
+                    'activity':filtered_recent_log.activity,
+                    'activity_date':filtered_recent_log.activity_date,
+                    'activity_time':filtered_recent_log.activity_time
+                })
+            return JsonResponse({'status':'success','filtered_recent_logs':context})
+        
+        elif filter_option == 'This Month' : 
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__month=current_month,activity_date__year=current_year)
+            context = []
+            for filtered_recent_log in filtered_recent_logs : 
+                context.append({
+                    'activity':filtered_recent_log.activity,
+                    'activity_date':filtered_recent_log.activity_date,
+                    'activity_time':filtered_recent_log.activity_time
+                })
+            return JsonResponse({'status':'success','filtered_recent_logs':context})
+        
+        elif filter_option == 'This Year' : 
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__year=current_year)
+            context = []
+            for filtered_recent_log in filtered_recent_logs : 
+                context.append({
+                    'activity':filtered_recent_log.activity,
+                    'activity_date':filtered_recent_log.activity_date,
+                    'activity_time':filtered_recent_log.activity_time
+                })
+            return JsonResponse({'status':'success','filtered_recent_logs':context})
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
