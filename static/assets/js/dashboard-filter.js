@@ -20,4 +20,21 @@ $(document).ready(function(){
             }
         })
     }
+
+    //filter completed task
+    var completedTaskFilterList = document.getElementById('completedTaskFilterList')
+    completedTaskFilterList.onclick = function(e) {
+        var target = getEventTarget(e)
+        $.ajax({
+            type:'get',
+            url:'/filter-completed-tasks',
+            dataType:'json',
+            data:{
+                'option':target.innerHTML
+            },
+            success:function(response){
+                $('#completedTask').html(response.filtered_complete_task)
+            }
+        })
+    }
 })

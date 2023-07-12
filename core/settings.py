@@ -118,7 +118,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 
 TIME_INPUT_FORMATS = ('%I:%M %p',)
-TIME_OUTPUT_FORMATS = ('%I:%M %p',)
+
+DATETIME_INPUT_FORMATS = ["%d/%m/%Y"]
 
 USE_I18N = True
 

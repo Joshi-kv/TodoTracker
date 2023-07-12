@@ -10,7 +10,7 @@ $(document).ready(() => {
                 let currentDate = new Date()
                 let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
                 let activity_time = item.activity_time
-                let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
+                let convertedTime = moment(activity_time,'HH:mm').format('hh:mm a')
                 let activity = item.activity
                 let activity_date = item.activity_date
     
@@ -71,11 +71,11 @@ $(document).ready(() => {
                 if(response.filtered_recent_logs.length > 0){
                     response.filtered_recent_logs.forEach((item) => {
                         let activity_time = item.activity_time
-                        let currentDate = new Date()
-                        let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
-                        let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
                         let activity = item.activity
                         let activity_date = item.activity_date
+                        let currentDate = new Date()
+                        let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
+                        let convertedTime = moment(activity_time,'HH:mm').format('hh:mm a')
             
                         let activityContentDiv = $('.activity')
                             let activityContent = 
@@ -128,7 +128,7 @@ $(document).ready(() => {
                     let currentDate = new Date()
                     let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
                     let activity_time = item.activity_time
-                    let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
+                    let convertedTime = moment(activity_time,'HH:mm').format('hh:mm a')
                     let activity = item.activity
                     let activity_date = item.activity_date
         

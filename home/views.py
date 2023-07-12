@@ -58,12 +58,36 @@ class TotalTaskFilterView(View) :
         else :
             filtered_total_tasks = Todo.objects.filter(user=user).count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
-    
+        
+#view to filter completed tasks
+class FilterCompletedTaskView(View) : 
+    def get(self,request) : 
+        current_date = date.today()
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        #filtering completed tasks
+        if filter_option == 'Today' : 
+            filtered_complete_tasks = Todo.objects.filter(user=user,task_status='Completed',created_date__day=current_date.day,created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_complete_task':filtered_complete_tasks})
+        elif filter_option == 'This Month' : 
+            filtered_complete_tasks = Todo.objects.filter(user=user,task_status='Completed',created_date__month=current_date.month,created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_complete_task':filtered_complete_tasks})
+        elif filter_option == 'This Year' :
+            filtered_complete_tasks = Todo.objects.filter(user=user,task_status='Completed',created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_complete_task':filtered_complete_tasks})
+        else : 
+            filtered_complete_tasks = Todo.objects.filter(user=user,task_status='Completed').count()
+            return JsonResponse({'status':'success','filtered_complete_task':filtered_complete_tasks})
 #view to render activity log
 class ActivityLogView(View) : 
     def get(self,request) : 
         user = request.user
-        activity_logs = ActivityLog.objects.filter(user=user).order_by('activity_time')[:6]
+        current_date = date.today()
+        activity_logs = ActivityLog.objects.filter(user=user,activity_date=current_date).order_by('activity_time')[:6]
+        print(activity_logs.count())
+        if activity_logs.count() < 6 : 
+            activity_logs = ActivityLog.objects.filter(user=user).order_by('activity_time')[:6]
         context = []
         for activity_log in activity_logs : 
             context.append({
