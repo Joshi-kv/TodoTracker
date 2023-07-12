@@ -402,19 +402,27 @@ class NewsListView(View) :
 #view to render general news page 
 class GeneralNewsPageView(View) : 
     def get(self,request) : 
-        return render(request,'general-news.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model) 
+        return render(request,'general-news.html',{'current_user':current_user})
     
 #view to render featured news page
 class FeaturedNewsPageView(View) : 
     def get(self,request) :
-        return render(request,'featured-news.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model) 
+        return render(request,'featured-news.html',{'current_user':current_user})
 
 #view to render announcement page
 class AnnouncementPageView(View) : 
     def get(self,request) :
-        return render(request,'announcements.html')
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model) 
+        return render(request,'announcements.html',{'current_user':current_user})
     
 #view to render my news page 
 class MyNewsPageView(View) :
-    def get(self,request) : 
-        return render(request,'my-news.html')
+    def get(self,request) :
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)  
+        return render(request,'my-news.html',{'current_user':current_user})
