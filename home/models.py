@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your models here.
 
 #model for todo
@@ -37,7 +38,7 @@ class Feedback(models.Model) :
     def __str__(self) : 
         return f'{self.subject}'
 
-#modal to save activity log
+#model to save activity log
 class ActivityLog(models.Model) : 
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     activity = models.CharField(max_length=500)
@@ -46,3 +47,44 @@ class ActivityLog(models.Model) :
 
     def __str__(self) : 
         return f'{self.user} - {self.activity}'
+    
+#model for news
+class News(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    title = models.CharField(max_length=500)
+    description = models.TextField()
+    category = models.CharField(max_length=256)
+    news_image = models.ImageField(upload_to='news-images')
+    slug = models.SlugField(max_length=500)
+    published_date = models.DateField(auto_now_add=True)
+    published_time = models.TimeField(auto_now_add=True)
+    
+    def get_absolute_url(self):
+        return reverse("home:news", kwargs={"slug": self.slug})
+    
+    def get_absolute_featured_news_url(self):
+        return reverse("home:featured-news", kwargs={"slug": self.slug})
+    
+    def get_absolute_general_news_url(self):
+        return reverse("home:general-news", kwargs={"slug": self.slug})
+    
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.title}'
+    
+    
+#model for updated 
+class Updates(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE) 
+    title = models.CharField(max_length=500)
+    description = models.TextField()
+    slug = models.CharField(max_length=500)
+    announcement_image = models.ImageField(upload_to='announcement-images')
+    published_date = models.DateField(auto_now_add=True)
+    published_time = models.TimeField(auto_now_add=True)
+    
+    def get_absolute_url(self):
+        return reverse("home:updates", kwargs={"slug": self.slug})
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.title}'

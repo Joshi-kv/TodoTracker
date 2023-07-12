@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback,ActivityLog
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates
 
 
 # Register your models here.
@@ -28,3 +28,18 @@ class ActivityLogAdmin(admin.ModelAdmin) :
     list_per_page = 20
     
 admin.site.register(ActivityLog,ActivityLogAdmin)
+
+#news model admin
+class NewsAdmin(admin.ModelAdmin) : 
+    list_display = ['user','title','category','description','slug','published_date','published_time']
+    list_per_page = 20
+    prepopulated_fields = {'slug':('title',)}
+admin.site.register(News,NewsAdmin)
+
+#updates model admin
+class UpdatesAdmin(admin.ModelAdmin) : 
+    list_display = ['user','title','description','slug','published_date','published_time']
+    list_per_page = 20
+    prepopulated_fields = {'slug':('title',)}
+admin.site.register(Updates,UpdatesAdmin)
+    

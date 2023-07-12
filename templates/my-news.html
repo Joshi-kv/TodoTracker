@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}News and Updates{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+{% include 'sidebar.html' %}
+
+<!--main content-->
+<main id="main" class="main">
+  
+  <!--Main page-->
+  <div class="search-bar mb-3">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input class="form-control form-control-sm search" type="text" name="query" placeholder="Search latest news here" title="Enter search keyword">
+      <button type="submit" class="btn btn-primary btn-sm ms-3" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+
+    <div class="pagetitle ">
+      <div class="d-flex">
+        <h1 class="my-3">My News</h1> <span class="mx-5 mt-3"><button data-bs-toggle="modal" data-bs-target="#newsAddModal" class="btn btn-primary btn-sm">Add News</button></span>
+      </div>
+      <nav>
+        <ul class="nav nav-tabs">
+
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:news' %}" >All News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:general-news' %}" >General News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:my-news' %}" >My News</a></button>
+            </li>
+  
+          </ul>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <div class="tab-content">
+        <h3></h3>
+      <section  class="section">
+        <div id="newsDiv"  class="row">
+          <!--news contents-->
+        </div>
+  
+      </section>
+    </div>
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="newsAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add News</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row g-3" id="updateTaskForm" method='post'>
+                {% csrf_token %}
+                <div class="col-12">
+                  <label for="taskTitle" class="form-label">News Title</label>
+                  <input type="text" name="updateTitle" class="form-control" id="taskUpdateTitle">
+                </div>
+
+                <div class="select-container mx-5"> 
+                    <div class="select-header"> 
+                        <img src="" alt="news image" srcset="">
+                      <svg id="uploadIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+                        <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> <p>Browse File to upload!</p>
+                    </div> 
+                    <label for="file" class="footer"> 
+                      <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path><path d="M18.153 6h-.009v5.342H23.5v-.002z"></path></g></svg> 
+                      <p>Choose News Image</p> 
+                    </label> 
+                    <input id="file" type="file"> 
+                </div>
+
+                <div class="col-12">
+                  <label for="taskDescription" class="form-label">News Description</label>
+                  <textarea class="form-control" name="updateDescription" placeholder="Description" id="taskUpdateDescription" style="height: 100px;"></textarea>
+                </div>
+
+
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Category</label>
+                    <select class="form-select" name="updatePriority" aria-label="Default select example" id="taskUpdatePriority">
+                        <option value="" >select categorys</option>
+                        <option value="High priority" >General</option>
+                        <option value="Medium priority" >Featured</option>
+                    </select>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+        
+            </form><!-- Vertical Form -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </main><!-- End #main -->
+
+{% include 'footer.html' %}
+
+<script src="{% static 'assets/js/news.js' %}"></script>
+
+{% endblock content %}

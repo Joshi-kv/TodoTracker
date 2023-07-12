@@ -385,7 +385,7 @@ class FeedbackCreateView(View) :
         return JsonResponse({'status':'created'})
     
 #view to render newspage 
-class NewsPageView(View) : 
+class MainNewsPageView(View) : 
     def get(self,request) : 
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model) 
@@ -398,4 +398,23 @@ class NewsListView(View) :
         top_news = newsapi.get_top_headlines(sources='techcrunch')
         news = top_news['articles']
         return JsonResponse({'status':'success','news':news})
+
+#view to render general news page 
+class GeneralNewsPageView(View) : 
+    def get(self,request) : 
+        return render(request,'general-news.html')
     
+#view to render featured news page
+class FeaturedNewsPageView(View) : 
+    def get(self,request) :
+        return render(request,'featured-news.html')
+
+#view to render announcement page
+class AnnouncementPageView(View) : 
+    def get(self,request) :
+        return render(request,'announcements.html')
+    
+#view to render my news page 
+class MyNewsPageView(View) :
+    def get(self,request) : 
+        return render(request,'my-news.html')

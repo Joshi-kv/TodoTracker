@@ -20,35 +20,36 @@
   </div><!-- End Search Bar -->
 
     <div class="pagetitle ">
-      <h1 class="my-3">Latest news </h1>
+      <h1 class="my-3">Featured News</h1>
       <nav>
         <ul class="nav nav-tabs">
 
-          <li class="nav-item mx-1" role="presentation">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:news' %}" >All News</a></button>
-          </li>
-
-          <li class="nav-item mx-1" role="presentation">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:general-news' %}" >General News</a></button>
-          </li>
-
-          <li class="nav-item mx-1">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
-          </li>
-
-          <li class="nav-item mx-1">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
-          </li>
-
-          <li class="nav-item mx-1">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:my-news' %}" >My News</a></button>
-          </li>
-
-        </ul>
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:news' %}" >All News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:general-news' %}" >General News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:my-news' %}" >My News</a></button>
+            </li>
+  
+          </ul>
       </nav>
     </div><!-- End Page Title -->
 
     <div class="tab-content">
+        <h3></h3>
       <section  class="section">
         <div id="newsDiv"  class="row">
           <!--news contents-->
