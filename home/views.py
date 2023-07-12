@@ -223,8 +223,9 @@ class TodoCreateView(View) :
             activity=f'"{task_title}" task added'
         )
         activity_log.save()
-
-        return JsonResponse({'status':'success','task':context})
+        
+        total_tasks = Todo.objects.filter(user=user).count()
+        return JsonResponse({'status':'success','task':context,'total':total_tasks})
     
 #view to update page view
 class UpdateTaskPageView(View) : 

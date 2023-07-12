@@ -79,13 +79,36 @@ $(document).ready(() =>{
                     <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                     `
                 ]).draw()
+
                 alertify.set('notifier','position','top-right')
                 alertify.success('New task added successfully')
-            }
-
+            },
+            
         })
         $('#basicModal').modal('toggle')
         $('#taskForm')[0].reset()
     })
 
 })
+
+//function to hide pagination dynamically 
+function hidePagination(totalTasks){
+    console.log('called')
+    if(totalTasks > 10 ){
+        $('#taskTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#taskTable_length').hide()
+        $('.pagination').hide()
+    }
+
+    $('select[name="taskTable_length"]').on('change',() =>{
+        console.log($('select[name="taskTable_length').val())
+        if(totalTasks > $('select[name="taskTable_length"]').val() ){
+            $('.pagination').show()
+        }else{
+            $('.pagination').hide()
+        }
+    })
+    
+}

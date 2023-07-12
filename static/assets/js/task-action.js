@@ -90,7 +90,7 @@ $(document).ready(() =>{
                                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                 `
                               ]).draw()
-                              
+                              hidePagination(table,data.tasks)
                         })
                     })
                 }
@@ -111,7 +111,6 @@ $(document).ready(() =>{
     $('#deleteModal').on('submit',(e) => {
         e.preventDefault()
         let taskId = $('#deleteModal').attr('delete')
-        console.log(taskId)
         $.ajax({
             type:'post',
             url:'/delete-task/',
@@ -142,14 +141,39 @@ $(document).ready(() =>{
                                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                 `
                               ]).draw()
-                              
+                            hidePagination(table,data.tasks)
                         })
                     })
                 }
                 alertify.set('notifier','position','top-right')
                 alertify.error('Task deleted!')
-            }
+            },
         })
         $('#deleteModal').modal('toggle')
     })
+
+
 })
+
+//function to hide pagination dynamically 
+function hidePagination(table,tasks){
+
+        
+    if(tasks.length > 10 ){
+        $('#taskTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#taskTable_length').hide()
+        $('.pagination').hide()
+    }
+
+    $('select[name="taskTable_length"]').on('change',() =>{
+        console.log($('select[name="taskTable_length').val())
+        if(tasks.length > $('select[name="taskTable_length"]').val() ){
+            $('.pagination').show()
+        }else{
+            $('.pagination').hide()
+        }
+    })
+    
+}

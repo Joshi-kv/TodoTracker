@@ -1,4 +1,5 @@
 $(document).ready(() =>{
+    
     // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/tasks/'
     fetch(url)
@@ -18,37 +19,71 @@ $(document).ready(() =>{
                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                 `
             ]).draw()
-            
-            if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
-                $('.pagination').hide()
-            }else{
-                $('.pagination').show()
-            }
-            
-            $('select[name="taskTable_length"]').on('change',() =>{
-                console.log($('select[name="taskTable_length').val())
-                if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
-                    $('.pagination').hide()
-                }else{
-                    $('.pagination').show()
-                }
-            })
-            
+
+            hidePagination(table,data.tasks)
+
             //custom filtering
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(4).search(status).draw()
+                hidePagination(table,data.tasks)
             })
             $('select[name="filterPriority"]').on('change',function(){
                 let priority = $(this).val()
                 table.column(3).search(priority).draw()
+                hidePagination(table,data.tasks)
             })
 
             $('input[name="filterDate"]').on('change',function(){
                 let date = $(this).val()
                 convertedDate = moment(date).format('DD/MM/yy')
                 table.column(2).search(convertedDate).draw()
+                hidePagination(table,data.tasks)
             })
         })
     })
+
+
 })
+
+//function to hide pagination dynamically 
+function hidePagination(table,tasks){
+
+    console.log('called')
+    if(tasks.length > 10 ){
+        $('#taskTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#taskTable_length').hide()
+        $('.pagination').hide()
+    }
+
+    $('select[name="taskTable_length"]').on('change',() =>{
+        console.log($('select[name="taskTable_length').val())
+        if(tasks.length > $('select[name="taskTable_length"]').val() ){
+            $('.pagination').show()
+        }else{
+            $('.pagination').hide()
+        }
+    })
+
+    //custom filtering
+    $('select[name="filterStatus"]').on('change',function(){
+        let status = $(this).val()
+        table.column(4).search(status).draw()
+        hidePagination(table,data.tasks)
+    })
+    $('select[name="filterPriority"]').on('change',function(){
+        let priority = $(this).val()
+        table.column(3).search(priority).draw()
+        hidePagination(table,data.tasks)
+    })
+
+    $('input[name="filterDate"]').on('change',function(){
+        let date = $(this).val()
+        convertedDate = moment(date).format('DD/MM/yy')
+        table.column(2).search(convertedDate).draw()
+        hidePagination(table,data.tasks)
+    })
+    
+}
