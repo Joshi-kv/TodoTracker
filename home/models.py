@@ -9,7 +9,7 @@ class Todo(models.Model) :
     task_description = models.TextField()
     task_duedate = models.DateField()
     task_status = models.CharField(max_length=100)
-    task_priority = models.CharField(max_length=10)
+    task_priority = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     

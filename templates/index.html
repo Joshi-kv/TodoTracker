@@ -36,19 +36,20 @@
 
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="totalTaskFilterList">
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li class="dropdown-item">Show all</li>
+                    <li class="dropdown-item">Today</li>
+                    <li class="dropdown-item">This Month</li>
+                    <li class="dropdown-item">This Year</li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Total Tasks</h5>
+                  <h5 class="card-title">Total Tasks </span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -76,9 +77,10 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li class="dropdown-item">Show all</li>
+                    <li class="dropdown-item">Today</li>
+                    <li class="dropdown-item">This Month</li>
+                    <li class="dropdown-item">This Year</li>
                   </ul>
                 </div>
 
@@ -112,9 +114,9 @@
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li class="dropdown-item">Today</li>
+                    <li class="dropdown-item">This Month</li>
+                    <li class="dropdown-item">This Year</li>
                   </ul>
                 </div>
 
@@ -535,5 +537,6 @@
 
   <script src="{% static 'assets/js/dashboard.js' %}"></script>
   <script src="{% static 'assets/js/activity-log.js' %}"></script>
+  <script src="{% static 'assets/js/dashboard-filter.js' %}"></script>
 
 {% endblock content %}

@@ -7,24 +7,31 @@ $(document).ready(() => {
         if(data.activity.length > 0){
 
             data.activity.forEach((item) => { 
+                let currentDate = new Date()
+                let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
                 let activity_time = item.activity_time
                 let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
                 let activity = item.activity
                 let activity_date = item.activity_date
     
                 let activityContentDiv = $('.activity')
-                    let activityContent = 
-                    `
-                    <div class="activity-item d-flex">
-                        <div class="activite-label">${convertedTime},<br><span>${activity_date}<br></span><br></div><br>
-                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                        <div class="activity-content">
-                        ${activity}
-                        </div>
+                let activityContent = 
+                `
+                <div class="activity-item d-flex" id=${activity_date}>
+                    <div class="activite-label">${convertedTime},<br><span>${activity_date}<br></span><br></div><br>
+                    <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                    <div class="activity-content">
+                    ${activity}
                     </div>
-        
-                    `
+                </div>
+    
+                `
+                if(activity_date != convertedCurrentDate){
                     activityContentDiv.append(activityContent)
+
+                }else{
+                    activityContentDiv.prepend(activityContent)
+                }
                 
             })
             
@@ -64,6 +71,8 @@ $(document).ready(() => {
                 if(response.filtered_recent_logs.length > 0){
                     response.filtered_recent_logs.forEach((item) => {
                         let activity_time = item.activity_time
+                        let currentDate = new Date()
+                        let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
                         let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
                         let activity = item.activity
                         let activity_date = item.activity_date
@@ -80,7 +89,12 @@ $(document).ready(() => {
                             </div>
                 
                             `
-                            activityContentDiv.append(activityContent)
+                            if(activity_date != convertedCurrentDate){
+                                activityContentDiv.append(activityContent)
+            
+                            }else{
+                                activityContentDiv.prepend(activityContent)
+                            }
                     })
                 }else{
 
@@ -111,24 +125,31 @@ $(document).ready(() => {
             if(data.activity.length > 0){
     
                 data.activity.forEach((item) => { 
+                    let currentDate = new Date()
+                    let convertedCurrentDate = moment(currentDate).format('yy-MM-DD')
                     let activity_time = item.activity_time
                     let convertedTime = moment(activity_time,'HH:mm').format('hh:mm')
                     let activity = item.activity
                     let activity_date = item.activity_date
         
                     let activityContentDiv = $('.activity')
-                        let activityContent = 
-                        `
-                        <div class="activity-item d-flex">
-                            <div class="activite-label">${convertedTime},<br><span>${activity_date}<br></span><br></div><br>
-                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                            <div class="activity-content">
-                            ${activity}
-                            </div>
+                    let activityContent = 
+                    `
+                    <div class="activity-item d-flex" id=${activity_date}>
+                        <div class="activite-label">${convertedTime},<br><span>${activity_date}<br></span><br></div><br>
+                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        <div class="activity-content">
+                        ${activity}
                         </div>
-            
-                        `
+                    </div>
+        
+                    `
+                    if(activity_date != convertedCurrentDate){
                         activityContentDiv.append(activityContent)
+    
+                    }else{
+                        activityContentDiv.prepend(activityContent)
+                    }
                     
                 })
                 

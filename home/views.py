@@ -35,12 +35,35 @@ class DashBoardCountView(View) :
             'pending_tasks':pending_tasks
         }
         return JsonResponse(context,safe=False)
+
+#view to filter total tasks
+class TotalTaskFilterView(View) : 
+    def get(self,request) :
+         
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        current_date = date.today()
+        
+        #filtering 
+        if filter_option == 'Today' : 
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__day=current_date.day,created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
+        elif filter_option == 'This Month' : 
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__month=current_date.month,created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
+        elif filter_option == 'This Year' : 
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
+        else :
+            filtered_total_tasks = Todo.objects.filter(user=user).count()
+            return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
     
 #view to render activity log
 class ActivityLogView(View) : 
     def get(self,request) : 
         user = request.user
-        activity_logs = ActivityLog.objects.filter(user=user).order_by('-activity_time')[:6]
+        activity_logs = ActivityLog.objects.filter(user=user).order_by('activity_time')[:6]
         context = []
         for activity_log in activity_logs : 
             context.append({
@@ -63,7 +86,7 @@ class FilterRecentActivityView(View) :
         
         #condition checking for filter 
         if filter_option == 'Today' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year)
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year).order_by('activity_time')
             context = []
             for filtered_recent_log in filtered_recent_logs : 
                 context.append({
@@ -74,7 +97,7 @@ class FilterRecentActivityView(View) :
             return JsonResponse({'status':'success','filtered_recent_logs':context})
         
         elif filter_option == 'This Month' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__month=current_month,activity_date__year=current_year)
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__month=current_month,activity_date__year=current_year).order_by('activity_time')
             context = []
             for filtered_recent_log in filtered_recent_logs : 
                 context.append({
@@ -85,7 +108,7 @@ class FilterRecentActivityView(View) :
             return JsonResponse({'status':'success','filtered_recent_logs':context})
         
         elif filter_option == 'This Year' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__year=current_year)
+            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__year=current_year).order_by('activity_time')
             context = []
             for filtered_recent_log in filtered_recent_logs : 
                 context.append({
@@ -151,7 +174,7 @@ class TodoCreateView(View) :
         
         activity_log = ActivityLog.objects.create(
             user = user,
-            activity='New task added'
+            activity=f'"{task_title}" task added'
         )
         activity_log.save()
 

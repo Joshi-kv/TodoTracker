@@ -1269,3 +1269,7 @@ h6 {
 .clear-filter-btn{
   cursor: pointer;
 }
+
+#totalTaskClearFilter{
+  font-size: 11px;
+}
