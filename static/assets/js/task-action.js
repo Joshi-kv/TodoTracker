@@ -78,10 +78,11 @@ $(document).ready(() =>{
                     .then((data) => {
                         data.tasks.forEach((task) =>{
                             let table = $('#taskTable').DataTable()
+                            let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
                             table.row.add([
                                 `${task.task_title}`,
                                 `${task.task_description}`,
-                                `${task.task_duedate}`,
+                                `${convertedTaskDuedate}`,
                                 `${task.task_priority}`,
                                 `${task.task_status}`,
                                 `
@@ -129,10 +130,11 @@ $(document).ready(() =>{
                     .then((data) => {
                         data.tasks.forEach((task) =>{
                             let table = $('#taskTable').DataTable()
+                            let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
                             table.row.add([
                                 `${task.task_title}`,
                                 `${task.task_description}`,
-                                `${task.task_duedate}`,
+                                `${convertedTaskDuedate}`,
                                 `${task.task_priority}`,
                                 `${task.task_status}`,
                                 `

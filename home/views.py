@@ -84,7 +84,8 @@ class ActivityLogView(View) :
     def get(self,request) : 
         user = request.user
         current_date = date.today()
-        activity_logs = ActivityLog.objects.filter(user=user,activity_date=current_date).order_by('activity_time')[:6]
+        activity_logs = ActivityLog.objects.filter(user=user,activity_date=current_date).order_by('activity_time')
+        print(activity_logs)
         print(activity_logs.count())
         if activity_logs.count() < 6 : 
             activity_logs = ActivityLog.objects.filter(user=user).order_by('activity_time')[:6]

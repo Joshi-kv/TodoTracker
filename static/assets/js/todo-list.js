@@ -6,10 +6,11 @@ $(document).ready(() =>{
     .then((data) => {
         data.tasks.forEach((task) =>{
             let table = $('#taskTable').DataTable()
+            let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
             table.row.add([
                 `${task.task_title}`,
                 `${task.task_description}`,
-                `${task.task_duedate}`,
+                `${convertedTaskDuedate}`,
                 `${task.task_priority}`,
                 `${task.task_status}`,
                 `
@@ -17,13 +18,13 @@ $(document).ready(() =>{
                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                 `
             ]).draw()
+            
             if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
                 $('.pagination').hide()
             }else{
                 $('.pagination').show()
             }
             
-            //custom filtering
             $('select[name="taskTable_length"]').on('change',() =>{
                 console.log($('select[name="taskTable_length').val())
                 if(data.tasks.length <= $('select[name="taskTable_length"]').val() ){
@@ -32,6 +33,8 @@ $(document).ready(() =>{
                     $('.pagination').show()
                 }
             })
+            
+            //custom filtering
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(4).search(status).draw()
@@ -43,7 +46,8 @@ $(document).ready(() =>{
 
             $('input[name="filterDate"]').on('change',function(){
                 let date = $(this).val()
-                table.column(2).search(date).draw()
+                convertedDate = moment(date).format('DD/MM/yy')
+                table.column(2).search(convertedDate).draw()
             })
         })
     })
