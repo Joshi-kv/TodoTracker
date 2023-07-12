@@ -37,4 +37,21 @@ $(document).ready(function(){
             }
         })
     }
+
+    //filter pending tasks
+    var pendingTaskFilterList = document.getElementById('pendingTaskFilterList')
+    pendingTaskFilterList.onclick = function(e){
+        let target = getEventTarget(e)
+        $.ajax({
+            type:'get',
+            url:'/filter-pending-tasks',
+            dataType:'json',
+            data:{
+                'option':target.innerHTML
+            },
+            success:function(response){
+                $('#pendingTask').html(response.filtered_pending_task)
+            }
+        })
+    }
 })

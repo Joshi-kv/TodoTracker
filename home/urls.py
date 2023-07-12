@@ -8,6 +8,7 @@ urlpatterns = [
     path('dashboard-count/',views.DashBoardCountView.as_view(),name='dashboard-count'),
     path('filter-total-tasks/',views.TotalTaskFilterView.as_view(),name='filter-total-task'),
     path('filter-completed-tasks/',views.FilterCompletedTaskView.as_view(),name='filter-completed-tasks'),
+    path('filter-pending-tasks/',views.FilterPendingTaskView.as_view(),name='filter-pending-tasks'),
     path('activity-logs/',views.ActivityLogView.as_view(),name='activity-logs'),
     path('recent-logs-filter',views.FilterRecentActivityView.as_view(),name='recent-log-filter'),
     path('todo/',views.TodoPageView.as_view(),name='todo-page'),

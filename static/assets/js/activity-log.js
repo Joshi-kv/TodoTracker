@@ -5,7 +5,6 @@ $(document).ready(() => {
     .then((data) => {
         if(data.activity.length > 0){
             let slicedData = [data.activity.slice(-5)]
-            console.log(slicedData)
             slicedData.forEach((data) => {
                 data.forEach((item) =>{
                     let currentDate = new Date()
@@ -126,7 +125,6 @@ $(document).ready(() => {
         .then((data) => {
             if(data.activity.length > 0){
                 let slicedData = [data.activity.slice(-5)]
-                console.log(slicedData)
                 slicedData.forEach((data) => {
                     data.forEach((item) =>{
                         let currentDate = new Date()
