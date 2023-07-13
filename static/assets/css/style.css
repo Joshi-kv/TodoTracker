@@ -1349,12 +1349,7 @@ h6 {
   overflow: auto;
 }
 
-
-
-/* .recent-log::-webkit-scrollbar{
-  width: 5px;
-  background: darkgray;
-  border-radius: 5px;
-  border: 1px solid rgb(119, 118, 118);
-  height: 5px;
-} */
+.no-news-content{
+  margin-top: 5rem;
+  height: 500px;
+}

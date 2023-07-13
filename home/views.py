@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
@@ -391,13 +391,15 @@ class MainNewsPageView(View) :
         current_user = UserProfile.objects.get(user=user_model) 
         return render(request,'news.html',{'current_user':current_user})
     
-#view to fetch news from newsapi
-class NewsListView(View) : 
-    def get(self,request) : 
-        newsapi = NewsApiClient(api_key='38569bb4f68f42e7a30be5fea761e707')
-        top_news = newsapi.get_top_headlines(sources='techcrunch')
-        news = top_news['articles']
-        return JsonResponse({'status':'success','news':news})
+
+    
+# #view to fetch news from newsapi
+# class NewsListView(View) : 
+#     def get(self,request) : 
+#         newsapi = NewsApiClient(api_key='38569bb4f68f42e7a30be5fea761e707')
+#         top_news = newsapi.get_top_headlines(sources='techcrunch')
+#         news = top_news['articles']
+#         return JsonResponse({'status':'success','news':news})
 
 #view to render general news page 
 class GeneralNewsPageView(View) : 
@@ -426,3 +428,57 @@ class MyNewsPageView(View) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)  
         return render(request,'my-news.html',{'current_user':current_user})
+
+
+#view to create news 
+class CreateNewsView(View) : 
+    def post(self,request) : 
+        user = request.user
+        news_title = request.POST.get('news_title')
+        news_image = request.FILES.get('news_image')
+        news_description = request.POST.get('news_description')
+        news_category = request.POST.get('news_category')
+        
+        news_slug_split = news_title.split(' ')
+        news_slug ='-'.join(news_slug_split)
+        
+        news = News.objects.create(
+            user = user,
+            title = news_title,
+            category = news_category,
+            news_image = news_image,
+            description = news_description,
+            slug = news_slug
+        )
+        news.save()
+        
+        context = {
+            'author':news.user.username,
+            'news_title':news.title,
+            'news_image':news.news_image.url,
+            'news_slug':news.slug,
+            'news_description':news.description,
+            'news_category':news.category,
+            'published_on':news.published_date,
+            'published_time':news.published_time
+        }
+        print(news)
+        return JsonResponse({'status':'success','news':context})
+
+#view to fetch my news 
+class MyNewsListView(View) : 
+    def get(self,request) : 
+        user = request.user 
+        my_news = News.objects.filter(user=user).order_by('published_date','-published_time')
+        context = []
+        for news in my_news : 
+            context.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_slug':news.slug,
+                'news_image':news.news_image.url,
+                'news_description':news.description,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':context})
