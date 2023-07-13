@@ -18,10 +18,13 @@ $(document).ready(() => {
                 reminder:reminder_option
             },
             success:function(response){
-                console.log(response)
-                if(response.status=='success' && response.reminder=='Enabled'){
-                    $('#reminder').setAttribute('checked')
-                }
+                if(response.reminder == true){
+                    alertify.set('notifier','position','top-right')
+                    alertify.success('Email notification turned on') 
+                }else{
+                    alertify.set('notifier','position','top-right')
+                    alertify.success('Email notification turned off')
+                }   
             }
         })
     })
