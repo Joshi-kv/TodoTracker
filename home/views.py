@@ -419,12 +419,52 @@ class GeneralNewsPageView(View) :
         current_user = UserProfile.objects.get(user=user_model) 
         return render(request,'general-news.html',{'current_user':current_user})
     
+#view to list general news 
+class GeneralNewsListView(View) : 
+    def get(self,request) : 
+        user = request.user.id,
+        general_news_obj = News.objects.all().exclude(user=user).filter(category='General').order_by('published_date','-published_time')
+        context = []
+        for general_news in general_news_obj : 
+            context.append({
+                'author':general_news.user.username,
+                'news_title':general_news.title,
+                'news_category':general_news.category,
+                'news_slug':general_news.slug,
+                'news_image':general_news.news_image.url,
+                'news_description':general_news.description,
+                'published_on':general_news.published_date,
+                'published_time':general_news.published_time
+            })
+            print(context)
+        return JsonResponse({'status':'success','news':context})
 #view to render featured news page
 class FeaturedNewsPageView(View) : 
     def get(self,request) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model) 
         return render(request,'featured-news.html',{'current_user':current_user})
+    
+    
+#view to list featured news 
+class FeaturedNewsListView(View) : 
+    def get(self,request) : 
+        user = request.user.id,
+        featured_news_obj = News.objects.all().exclude(user=user).filter(category='Featured').order_by('published_date','-published_time')
+        context = []
+        for featured_news in featured_news_obj : 
+            context.append({
+                'author':featured_news.user.username,
+                'news_title':featured_news.title,
+                'news_category':featured_news.category,
+                'news_slug':featured_news.slug,
+                'news_image':featured_news.news_image.url,
+                'news_description':featured_news.description,
+                'published_on':featured_news.published_date,
+                'published_time':featured_news.published_time
+            })
+            print(context)
+        return JsonResponse({'status':'success','news':context})
 
 #view to render announcement page
 class AnnouncementPageView(View) : 
@@ -432,6 +472,23 @@ class AnnouncementPageView(View) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model) 
         return render(request,'announcements.html',{'current_user':current_user})
+    
+#view to fetch announcements
+class AnnouncementListView(View) : 
+    def get(self,request) : 
+        announcement_obj = Updates.objects.all().order_by('published_date','-published_time')
+        context = []
+        for announcement in announcement_obj : 
+            context.append({
+                'author':announcement.user.username,
+                'announcement_title':announcement.title,
+                'announcement_description':announcement.description,
+                'announcement_image':announcement.announcement_image.url,
+                'announcement_slug':announcement.slug,
+                'published_date':announcement.published_date,
+                'published_time':announcement.published_time
+            })
+        return JsonResponse({'status':'success',"announcements":context})
     
 #view to render my news page 
 class MyNewsPageView(View) :
