@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}News and Updates{% endblock title %}
+{% block title %}Announcements and updates{% endblock title %}
 
 {% block content %}
 
@@ -28,6 +28,15 @@
               <div class="col-md-4">
                 <label for="">Date : </label>
                 <input class="form-control dataTables_filter" type="date" name="filterDate" >
+              </div>
+              <div class="col-md-4">
+                <label for="">Filter by:   </label>
+                <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
+                    <option value=''>Show all</option>
+                    <option value="Today" >Today</option>
+                    <option value="This Month">This Month</option>
+                    <option value="This Year">This Year</option>
+                </select>
               </div>
               <div class="col-md-3 mt-4">
                 <button class="btn btn-primary btn-sm" id="clearFilterBtn">Clear Filter</button>
@@ -80,6 +89,6 @@
 
 {% include 'footer.html' %}
 
-<script src="{% static 'assets/js/news.js' %}"></script>
+
 
 {% endblock content %}

@@ -394,12 +394,23 @@ class MainNewsPageView(View) :
 
     
 # #view to fetch news from newsapi
-# class NewsListView(View) : 
-#     def get(self,request) : 
-#         newsapi = NewsApiClient(api_key='38569bb4f68f42e7a30be5fea761e707')
-#         top_news = newsapi.get_top_headlines(sources='techcrunch')
-#         news = top_news['articles']
-#         return JsonResponse({'status':'success','news':news})
+class NewsListView(View) : 
+    def get(self,request) : 
+        user = request.user  
+        news_obj = News.objects.all().exclude(user=user).order_by('published_date','-published_time')
+        all_news = []
+        for news in news_obj : 
+            all_news.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_image':news.news_image.url,
+                'news_slug':news.slug,
+                'news_category':news.category,
+                'news_description':news.description,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':all_news})
 
 #view to render general news page 
 class GeneralNewsPageView(View) : 

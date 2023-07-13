@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}News and Updates{% endblock title %}
+{% block title %}My News{% endblock title %}
 
 {% block content %}
 
@@ -14,7 +14,7 @@
   <!--Main page-->
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="search-bar mb-3">
             <form class="search-form d-flex align-items-center" method="POST" action="#">
               <input class="form-control form-control-sm search" type="text" name="query" placeholder="Search latest news here" title="Enter search keyword">
@@ -22,11 +22,11 @@
             </form>
           </div><!-- End Search Bar -->
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
           <h5>Filter</h5>
           <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label for="">Date : </label>
                   <input class="form-control dataTables_filter" type="date" name="filterDate" >
                 </div>
@@ -37,6 +37,15 @@
                       <option value="General" >General</option>
                       <option value="Featured">Featured</option>
                     </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="">Filter by:   </label>
+                  <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
+                      <option value=''>Show all</option>
+                      <option value="Today" >Today</option>
+                      <option value="This Month">This Month</option>
+                      <option value="This Year">This Year</option>
+                  </select>
                 </div>
                 <div class="col-md-3 mt-4">
                   <button class="btn btn-primary btn-sm" id="clearFilterBtn">Clear Filter</button>
