@@ -90,7 +90,6 @@ $(document).ready(() =>{
                                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                 `
                               ]).draw()
-                              hidePagination(table,data.tasks)
                         })
                     })
                 }
@@ -141,7 +140,8 @@ $(document).ready(() =>{
                                 <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                 `
                               ]).draw()
-                            hidePagination(table,data.tasks)
+                            
+                            changePagination(table,data.tasks)
                         })
                     })
                 }
@@ -156,7 +156,7 @@ $(document).ready(() =>{
 })
 
 //function to hide pagination dynamically 
-function hidePagination(table,tasks){
+function changePagination(table,tasks){
 
         
     if(tasks.length > 10 ){
