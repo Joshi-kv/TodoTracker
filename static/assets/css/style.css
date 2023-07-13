@@ -1343,3 +1343,18 @@ h6 {
   width: 200px;
   height: auto;
 }
+
+.recent-log{
+  height: 400px;
+  overflow: auto;
+}
+
+
+
+/* .recent-log::-webkit-scrollbar{
+  width: 5px;
+  background: darkgray;
+  border-radius: 5px;
+  border: 1px solid rgb(119, 118, 118);
+  height: 5px;
+} */
