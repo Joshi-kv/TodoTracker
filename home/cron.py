@@ -5,6 +5,7 @@ import datetime
 from django.template.loader import get_template
 from django.db.models import Q
 from django.contrib.auth.models import User
+from users.models import UserProfile
 
 #function to schedule task to send pending task remainder
 def update_pending_task() : 
@@ -21,18 +22,19 @@ def update_pending_task() :
             context={
                 'pending_tasks':pending_tasks
             }
-            subject = 'Pending task reminder'
-            message = get_template('email.html').render(context)
-            from_mail = settings.DEFAULT_FROM_EMAIL
-            to_mail = user.email
-            email = EmailMessage(
-                subject,
-                message,
-                from_email=from_mail,
-                to=[to_mail]
-            )
-            email.content_subtype = 'html'
-            email.send()
-            print('email send')
-        print(pending_tasks)
+            
+            #sending pending task reminder to only notification enabled users
+            if UserProfile.objects.filter(user=user,enable_notification=True) :
+                subject = 'Pending task reminder'
+                message = get_template('email.html').render(context)
+                from_mail = settings.DEFAULT_FROM_EMAIL
+                to_mail = user.email
+                email = EmailMessage(
+                    subject,
+                    message,
+                    from_email=from_mail,
+                    to=[to_mail]
+                )
+                email.content_subtype = 'html'
+                email.send()
 

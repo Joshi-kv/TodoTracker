@@ -179,6 +179,23 @@ class UserSettingsView(View) :
         
         return JsonResponse(context,safe=False)
     
+#view to change reminder settings 
+class ReminderSettingsView(View) :
+    def post(self,request) : 
+        user = request.user
+        reminder_option = request.POST.get('reminder')
+        user_profile = UserProfile.objects.get(user=user)
+        if reminder_option == 'turnoff' : 
+            print('turnoff')
+            user_profile.enable_notification = False
+            user_profile.save()
+        else : 
+            print('turnon')
+            user_profile.enable_notification = True
+            user_profile.save()
+        reminder = user_profile.enable_notification
+        return JsonResponse({'status':'success','reminder':reminder})
+    
 #view to remove profile picture
 class ProfilePictureRemoveView(View) : 
     def get(self,request) : 

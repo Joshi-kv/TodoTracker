@@ -17,6 +17,7 @@ class UserProfile(models.Model) :
     facebook_profile = models.URLField(max_length=500,blank=True,null=True)
     instagram_profile = models.URLField(max_length=500,blank=True,null=True)
     linkedin_profile = models.URLField(max_length=500,blank=True,null=True)
+    enable_notification = models.BooleanField(default=True)
     
     def __str__(self) : 
         return f'{self.user}'
