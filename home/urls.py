@@ -44,6 +44,7 @@ urlpatterns = [
     path('search-my-news/',views.MyNewsSearchView.as_view(),name='my-news-search'),
     path('all-news-filter-category/',views.AllNewsCategoryFilter.as_view(),name='all-news-filter-category'),
     path('all-news-filter-filterby/',views.AllNewsFilterByFilter.as_view(),name='all-news-filter-filterby'),
+    path('general-news-filter-filterby/',views.GeneralNewsFilterByFilter.as_view(),name='general-news-filter-filterby'),
     
     
 ]

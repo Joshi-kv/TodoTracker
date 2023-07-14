@@ -18,7 +18,7 @@ $(document).ready(() => {
                            
                             let newsContent = 
                             `
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 mt-5">
 
                             <div class="card">
                             <div class="card-body">
@@ -49,7 +49,7 @@ $(document).ready(() => {
                         let newsContent = 
                         
                         `
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 mt-5">
         
                         <div class="card">
                         <div class="card-body">
