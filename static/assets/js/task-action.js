@@ -95,7 +95,7 @@
 
         //task update functions end 
 
-        //task delete functions startf
+        //task delete functions start
         $(document).on('click','#deleteBtn',function(){
             let taskId = $(this).attr('data-delete')
             let deleteModalId = $('#deleteModal').attr('delete',taskId)

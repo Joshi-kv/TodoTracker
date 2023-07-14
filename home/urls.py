@@ -36,5 +36,6 @@ urlpatterns = [
     path('announcement/<slug:slug>/',views.single_announcement_page,name='announcement'),
     path('news-update-view/',views.NewsUpdatePageView.as_view(),name='news-update-view'),
     path('news-update/',views.NewsUpdateView.as_view(),name='news-update'),
+    path('news-delete/',views.NewsDeleteView.as_view(),name='news-delete'),
     
 ]

@@ -94,13 +94,19 @@ $(document).ready(() => {
                 
                 `
                 <div class="col-lg-6">
-
-                <div class="card" id="${news.news_id}>
+                <div class="card" id="myNews-${news.news_id}"  data-news="${news.news_id}">
                 <div class="card-body">
-                    <a href=""><h5 class="card-title">${news.news_title}</h5></a>
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="recentLog">
+                    <li class="dropdown-header text-start">
+                        <h6>Options</h6>
+                    </li>
+                    <li class="dropdown-item" id="newsUpdate" data-bs-toggle="modal" data-bs-target="#newsUpdateModal" data-update=${news.news_id}>Update</li>
+                    <li class="dropdown-item" id="newsDelete" data-bs-toggle="modal" data-bs-target="#newsDeleteModal" data-delete=${news.news_id}>Delete</li>
+                    </ul>
+                    <a href="/news/${news.news_slug}/"  id="slug-${news.news_id}"><h5 class="card-title" id="title-${news.news_id}">${news.news_title}</h5></a>
                     <span class="text-secondary small">published on ${convertedDate}&nbsp;${convertedTime}</span>
-                    <img class="newsImage mt-3" src="${news.news_image}" alt="" >
-                    <p>${news.news_description}</p>
+                    <img class="newsImage mt-3"  src="${news.news_image}" id="image-${news.news_id}" alt="" >
                 </div>
                 </div>
                 </div>
@@ -112,5 +118,7 @@ $(document).ready(() => {
         })
         $('#newsAddModal').modal('toggle');
         $('#addNewsForm')[0].reset();
+        alertify.set('notifier','position','top-right')
+        alertify.success('News added successfully.')
     })
 })

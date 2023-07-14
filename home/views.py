@@ -634,3 +634,13 @@ class NewsUpdateView(View) :
         
         
         return JsonResponse({'status':'success','news':context})
+    
+#view to delete news 
+class NewsDeleteView(View) : 
+    def post(self,request) : 
+        user = request.user 
+        news_id = request.POST.get('news_id')
+        news = News.objects.get(id=news_id)
+        news.delete()
+
+        return JsonResponse({'status':'success'})
