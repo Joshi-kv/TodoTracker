@@ -95,7 +95,7 @@ $(document).ready(() => {
                 `
                 <div class="col-lg-6">
 
-                <div class="card">
+                <div class="card" id="${news.news_id}>
                 <div class="card-body">
                     <a href=""><h5 class="card-title">${news.news_title}</h5></a>
                     <span class="text-secondary small">published on ${convertedDate}&nbsp;${convertedTime}</span>

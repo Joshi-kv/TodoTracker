@@ -150,6 +150,56 @@
     </div>
   </div>
 
+  
+  <!--Update Modal -->
+  <div class="modal fade" id="newsUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update News</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="row g-3" id="updateNewsForm" method='post'>
+                {% csrf_token %}
+                <div class="col-12">
+                  <label for="newsTitle" class="form-label">News Title</label>
+                  <input type="text" name="newsUpdateTitle" class="form-control" id="newsUpdateTitle">
+                </div>
+
+                <div class="select-container mx-5"> 
+                    <div class="select-header"> 
+                    <img id="newsUpdateImage" src="" >
+                    </div> 
+                    <input id="UpdateFile" name="newsUpdateImage" type="file" > 
+                </div>
+
+                <div class="col-12">
+                  <label for="newsDescription" class="form-label">News Description</label>
+                  <textarea class="form-control" name="newsUpdateDescription" placeholder="Description" id="newsUpdateDescription" style="height: 100px;"></textarea>
+                </div>
+
+
+                <div class="col-12">
+                    <label for="newsUpdateCategory" class="form-label">Category</label>
+                    <select class="form-select" name="newsUpdateCategory" id="newsUpdateCategory">
+                        <option value="" >select categorys</option>
+                        <option value="General" >General</option>
+                        <option value="Featured" >Featured</option>
+                    </select>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+        
+            </form><!-- Vertical Form -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   </main><!-- End #main -->
 
 {% include 'footer.html' %}

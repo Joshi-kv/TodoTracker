@@ -522,6 +522,7 @@ class CreateNewsView(View) :
         news.save()
         
         context = {
+            'news_id':news.id,
             'author':news.user.username,
             'news_title':news.title,
             'news_image':news.news_image.url,
@@ -541,7 +542,9 @@ class MyNewsListView(View) :
         my_news = News.objects.filter(user=user).order_by('published_date','-published_time')
         context = []
         for news in my_news : 
+            
             context.append({
+                'news_id':news.id,
                 'author':news.user.username,
                 'news_title':news.title,
                 'news_slug':news.slug,
@@ -563,3 +566,71 @@ def single_announcement_page(request,slug) :
     if slug != None : 
         announcement = Updates.objects.get(slug=slug)
     return render(request,'single-announcement.html',{'announcement':announcement})
+
+#view to update news 
+class NewsUpdatePageView(View) : 
+    def get(self,request) : 
+        user = request.user 
+        news_id = request.GET.get('news_id')
+        news = News.objects.get(id=news_id,user=user)
+        context = {
+            'news_id':news.id,
+            'author':news.user.username,
+            'news_title':news.title,
+            'news_image':news.news_image.url,
+            'news_category':news.category,
+            'news_description':news.description,
+        }
+        return JsonResponse({'status':'success','news':context})
+
+class NewsUpdateView(View) : 
+    def post(self,request) : 
+        user = request.user,
+        news_id = request.POST.get('news_id')
+        news = News.objects.get(id=news_id,)
+        if request.FILES.get('news_image') == None : 
+            news_title = request.POST.get('news_title')
+            news_description = request.POST.get('news_description')
+            news_image = news.news_image
+            news_category = request.POST.get('news_category')
+        
+        
+            news_slug_split = news_title.split(' ')
+            news_slug ='-'.join(news_slug_split)
+        
+            
+            news.title = news_title
+            news.slug = news_slug
+            news.news_image = news_image
+            news.description = news_description
+            news.category = news_category
+            news.save()
+            
+        else : 
+            news_title = request.POST.get('news_title')
+            news_description = request.POST.get('news_description')
+            news_image = request.FILES.get('news_image')
+            news_category = request.POST.get('news_category')
+        
+        
+            news_slug_split = news_title.split(' ')
+            news_slug ='-'.join(news_slug_split)
+        
+            
+            news.title = news_title
+            news.slug = news_slug
+            news.news_image = news_image
+            news.description = news_description
+            news.category = news_category
+            news.save()
+        
+        context = {
+            'news_title':news.title,
+            'news_slug':news.slug,
+            'news_description':news.description,
+            'news_category':news.category,
+            'news_image':news.news_image.url,
+        }
+        
+        
+        return JsonResponse({'status':'success','news':context})

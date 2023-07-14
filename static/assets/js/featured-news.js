@@ -16,7 +16,7 @@ $(document).ready(() => {
 
                 <div class="card">
                 <div class="card-body">
-                    <a href="/${news.news_slug}/"><h5 class="card-title">${news.news_title}</h5></a>
+                    <a href="/news/${news.news_slug}/"><h5 class="card-title">${news.news_title}</h5></a>
                     <span>published by <b>${news.author}</b></span><span class="text-secondary small ms-5">published on ${convertedDate}&nbsp;${convertedTime}</span>
                     <img class="newsImage mt-3" src="${news.news_image}" alt="" >
                 </div>

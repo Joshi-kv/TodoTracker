@@ -1335,11 +1335,11 @@ h6 {
   text-align: center;
 }
 
-#file {
+#UpdateFile,#file {
   margin-left: 5rem;
 }
 
-#newsImage{
+#newsUpdateImage,#newsImage{
   width: 200px;
   height: auto;
 }

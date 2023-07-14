@@ -32,6 +32,9 @@ urlpatterns = [
     path('my-news/',views.MyNewsPageView.as_view(),name='my-news'),
     path('my-news-list/',views.MyNewsListView.as_view(),name='my-news-list'),
     path('create-news/',views.CreateNewsView.as_view(),name='create-news'),
-    path('<slug:slug>/',views.single_news_page,name='news'),
-    path('announcement/<slug:slug>/',views.single_announcement_page,name='announcement')
+    path('news/<slug:slug>/',views.single_news_page,name='news'),
+    path('announcement/<slug:slug>/',views.single_announcement_page,name='announcement'),
+    path('news-update-view/',views.NewsUpdatePageView.as_view(),name='news-update-view'),
+    path('news-update/',views.NewsUpdateView.as_view(),name='news-update'),
+    
 ]
