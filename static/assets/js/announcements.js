@@ -17,10 +17,9 @@ $(document).ready(() => {
 
                 <div class="card">
                 <div class="card-body">
-                    <a href=""><h5 class="card-title">${announcement.announcement_title}</h5></a>
+                    <a href="/announcement/${announcement.announcement_slug}/"><h5 class="card-title">${announcement.announcement_title}</h5></a>
                     <span>published by <b>${announcement.author}</b></span><span class="text-secondary small ms-5">published on ${convertedDate}&nbsp;${convertedTime}</span>
                     <img class="newsImage mt-3" src="${announcement.announcement_image}" alt="" >
-                    <p>${announcement.announcement_description}</p>
                 </div>
                 </div>
                 </div>

@@ -60,13 +60,8 @@ class News(models.Model) :
     published_time = models.TimeField(auto_now_add=True)
     
     def get_absolute_url(self):
-        return reverse("home:news", kwargs={"slug": self.slug})
+        return reverse("home:single-news", kwargs={"slug": self.slug})
     
-    def get_absolute_featured_news_url(self):
-        return reverse("home:featured-news", kwargs={"slug": self.slug})
-    
-    def get_absolute_general_news_url(self):
-        return reverse("home:general-news", kwargs={"slug": self.slug})
     
     
     def __str__(self) : 

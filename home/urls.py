@@ -21,7 +21,7 @@ urlpatterns = [
     path('faq-list/',views.FaqListView.as_view(),name='faq-list'),
     path('feedback/',views.FeedbackPageView.as_view(),name='feedback'),
     path('feedback-submission/',views.FeedbackCreateView.as_view(),name='feedback-submission'),
-    path('news/',views.MainNewsPageView.as_view(),name='news'),
+    path('all-news/',views.MainNewsPageView.as_view(),name='all-news'),
     path('news-list/',views.NewsListView.as_view(),name='news-list'),
     path('general-news/',views.GeneralNewsPageView.as_view(),name='general-news'),
     path('general-news-list/',views.GeneralNewsListView.as_view(),name='general-news-list'),
@@ -32,4 +32,6 @@ urlpatterns = [
     path('my-news/',views.MyNewsPageView.as_view(),name='my-news'),
     path('my-news-list/',views.MyNewsListView.as_view(),name='my-news-list'),
     path('create-news/',views.CreateNewsView.as_view(),name='create-news'),
+    path('<slug:slug>/',views.single_news_page,name='news'),
+    path('announcement/<slug:slug>/',views.single_announcement_page,name='announcement')
 ]

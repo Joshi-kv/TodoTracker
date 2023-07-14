@@ -11,7 +11,7 @@ function listTable(){
     .then(response => response.json())
     .then((data) => {
         data.tasks.forEach((task) =>{
-            table = $('#taskTable').DataTable()
+            table = $('#taskTable').DataTable();
             let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
             let taskId = task.task_id
             let taskRow = table.row.add([

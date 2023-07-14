@@ -551,3 +551,15 @@ class MyNewsListView(View) :
                 'published_time':news.published_time
             })
         return JsonResponse({'status':'success','news':context})
+    
+#view to render single news
+def single_news_page(request,slug) : 
+    if slug != None : 
+        news = News.objects.get(slug=slug)
+    return render(request,'single-news.html',{'news':news})
+    
+#view to render single announcement
+def single_announcement_page(request,slug) : 
+    if slug != None : 
+        announcement = Updates.objects.get(slug=slug)
+    return render(request,'single-announcement.html',{'announcement':announcement})

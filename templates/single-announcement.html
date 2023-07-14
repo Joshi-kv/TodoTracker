@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My News{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+{% include 'sidebar.html' %}
+
+<!--main content-->
+<main id="main" class="main">
+  
+    <div class="pagetitle ">
+        <nav>
+          <ul class="nav nav-tabs">
+  
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:all-news' %}" >All News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1" role="presentation">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:general-news' %}" >General News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
+            </li>
+  
+            <li class="nav-item mx-1">
+              <button type="button" class="nav-link active" ><a href="{% url 'home:my-news' %}" >My News</a></button>
+            </li>
+  
+          </ul>
+        </nav>
+      </div><!-- End Page Title -->
+
+    <div class="tab-content">
+        <h3></h3>
+      <section  class="section mt-5 ">
+        <div id="singleNewsDiv"  class="row">
+          <!--news contents-->
+          <div class="col-lg-8">
+
+            <div class="card">
+            <div class="card-body">
+                <a href=""><h5 class="card-title">{{announcement.title}}</h5></a>
+                <span>published by <b>{{announcement.user.username}}</b></span><span class="text-secondary small ms-5">published on {{announcement.published_date}}&nbsp;&nbsp;{{announcement.published_time}}</span>
+                <img class="newsImage mt-3" src="{{announcement.announcement_image.url}}" alt="" >
+                <p class="my-5">{{announcement.description}}</p>
+            </div>
+            </div>
+            </div>
+        </div>
+  
+      </section>
+    </div>
+
+
+
+  </main><!-- End #main -->
+
+{% include 'footer.html' %}
+
+{% endblock content %}
