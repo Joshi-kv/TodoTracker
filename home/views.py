@@ -644,3 +644,39 @@ class NewsDeleteView(View) :
         news.delete()
 
         return JsonResponse({'status':'success'})
+    
+#view for all news search
+class AllNewsSearchView(View) : 
+    def get(self,request) : 
+        user = request.user
+        query = request.GET.get('query')
+        news_obj= News.objects.filter(title__icontains=query,).exclude(user=user)
+        news_results = []
+        for news in news_obj : 
+            news_results.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_slug':news.slug,
+                'news_image':news.news_image.url,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':news_results})
+    
+#view for general news search
+class GeneralNewsSearchView(View) : 
+    def get(self,request) : 
+        user = request.user
+        query = request.GET.get('query')
+        news_obj= News.objects.filter(title__icontains=query,category="General").exclude(user=user)
+        news_results = []
+        for news in news_obj : 
+            news_results.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_slug':news.slug,
+                'news_image':news.news_image.url,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':news_results})

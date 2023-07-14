@@ -37,5 +37,7 @@ urlpatterns = [
     path('news-update-view/',views.NewsUpdatePageView.as_view(),name='news-update-view'),
     path('news-update/',views.NewsUpdateView.as_view(),name='news-update'),
     path('news-delete/',views.NewsDeleteView.as_view(),name='news-delete'),
+    path('search-all-news/',views.AllNewsSearchView.as_view(),name='all-news-search'),
+    path('search-general-news/',views.GeneralNewsSearchView.as_view(),name='general-news-search'),
     
 ]

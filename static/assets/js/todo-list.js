@@ -1,4 +1,5 @@
 let table;
+let taskLength;
 $(document).ready(() =>{
     listTable()
 })
@@ -27,6 +28,7 @@ function listTable(){
             ]).node()
             $(taskRow).attr('data-task-id',taskId)
             table.draw()
+            taskLength = data.tasks
             hidePagination(table,data.tasks)
 
             //custom filtering
@@ -85,5 +87,6 @@ $('#clearFilterBtn').on('click',function(){
     $('#filterStatus').val('')
     $('#filterPriority').val('')
     $('#filterDate').val('')
+    hidePagination(table,taskLength)
    clearFilters()
 })
