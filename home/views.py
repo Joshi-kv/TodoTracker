@@ -305,7 +305,8 @@ class TaskDeleteView(View) :
                 activity = f' "{task.task_title}" deleted'
             )
             activity_log.save()
-            return JsonResponse({'status':'success'})   
+            total_tasks = Todo.objects.filter(user=task.user).count()
+            return JsonResponse({'status':'success','total_tasks':total_tasks})   
     
 #view to render faq page
 class FaqPageView(View) : 

@@ -1,4 +1,5 @@
     $(document).ready(() =>{
+        
         //task updation functions start
         //function to load selected task details
         $(document).on('click','#editBtn',function(){
@@ -11,7 +12,6 @@
                 data:{'task_id':taskId},
                 success:function(response){
                     let task = response.task
-                    console.log(task)
                     $('#taskUpdateTitle').val(task.task_title)
                     $('#taskUpdateDescription').val(task.task_description)
                     $('#taskUpdateDuedate').val(task.task_duedate)
@@ -68,30 +68,23 @@
                     'task_status':$('select[name="updateStatus"]').val(),
                 },
                 success:function(response){
-                    console.log(response)
                     if(response.status === 'updated'){
+                        let updatedTask = response.task
+                        let convertedTaskDuedate = moment(updatedTask.task_duedate).format('DD/MM/yy')
                         let table = $('#taskTable').DataTable()
-                        table.clear().draw()
-                        const url = 'http://127.0.0.1:8000/tasks/'
-                        fetch(url)
-                        .then(response => response.json())
-                        .then((data) => {
-                            data.tasks.forEach((task) =>{
-                                let table = $('#taskTable').DataTable()
-                                let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
-                                table.row.add([
-                                    `${task.task_title}`,
-                                    `${task.task_description}`,
-                                    `${convertedTaskDuedate}`,
-                                    `${task.task_priority}`,
-                                    `${task.task_status}`,
-                                    `
-                                    <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
-                                    `
-                                ]).draw()
-                            })
-                        })
+                        const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
+
+                        table.row(rowIndex).data([
+                            updatedTask.task_title,
+                            updatedTask.task_description,
+                            convertedTaskDuedate,
+                            updatedTask.task_priority,
+                            updatedTask.task_status,
+                            `
+                            <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                            `
+                        ]).draw(false)
                     }
                     alertify.set('notifier','position','top-right')
                     alertify.warning('Task edited successfully')
@@ -119,31 +112,15 @@
                     task_id:taskId
                 },
                 success:function(response){
+                    console.log(response)
                     if(response.status === 'success'){
+                        let total = response.total_tasks
+                        
                         let table = $('#taskTable').DataTable()
-                        table.clear().draw()
-                        const url = 'http://127.0.0.1:8000/tasks/'
-                        fetch(url)
-                        .then(response => response.json())
-                        .then((data) => {
-                            data.tasks.forEach((task) =>{
-                                let table = $('#taskTable').DataTable()
-                                let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
-                                table.row.add([
-                                    `${task.task_title}`,
-                                    `${task.task_description}`,
-                                    `${convertedTaskDuedate}`,
-                                    `${task.task_priority}`,
-                                    `${task.task_status}`,
-                                    `
-                                    <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
-                                    `
-                                ]).draw()
-                                
-                                changePagination(table,data.tasks)
-                            })
-                        })
+                        let deletedRow = table.row(`tr[data-task-id=${taskId}]`).index()
+                        table.row(deletedRow).remove().draw(false)
+                        changePagination(table,total)
+                        
                     }
                     alertify.set('notifier','position','top-right')
                     alertify.error('Task deleted!')
@@ -156,10 +133,10 @@
     })
 
     //function to hide pagination dynamically 
-    function changePagination(table,tasks){
+    function changePagination(table,total){
 
             
-        if(tasks.length > 10 ){
+        if(total > 10 ){
             $('#taskTable_length').show()
             $('.pagination').show()
         }else{
@@ -169,7 +146,7 @@
 
         $('select[name="taskTable_length"]').on('change',() =>{
             console.log($('select[name="taskTable_length').val())
-            if(tasks.length > $('select[name="taskTable_length"]').val() ){
+            if(total > $('select[name="taskTable_length"]').val() ){
                 $('.pagination').show()
             }else{
                 $('.pagination').hide()
