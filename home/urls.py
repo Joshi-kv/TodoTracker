@@ -39,5 +39,8 @@ urlpatterns = [
     path('news-delete/',views.NewsDeleteView.as_view(),name='news-delete'),
     path('search-all-news/',views.AllNewsSearchView.as_view(),name='all-news-search'),
     path('search-general-news/',views.GeneralNewsSearchView.as_view(),name='general-news-search'),
+    path('search-featured-news/',views.FeaturedNewsSearchView.as_view(),name='featured-news-search'),
+    path('announcement-search/',views.announcementSearchView.as_view(),name='announcement-search'),
+    path('search-my-news/',views.MyNewsSearchView.as_view(),name='my-news-search'),
     
 ]

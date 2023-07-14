@@ -437,7 +437,6 @@ class GeneralNewsListView(View) :
                 'published_on':general_news.published_date,
                 'published_time':general_news.published_time
             })
-            print(context)
         return JsonResponse({'status':'success','news':context})
 #view to render featured news page
 class FeaturedNewsPageView(View) : 
@@ -464,7 +463,6 @@ class FeaturedNewsListView(View) :
                 'published_on':featured_news.published_date,
                 'published_time':featured_news.published_time
             })
-            print(context)
         return JsonResponse({'status':'success','news':context})
 
 #view to render announcement page
@@ -672,6 +670,61 @@ class GeneralNewsSearchView(View) :
         news_results = []
         for news in news_obj : 
             news_results.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_slug':news.slug,
+                'news_image':news.news_image.url,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':news_results})
+    
+#view for featured news search
+class FeaturedNewsSearchView(View) : 
+    def get(self,request) : 
+        user = request.user
+        query = request.GET.get('query')
+        news_obj= News.objects.filter(title__icontains=query,category="Featured").exclude(user=user)
+        news_results = []
+        for news in news_obj : 
+            news_results.append({
+                'author':news.user.username,
+                'news_title':news.title,
+                'news_slug':news.slug,
+                'news_image':news.news_image.url,
+                'published_on':news.published_date,
+                'published_time':news.published_time
+            })
+        return JsonResponse({'status':'success','news':news_results})
+    
+#view for announcement search
+class announcementSearchView(View) : 
+    def get(self,request) : 
+        user = request.user
+        query = request.GET.get('query')
+        announcement_obj= Updates.objects.filter(title__icontains=query,)
+        announcement_results = []
+        for announcement in announcement_obj : 
+            announcement_results.append({
+                'author':announcement.user.username,
+                'announcement_title':announcement.title,
+                'announcement_slug':announcement.slug,
+                'announcement_image':announcement.announcement_image.url,
+                'published_on':announcement.published_date,
+                'published_time':announcement.published_time
+            })
+        return JsonResponse({'status':'success','announcements':announcement_results})
+    
+#view for my search
+class MyNewsSearchView(View) : 
+    def get(self,request) : 
+        user = request.user
+        query = request.GET.get('query')
+        news_obj= News.objects.filter(title__icontains=query,user=user)
+        news_results = []
+        for news in news_obj : 
+            news_results.append({
+                'news_id':news.id,
                 'author':news.user.username,
                 'news_title':news.title,
                 'news_slug':news.slug,

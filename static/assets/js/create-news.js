@@ -90,6 +90,8 @@ $(document).ready(() => {
                 let convertedDate = moment(news.published_on).format('DD-MM-yy')   
                 let convertedTime = moment(news.published_time,'HH:mm').format('hh:mm A')                 
                 let newsDiv = $('#myNewsDiv')
+                $('#newsImage').attr('src','')
+                $('#uploadIcon').show()
                 let newsContent = 
                 
                 `

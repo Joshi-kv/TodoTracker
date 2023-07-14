@@ -1,17 +1,19 @@
 $(document).ready(() => {
-    let searchInput = $('input[name ="generalNewsSearch"]')
+    let searchInput = $('input[name ="featuredNewsSearch"]')
     searchInput.keyup((e) =>{
          $('#newsDiv').empty()
         if(e.keyCode != 8){
             $.ajax({
-                url:'/search-general-news',
+                url:'/search-featured-news',
                 data:{
                     'query' : e.target.value
                 },
                 dataType : 'json',
                 success:function(response){
+                    console.log(response)
                     if(response.status == 'success'){
                         response.news.forEach((data) => {
+                            console.log(data)
                             
                             let convertedDate = moment(data.published_on).format('DD-MM-yy')   
                             let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
@@ -36,13 +38,12 @@ $(document).ready(() => {
                 }
             })
         }else{
-            const url = 'http://127.0.0.1:8000/general-news-list/'
-            fetch(url)
+            const url = 'http://127.0.0.1:8000/featured-news-list/'
+            fetch(url) 
             .then(response => response.json())
             .then((data) => {
                 let newsDiv = $('#newsDiv')
                 if(data.news.length > 0){
-                    console.log(data)
                         data.news.forEach((news) => {
                         let convertedDate = moment(news.published_on).format('DD-MM-yy')   
                         let convertedTime = moment(news.published_time,'HH:mm').format('hh:mm A')                 
@@ -56,7 +57,6 @@ $(document).ready(() => {
                             <a href="/news/${news.news_slug}/"><h5 class="card-title">${news.news_title}</h5></a>
                             <span>published by <b>${news.author}</b></span><span class="text-secondary small ms-5">published on ${convertedDate}&nbsp;${convertedTime}</span>
                             <img class="newsImage mt-3" src="${news.news_image}" alt="" >
-        
                         </div>
                         </div>
                         </div>
@@ -78,7 +78,7 @@ $(document).ready(() => {
             })
         }
     })
-    $('#generalSearchForm').on('submit',function(e){
+    $('#featuredSearchForm').on('submit',function(e){
         e.preventDefault()
     })
 })

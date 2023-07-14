@@ -3,10 +3,8 @@ $(document).ready(() => {
     fetch(url) 
     .then(response => response.json())
     .then((data) => {
-        console.log(data)
         let announcemtDiv = $('#newsDiv')
         if(data.announcements.length > 0){
-            console.log(data)
                 data.announcements.forEach((announcement) => {
                 let convertedDate = moment(announcement.published_date).format('DD-MM-yy')   
                 let convertedTime = moment(announcement.published_time,'HH:mm').format('hh:mm A')                 
