@@ -1,3 +1,4 @@
+let table;
 $(document).ready(() =>{
     listTable()
 })
@@ -10,7 +11,7 @@ function listTable(){
     .then(response => response.json())
     .then((data) => {
         data.tasks.forEach((task) =>{
-            let table = $('#taskTable').DataTable()
+            table = $('#taskTable').DataTable()
             let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
             table.row.add([
                 `${task.task_title}`,
@@ -71,6 +72,16 @@ function hidePagination(table,tasks){
     
 }
 
+//function to clear filter
+function clearFilters() {
+    table.column(4).search('').draw(); // Clear status filter
+    table.column(3).search('').draw(); // Clear priority filter
+    table.column(2).search('').draw(); // Clear date filter
+  }
+
 $('#clearFilterBtn').on('click',function(){
-   window.location.reload()
+    $('#filterStatus').val('')
+    $('#filterPriority').val('')
+    $('#filterDate').val('')
+   clearFilters()
 })
