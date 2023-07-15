@@ -46,6 +46,7 @@ urlpatterns = [
     path('all-news-filter-filterby/',views.AllNewsFilterByFilter.as_view(),name='all-news-filter-filterby'),
     path('general-news-filter-filterby/',views.GeneralNewsFilterByFilter.as_view(),name='general-news-filter-filterby'),
     path('featured-news-filter-filterby/',views.FeaturedNewsFilterByFilter.as_view(),name='featured-news-filter-filterby'),
+    path('announcement-filter-filterby/',views.AnnouncementFilterByFilter.as_view(),name='announcement-filter-filterby'),
     
     
 ]

@@ -920,7 +920,7 @@ class FeaturedNewsFilterByFilter(View) :
         current_date = date.today()
         
         if filter_option == 'Today' : 
-            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='General',published_date__day=current_date.day,published_date__year=current_date.year).order_by('published_date','-published_time')
+            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='Featured',published_date__day=current_date.day,published_date__year=current_date.year).order_by('published_date','-published_time')
             result = []
             for news in filterby_filtered_all_news : 
                 result.append({
@@ -934,7 +934,7 @@ class FeaturedNewsFilterByFilter(View) :
                 })
             return JsonResponse({'status':'success','result':result})
         elif filter_option == 'This Month' :
-            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='General',published_date__month=current_date.month,published_date__year=current_date.year).order_by('published_date','-published_time')
+            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='Featured',published_date__month=current_date.month,published_date__year=current_date.year).order_by('published_date','-published_time')
             result = []
             for news in filterby_filtered_all_news : 
                 result.append({
@@ -948,7 +948,7 @@ class FeaturedNewsFilterByFilter(View) :
                 })
             return JsonResponse({'status':'success','result':result})
         elif filter_option == 'This Year' : 
-            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='General',published_date__year=current_date.year).order_by('published_date','-published_time')
+            filterby_filtered_all_news = News.objects.all().exclude(user=user).filter(category='Featured',published_date__year=current_date.year).order_by('published_date','-published_time')
             result = []
             for news in filterby_filtered_all_news : 
                 result.append({
@@ -962,7 +962,7 @@ class FeaturedNewsFilterByFilter(View) :
                 })
             return JsonResponse({'status':'success','result':result})
         else : 
-            filterby_filtered_all_news = News.objects.filter(category='General',).exclude(user=user).order_by('published_date','-published_time')
+            filterby_filtered_all_news = News.objects.filter(category='Featured',).exclude(user=user).order_by('published_date','-published_time')
             result = []
             for news in filterby_filtered_all_news : 
                 result.append({
@@ -973,5 +973,69 @@ class FeaturedNewsFilterByFilter(View) :
                     'news_image':news.news_image.url,
                     'published_on':news.published_date,
                     'published_time':news.published_time
+                })
+            return JsonResponse({'status':'success','result':result})
+
+#announcement filterby filter
+class AnnouncementFilterByFilter(View) : 
+    def get(self,request) : 
+        user = request.user.id,
+        filter_option = request.GET.get('filter_option')
+        current_date = date.today()
+        
+        if filter_option == 'Today' : 
+            filterby_filtered_annnouncement = Updates.objects.all().filter(published_date__day=current_date.day,published_date__year=current_date.year).order_by('published_date','-published_time')
+            result = []
+            for announcement in filterby_filtered_annnouncement  : 
+                result.append({
+                    'announcement_id':announcement.id,
+                    'author':announcement.user.username,
+                    'announcement_title':announcement.title,
+                    'announcement_slug':announcement.slug,
+                    'announcement_image':announcement.announcement_image.url,
+                    'published_on':announcement.published_date,
+                    'published_time':announcement.published_time
+                })
+            return JsonResponse({'status':'success','result':result})
+        elif filter_option == 'This Month' :
+            filterby_filtered_annnouncement  = Updates.objects.all().filter(published_date__month=current_date.month,published_date__year=current_date.year).order_by('published_date','-published_time')
+            result = []
+            for announcement in filterby_filtered_annnouncement  : 
+                result.append({
+                    'announcement_id':announcement.id,
+                    'author':announcement.user.username,
+                    'announcement_title':announcement.title,
+                    'announcement_slug':announcement.slug,
+                    'announcement_image':announcement.announcement_image.url,
+                    'published_on':announcement.published_date,
+                    'published_time':announcement.published_time
+                })
+            return JsonResponse({'status':'success','result':result})
+        elif filter_option == 'This Year' : 
+            filterby_filtered_annnouncement  = Updates.objects.all().filter(published_date__year=current_date.year).order_by('published_date','-published_time')
+            result = []
+            for announcement in filterby_filtered_annnouncement  : 
+                result.append({
+                    'announcement_id':announcement.id,
+                    'author':announcement.user.username,
+                    'announcement_title':announcement.title,
+                    'announcement_slug':announcement.slug,
+                    'announcement_image':announcement.announcement_image.url,
+                    'published_on':announcement.published_date,
+                    'published_time':announcement.published_time
+                })
+            return JsonResponse({'status':'success','result':result})
+        else : 
+            filterby_filtered_annnouncement  = Updates.objects.all().order_by('published_date','-published_time')
+            result = []
+            for announcement in filterby_filtered_annnouncement  : 
+                result.append({
+                    'announcement_id':announcement.id,
+                    'author':announcement.user.username,
+                    'announcement_title':announcement.title,
+                    'announcement_slug':announcement.slug,
+                    'announcement_image':announcement.announcement_image.url,
+                    'published_on':announcement.published_date,
+                    'published_time':announcement.published_time
                 })
             return JsonResponse({'status':'success','result':result})

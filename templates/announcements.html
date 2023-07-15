@@ -26,12 +26,8 @@
         <div class="container">
           <div class="row">
               <div class="col-md-4">
-                <label for="">Date : </label>
-                <input class="form-control dataTables_filter" type="date" name="filterDate" >
-              </div>
-              <div class="col-md-4">
                 <label for="">Filter by:   </label>
-                <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
+                <select class="form-select dataTables_filter" name="filterBy" aria-label="Default select example" >
                     <option value=''>Show all</option>
                     <option value="Today" >Today</option>
                     <option value="This Month">This Month</option>
@@ -91,5 +87,6 @@
 
 <script src="{% static 'assets/js/announcements.js' %}"></script>
 <script src="{% static 'assets/js/announcement-search.js' %}"></script>
+<script src="{% static 'assets/js/announcement-filter.js' %}"></script>
 
 {% endblock content %}
