@@ -27,12 +27,8 @@
           <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                  <label for="">Date : </label>
-                  <input class="form-control dataTables_filter" type="date" name="filterDate" >
-                </div>
-                <div class="col-md-3">
                   <label for="">Category : </label>
-                  <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
+                  <select class="form-select dataTables_filter" name="filterCategory" aria-label="Default select example" >
                       <option value=''>Show all</option>
                       <option value="General" >General</option>
                       <option value="Featured">Featured</option>
@@ -40,7 +36,7 @@
                 </div>
                 <div class="col-md-3">
                   <label for="">Filter by:   </label>
-                  <select class="form-select dataTables_filter" name="filterStatus" aria-label="Default select example" >
+                  <select class="form-select dataTables_filter" name="filterBy" aria-label="Default select example" >
                       <option value=''>Show all</option>
                       <option value="Today" >Today</option>
                       <option value="This Month">This Month</option>
@@ -231,4 +227,5 @@
 <script src="{% static 'assets/js/news-image-upload.js' %}"></script>
 <script src="{% static 'assets/js/create-news.js' %}"></script>
 <script src="{% static 'assets/js/my-news-search.js' %}"></script>
+<script src="{% static 'assets/js/my-news-filter.js' %}"></script>
 {% endblock content %}
