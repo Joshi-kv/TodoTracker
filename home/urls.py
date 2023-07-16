@@ -42,12 +42,10 @@ urlpatterns = [
     path('search-featured-news/',views.FeaturedNewsSearchView.as_view(),name='featured-news-search'),
     path('announcement-search/',views.announcementSearchView.as_view(),name='announcement-search'),
     path('search-my-news/',views.MyNewsSearchView.as_view(),name='my-news-search'),
-    path('all-news-filter-category/',views.AllNewsCategoryFilter.as_view(),name='all-news-filter-category'),
-    path('all-news-filter-filterby/',views.AllNewsFilterByFilter.as_view(),name='all-news-filter-filterby'),
+    path('all-news-filter/',views.AllNewsFilter.as_view(),name='all-news-filter'),
     path('general-news-filter-filterby/',views.GeneralNewsFilterByFilter.as_view(),name='general-news-filter-filterby'),
     path('featured-news-filter-filterby/',views.FeaturedNewsFilterByFilter.as_view(),name='featured-news-filter-filterby'),
     path('announcement-filter-filterby/',views.AnnouncementFilterByFilter.as_view(),name='announcement-filter-filterby'),
-    path('my-news-filter-category/',views.MyNewsCategoryFilter.as_view(),name='my-news-filter-category'),
-    path('my-news-filter-filterby/',views.MyNewsFilterByFilter.as_view(),name='my-news-filter-filterby'),
+    path('my-news-filter/',views.MyNewsFilter.as_view(),name='my-news-filter'),
     
 ]
