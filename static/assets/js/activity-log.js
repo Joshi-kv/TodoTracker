@@ -1,55 +1,53 @@
 $(document).ready(() => {
-    const url = 'http://127.0.0.1:8000/activity-logs/'
-    fetch(url)
-    .then(response => response.json())
-    .then((data) => {
-        if(data.activity.length > 0){
-            let slicedData = [data.activity.slice(-5)]
-            slicedData.forEach((data) => {
-                data.forEach((item) =>{
-                    let currentDate = new Date()
-                    let convertedCurrentDate = moment(currentDate).format('DD-MM-yy')
-                    let activity_time = item.activity_time
-                    let convertedTime = moment(activity_time,'HH:mm').format('hh:mm a')
-                    let activity = item.activity
-                    let activity_date = item.activity_date
-                    let convertedActivityDate = moment(activity_date).format('DD-MM-yy')
-        
-                    let activityContentDiv = $('.activity')
-                    let activityContent = 
-                    `
+    $(document).ready(() => {
+        const url = 'http://127.0.0.1:8000/activity-logs/';
+        fetch(url)
+          .then(response => response.json())
+          .then((data) => {
+            if (data.activity.length > 0) {
+              let slicedData = [data.activity.slice(-5)];
+              slicedData.forEach((data) => {
+                data.forEach((item) => {
+                  let currentDate = new Date();
+                  let convertedCurrentDate = moment(currentDate).format('DD-MM-yy');
+                  let activity_time = item.activity_time;
+                  let convertedTime = moment(activity_time, 'HH:mm').format('hh:mm a');
+                  let activity = item.activity;
+                  let activity_date = item.activity_date;
+                  let convertedActivityDate = moment(activity_date).format('DD-MM-yy');
+      
+                  let activityContentDiv = $('.activity');
+                  let activityContent = `
                     <div class="activity-item d-flex" id=${activity_date}>
-                        <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
-                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                        <div class="activity-content">
+                      <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
+                      <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                      <div class="activity-content">
                         ${activity}
-                        </div>
+                      </div>
                     </div>
-        
-                    `
-                    if(convertedActivityDate != convertedCurrentDate){
-                        activityContentDiv.append(activityContent)
-
-                    }else{
-                        activityContentDiv.prepend(activityContent)
-                    }
-                })
-            })
-            
-        }else{
-            let activityContentDiv = $('.activity')
-            let activityContent = 
-            `
-            <div class="activity-item d-flex">
-                <div class="activity-content">
+                  `;
+      
+                  if (convertedActivityDate != convertedCurrentDate) {
+                    activityContentDiv.append(activityContent);
+                  } else {
+                    activityContentDiv.prepend(activityContent);
+                  }
+                });
+              });
+            } else {
+              let activityContentDiv = $('.activity');
+              let activityContent = `
+                <div class="activity-item d-flex">
+                  <div class="activity-content">
                     No recent activities
+                  </div>
                 </div>
-            </div>
-
-            `
-            activityContentDiv.append(activityContent)
-        }
-    })
+              `;
+              activityContentDiv.append(activityContent);
+            }
+          });
+      });
+      
 
     //filter recent logs
     function getEventTarget(e) {

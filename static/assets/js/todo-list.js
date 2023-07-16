@@ -27,6 +27,7 @@ function listTable(){
                 `
             ]).node()
             $(taskRow).attr('data-task-id',taskId)
+            table = $('#taskTable').DataTable();
             table.draw()
             taskLength = data.tasks
             hidePagination(table,data.tasks)
