@@ -3,14 +3,18 @@ $(document).ready(() => {
     fetch(url)
     .then(response => response.json())
     .then((data) => {
-        data.tasks.forEach((task) => {
+        data.tasks.forEach((task,index) => {
             let taskDiv = $('#dashboardTasks')
             let convertedDate = moment(task.duedate).format('DD/MM/yy')
-            // $('#badge').addClass('badge')
-            // $('#badge').addClass('bg-success')
+            // $('#badge').addClass('bg-primary')
+            // $('.badge').addClass('bg-primary')
+            // // $('#badge').addClass('text-white')
+            // // $('.badge').addClass('bg-success')
+            // // $('#badge').addClass('bg-success')
             let taskContent =
             `
             <tr>
+                <td>${index+1}</td>
                 <td>${task.title}</td>
                 <td>${task.description}</td>
                 <td>${convertedDate}</td>
@@ -38,12 +42,14 @@ $(document).ready(() => {
                 'option':target.innerHTML
             },
             success:function(response){
-                response.tasks.forEach((task) => {
+                $('#dashboardTasks').empty()
+                response.tasks.forEach((task,index) => {
                     let convertedDate = moment(task.duedate).format('DD/MM/yy')
                     let taskDiv = $('#dashboardTasks')
                     let taskContent = 
                     `
                     <tr>
+                        <td>${index+1}</td> 
                         <td>${task.title}</td>
                         <td>${task.description}</td>
                         <td>${convertedDate}</td>
@@ -62,12 +68,13 @@ $(document).ready(() => {
         fetch(url)
         .then(response => response.json())
         .then((data) => {
-            data.tasks.forEach((task) => {
+            data.tasks.forEach((task,index) => {
                 let taskDiv = $('#dashboardTasks')
                 let convertedDate = moment(task.duedate).format('DD/MM/yy')
                 let taskContent = 
                 `
                 <tr>
+                    <td>${index+1}</td>
                     <td>${task.title}</td>
                     <td>${task.description}</td>
                     <td>${convertedDate}</td>
