@@ -5,6 +5,7 @@ $(document).ready(() => {
     .then((data) => {
         data.tasks.forEach((task) => {
             let taskDiv = $('#dashboardTasks')
+            let convertedDate = moment(task.duedate).format('DD/MM/yy')
             // $('#badge').addClass('badge')
             // $('#badge').addClass('bg-success')
             let taskContent =
@@ -12,12 +13,12 @@ $(document).ready(() => {
             <tr>
                 <td>${task.title}</td>
                 <td>${task.description}</td>
-                <td>${task.duedate}</td>
+                <td>${convertedDate}</td>
                 <td><span id="badge">${task.status}</span></td>
             </tr>
             
             `
-            taskDiv.prepend(taskContent)
+            taskDiv.append(taskContent)
         })
     })
 
@@ -38,18 +39,19 @@ $(document).ready(() => {
             },
             success:function(response){
                 response.tasks.forEach((task) => {
+                    let convertedDate = moment(task.duedate).format('DD/MM/yy')
                     let taskDiv = $('#dashboardTasks')
                     let taskContent = 
                     `
                     <tr>
                         <td>${task.title}</td>
                         <td>${task.description}</td>
-                        <td>${task.duedate}</td>
+                        <td>${convertedDate}</td>
                         <td><span >${task.status}</span></td>
                     </tr>
                     
                     `
-                    taskDiv.prepend(taskContent)
+                    taskDiv.append(taskContent)
                 })
             }
         })
@@ -62,17 +64,18 @@ $(document).ready(() => {
         .then((data) => {
             data.tasks.forEach((task) => {
                 let taskDiv = $('#dashboardTasks')
+                let convertedDate = moment(task.duedate).format('DD/MM/yy')
                 let taskContent = 
                 `
                 <tr>
                     <td>${task.title}</td>
                     <td>${task.description}</td>
-                    <td>${task.duedate}</td>
+                    <td>${convertedDate}</td>
                     <td><span >${task.status}</span></td>
                 </tr>
                 
                 `
-                taskDiv.prepend(taskContent)
+                taskDiv.append(taskContent)
             })
         })
     })
