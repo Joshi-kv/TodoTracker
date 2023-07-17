@@ -37,6 +37,23 @@ class DashBoardCountView(View) :
         }
         return JsonResponse(context,safe=False)
 
+#view to show dashboard task
+class DashboardTaskView(View) : 
+    def get(self,request) : 
+        user = request.user
+        tasks = Todo.objects.filter(user=user).order_by('-created_date','-updated_date')[:5]
+        
+        context = []
+        
+        for task in tasks : 
+            context.append({
+                'title':task.task_title,
+                'description':task.task_description,
+                'duedate':task.task_duedate,
+                'status':task.task_status
+            })
+        return JsonResponse({'status':'success','tasks':context})
+
 #view to filter total tasks
 class TotalTaskFilterView(View) : 
     def get(self,request) :
@@ -162,6 +179,68 @@ class FilterRecentActivityView(View) :
                     'activity_time':filtered_recent_log.activity_time
                 })
             return JsonResponse({'status':'success','filtered_recent_logs':context})
+    
+#view to filter dasboardTask
+class FilterDashboardTaskView(View) : 
+    def get(self,request) : 
+        current_date = date.today()
+        current_day = current_date.day
+        current_month = current_date.month
+        current_year = current_date.year
+        
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        #condition checking for filter 
+        if filter_option == 'Today' : 
+            tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).order_by('-created_date')
+            context = []
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
+        
+        elif filter_option == 'This Month' : 
+            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).order_by('-created_date')
+            context = []
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
+        
+        
+        elif filter_option == 'This Year' : 
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).order_by('-created_date')
+            context = []
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
+        else : 
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).order_by('-created_date')
+            context = []
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
+        
+        
         
 
 #news dashboard view
