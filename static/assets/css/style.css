@@ -1275,8 +1275,8 @@ h6 {
 }
 
 .select-container {
-  height: 360px;
-  width: 250px;
+  height: 265px;
+  width:420px;
   border-radius: 10px;
   border: 2px dashed royalblue;
   display: flex;
@@ -1336,11 +1336,11 @@ h6 {
 }
 
 #UpdateFile,#file {
-  margin-left: 5rem;
+  margin-left: 3rem;
 }
 
 #newsUpdateImage,#newsImage{
-  width: 200px;
+  width: 350px;
   height: auto;
 }
 
@@ -1357,4 +1357,7 @@ h6 {
 .latest-news{
   height: 400px;
   overflow: auto;
+}
+#uploadIcon{
+  height: 100px;
 }

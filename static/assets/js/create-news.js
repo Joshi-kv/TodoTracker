@@ -123,4 +123,10 @@ $(document).ready(() => {
         alertify.set('notifier','position','top-right')
         alertify.success('News added successfully.')
     })
+
+    $('#closeBtn').on('click',function(e){
+        e.preventDefault()
+        $('#newsImage').attr('src','')
+        $('#addNewsForm')[0].reset()
+    })
 })
