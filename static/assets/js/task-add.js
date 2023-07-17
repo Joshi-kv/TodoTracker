@@ -87,6 +87,24 @@ $(document).ready(() => {
 
                 // Call changePagination with the updated total number of tasks
                 showPagination(total);
+                //custom filtering
+                $('select[name="filterStatus"]').on('change',function(){
+                    let status = $(this).val()
+                    table.column(4).search(status).draw()
+                    showPagination(total)
+                })
+                $('select[name="filterPriority"]').on('change',function(){
+                    let priority = $(this).val()
+                    table.column(3).search(priority).draw()
+                    showPagination(total)
+                })
+        
+                $('input[name="filterDate"]').on('change',function(){
+                    let date = $(this).val()
+                    convertedDate = moment(date).format('DD/MM/yy')
+                    table.column(2).search(convertedDate).draw()
+                    showPagination(total)
+                })
             },
 
         });

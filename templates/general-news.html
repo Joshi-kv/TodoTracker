@@ -52,14 +52,14 @@
             <li class="nav-item mx-1" role="presentation">
               <button type="button" class="nav-link active" ><a href="{% url 'home:all-news' %}" >All News</a></button>
             </li>
-  
+{% comment %}   
             <li class="nav-item mx-1" role="presentation">
               <button type="button" class="nav-link active" ><a href="{% url 'home:general-news' %}" >General News</a></button>
             </li>
   
             <li class="nav-item mx-1">
               <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
-            </li>
+            </li> {% endcomment %}
   
             <li class="nav-item mx-1">
               <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
