@@ -67,8 +67,8 @@ $(document).ready(() => {
                     newsDiv.empty()
                     response.news.forEach((news) => {
                         let newsContent;
-                        if (response.news.news_description.length > 50){
-                            let description = response.news.news_description.slice(0,50)
+                        if (news.news_description.length > 50){
+                            let description = news.news_description.slice(0,50)
                             newsContent = 
                             `
                             <div class="post-item clearfix">
