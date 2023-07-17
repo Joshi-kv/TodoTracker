@@ -5,7 +5,7 @@ $(document).ready(() => {
           .then(response => response.json())
           .then((data) => {
             if (data.activity.length > 0) {
-              let slicedData = [data.activity.slice(-5)];
+              let slicedData = [data.activity.slice(0,5)];
               slicedData.forEach((data) => {
                 data.forEach((item) => {
                   let currentDate = new Date();
@@ -30,7 +30,7 @@ $(document).ready(() => {
                   if (convertedActivityDate != convertedCurrentDate) {
                     activityContentDiv.append(activityContent);
                   } else {
-                    activityContentDiv.prepend(activityContent);
+                    activityContentDiv.append(activityContent);
                   }
                 });
               });
@@ -93,7 +93,7 @@ $(document).ready(() => {
                                 activityContentDiv.append(activityContent)
             
                             }else{
-                                activityContentDiv.prepend(activityContent)
+                                activityContentDiv.append(activityContent)
                             }
                     })
                 }else{
@@ -122,7 +122,7 @@ $(document).ready(() => {
         .then(response => response.json())
         .then((data) => {
             if(data.activity.length > 0){
-                let slicedData = [data.activity.slice(-5)]
+                let slicedData = [data.activity.slice(0,5)]
                 slicedData.forEach((data) => {
                     data.forEach((item) =>{
                         let currentDate = new Date()
@@ -149,7 +149,7 @@ $(document).ready(() => {
                             activityContentDiv.append(activityContent)
     
                         }else{
-                            activityContentDiv.prepend(activityContent)
+                            activityContentDiv.append(activityContent)
                         }
                     })
                 })
