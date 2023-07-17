@@ -88,6 +88,9 @@ $(document).ready(()=>{
                 success:function(response){
                     if(response.success === true){
                         window.location.href = '/user/login/'
+                    }else{
+                        window.location.href = '/user/register/'
+                        $('#signupError').html(`${response.error}`)
                     }
                 }
             })

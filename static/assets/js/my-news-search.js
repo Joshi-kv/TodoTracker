@@ -12,35 +12,48 @@ $(document).ready(() => {
                 success:function(response){
                     console.log(response)
                     if(response.status == 'success'){
-                        response.news.forEach((data) => {
-                            console.log(data)
-                            
-                            let convertedDate = moment(data.published_on).format('DD-MM-yy')   
-                            let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
-                           
+                        if(response.news.length > 0){
+
+                            response.news.forEach((data) => {
+                                console.log(data)
+                                
+                                let convertedDate = moment(data.published_on).format('DD-MM-yy')   
+                                let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
+                               
+                                let newsContent = 
+                                `
+                                <div class="col-lg-6">
+                                <div class="card" id="myNews-${data.news_id}"  data-news="${data.news_id}">
+                                <div class="card-body">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="recentLog">
+                                    <li class="dropdown-header text-start">
+                                        <h6>Options</h6>
+                                    </li>
+                                    <li class="dropdown-item" id="newsUpdate" data-bs-toggle="modal" data-bs-target="#newsUpdateModal" data-update=${data.news_id}>Update</li>
+                                    <li class="dropdown-item" id="newsDelete" data-bs-toggle="modal" data-bs-target="#newsDeleteModal" data-delete=${data.news_id}>Delete</li>
+                                    </ul>
+                                    <a href="/news/${data.news_slug}/"  id="slug-${data.news_id}"><h5 class="card-title" id="title-${data.news_id}">${data.news_title}</h5></a>
+                                    <span class="text-secondary small">published on ${convertedDate}&nbsp;${convertedTime}</span>
+                                    <img class="newsImage mt-3"  src="${data.news_image}" id="image-${data.news_id}" alt="" >
+                                </div>
+                                </div>
+                                </div>
+                                
+                                `
+                                $("#myNewsDiv").append(newsContent)
+                            })
+                        }else{
                             let newsContent = 
                             `
-                            <div class="col-lg-6">
-                            <div class="card" id="myNews-${data.news_id}"  data-news="${data.news_id}">
-                            <div class="card-body">
-                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="recentLog">
-                                <li class="dropdown-header text-start">
-                                    <h6>Options</h6>
-                                </li>
-                                <li class="dropdown-item" id="newsUpdate" data-bs-toggle="modal" data-bs-target="#newsUpdateModal" data-update=${data.news_id}>Update</li>
-                                <li class="dropdown-item" id="newsDelete" data-bs-toggle="modal" data-bs-target="#newsDeleteModal" data-delete=${data.news_id}>Delete</li>
-                                </ul>
-                                <a href="/news/${data.news_slug}/"  id="slug-${data.news_id}"><h5 class="card-title" id="title-${data.news_id}">${data.news_title}</h5></a>
-                                <span class="text-secondary small">published on ${convertedDate}&nbsp;${convertedTime}</span>
-                                <img class="newsImage mt-3"  src="${data.news_image}" id="image-${data.news_id}" alt="" >
+                            <div  class="no-news-content my-5 d-flex justify-content-center">
+                            <div>
+                            <h4>No news created</h4>
                             </div>
                             </div>
-                            </div>
-                            
                             `
-                            $("#myNewsDiv").append(newsContent)
-                        })
+                            $('#myNewsDiv').append(newsContent)
+                        }
                     }
                 }
             })

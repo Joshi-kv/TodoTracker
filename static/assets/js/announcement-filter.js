@@ -78,7 +78,7 @@ $(document).ready(() => {
                 `
                 <div  class="no-news-content my-5 d-flex justify-content-center">
                 <div>
-                <h4>No news created</h4>
+                <h4>No Announcements</h4>
                 </div>
                 </div>
                 `

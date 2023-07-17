@@ -21,15 +21,20 @@ class UserRegistrationView(View) :
             email = request.POST.get('email')
             password = request.POST.get('password')
             
-            user = User.objects.create_user(first_name=name,email=email,username=username,password=password)
-            user.save()
+            if User.objects.filter(username=username).exists() : 
+                return JsonResponse({'success':False,'error':'Username already taken'})
+            elif User.objects.filter(email=email).exists() : 
+                return JsonResponse({'success':False,'error':'Email already taken'})
+            else : 
+                user = User.objects.create_user(first_name=name,email=email,username=username,password=password)
+                user.save()
             
             user_model = User.objects.get(username=username)
             new_profile = UserProfile.objects.create(user=user_model)
             new_profile.save()
 
             activity_log = ActivityLog.objects.create(
-                user=request.user,
+                user=new_profile.user,
                 activity='Profile created'
             )
             activity_log.save()

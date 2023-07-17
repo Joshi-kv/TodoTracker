@@ -11,29 +11,43 @@ $(document).ready(() => {
                 dataType : 'json',
                 success:function(response){
                     console.log(response)
+                    let announcemtDiv = $('#newsDiv')
                     if(response.status == 'success'){
-                        response.announcements.forEach((data) => {
-                            console.log(data)
-                            
-                            let convertedDate = moment(data.published_on).format('DD-MM-yy')   
-                            let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
-                           
+                        if(response.announcements.length > 0){
+                            response.announcements.forEach((data) => {
+                                console.log(data)
+                                
+                                let convertedDate = moment(data.published_on).format('DD-MM-yy')   
+                                let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
+                               
+                                let announcementContent = 
+                                `
+                                <div class="col-lg-6">
+    
+                                <div class="card">
+                                <div class="card-body">
+                                    <a href="/news/${data.announcement_slug}/"><h5 class="card-title">${data.announcement_title}</h5></a>
+                                    <span>published by <b>${data.author}</b></span><span class="text-secondary small ms-5">published on ${convertedDate}&nbsp;${convertedTime}</span>
+                                    <img class="newsImage mt-3" src="${data.announcement_image}" alt="" >
+                                </div>
+                                </div>
+                                </div>
+                                
+                                `
+                                $("#newsDiv").append(announcementContent)
+                            })
+
+                        }else{
                             let announcementContent = 
                             `
-                            <div class="col-lg-6">
-
-                            <div class="card">
-                            <div class="card-body">
-                                <a href="/news/${data.announcement_slug}/"><h5 class="card-title">${data.announcement_title}</h5></a>
-                                <span>published by <b>${data.author}</b></span><span class="text-secondary small ms-5">published on ${convertedDate}&nbsp;${convertedTime}</span>
-                                <img class="newsImage mt-3" src="${data.announcement_image}" alt="" >
+                            <div  class="no-news-content my-5 d-flex justify-content-center">
+                            <div>
+                            <h4>No Announcements</h4>
                             </div>
                             </div>
-                            </div>
-                            
                             `
-                            $("#newsDiv").append(announcementContent)
-                        })
+                            announcemtDiv.append(announcementContent)
+                        }
                     }
                 }
             })
@@ -69,12 +83,13 @@ $(document).ready(() => {
                     `
                     <div  class="no-news-content my-5 d-flex justify-content-center">
                     <div>
-                    <h4>No news created</h4>
+                    <h4>No Announcements</h4>
                     </div>
                     </div>
                     `
                     announcemtDiv.append(announcementContent)
                 }
+
             })
         }
     })
