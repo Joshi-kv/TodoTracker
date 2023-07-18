@@ -6,14 +6,29 @@ $(document).ready(() => {
         if(data.tasks.length > 0){
             $('#taskTableHeading').show()
         data.tasks.forEach((task,index) => {
-
+                let status;
                 let taskDiv = $('#dashboardTasks')
                 let convertedDate = moment(task.duedate).format('DD/MM/yy')
-                // $('#badge').addClass('bg-primary')
-                // $('.badge').addClass('bg-primary')
-                // // $('#badge').addClass('text-white')
-                // // $('.badge').addClass('bg-success')
-                // // $('#badge').addClass('bg-success')
+
+                switch(task.status){
+                    case 'Pending' : 
+                        status = 'pending'
+                        break;
+
+                    case 'In progress':
+                        status = 'in-progress'
+                        break;
+                    case 'Upcoming' :
+                        status = 'upcoming'
+                        break;
+                    case 'Completed' :
+                        status = 'completed'
+                        break;
+                    default :
+                        status = ''
+                        break
+                }
+
                 let taskContent =
                 `
                 <tr>
@@ -21,7 +36,7 @@ $(document).ready(() => {
                     <td>${task.title}</td>
                     <td>${task.description}</td>
                     <td>${convertedDate}</td>
-                    <td><span id="badge">${task.status}</span></td>
+                    <td><p class = 'visual-indicator ${status}' >${task.status}</p></td>
                 </tr>
                 
                 `
@@ -62,6 +77,25 @@ $(document).ready(() => {
                     response.tasks.forEach((task,index) => {
                         let convertedDate = moment(task.duedate).format('DD/MM/yy')
                         let taskDiv = $('#dashboardTasks')
+                        let status;
+                        switch(task.status){
+                            case 'Pending' : 
+                                status = 'pending'
+                                break;
+        
+                            case 'In progress':
+                                status = 'in-progress'
+                                break;
+                            case 'Upcoming' :
+                                status = 'upcoming'
+                                break;
+                            case 'Completed' :
+                                status = 'completed'
+                                break;
+                            default :
+                                status = ''
+                                break
+                        }
                         let taskContent = 
                         `
                         <tr>
@@ -69,7 +103,7 @@ $(document).ready(() => {
                             <td>${task.title}</td>
                             <td>${task.description}</td>
                             <td>${convertedDate}</td>
-                            <td><span >${task.status}</span></td>
+                            <td><p class="visual-indicator ${status}">${task.status}</p></td>
                         </tr>
                         
                         `
@@ -101,14 +135,36 @@ $(document).ready(() => {
                 data.tasks.forEach((task,index) => {
                     let taskDiv = $('#dashboardTasks')
                     let convertedDate = moment(task.duedate).format('DD/MM/yy')
+                    let status;
+                    switch(task.status){
+                        case 'Pending' : 
+                            status = 'pending'
+                            break;
+    
+                        case 'In progress':
+                            status = 'in-progress'
+                            break;
+                        case 'Upcoming' :
+                            status = 'upcoming'
+                            break;
+                        case 'Completed' :
+                            status = 'completed'
+                            break;
+                        default :
+                            status = ''
+                            break
+                    }
+
                     let taskContent = 
+
+
                     `
                     <tr>
                         <td>${index+1}</td>
                         <td>${task.title}</td>
                         <td>${task.description}</td>
                         <td>${convertedDate}</td>
-                        <td><span >${task.status}</span></td>
+                        <td><p class="visual-indicator ${status}">${task.status}</p></td>
                     </tr>
                     
                     `

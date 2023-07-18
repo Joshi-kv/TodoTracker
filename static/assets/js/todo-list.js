@@ -52,6 +52,9 @@ function listTable(){
             })
 
         })
+        // table.on('search.dt',function(){
+        //     hidePagination(table,table.data().count())
+        // })
     })
 }
 
@@ -91,3 +94,4 @@ $('#clearFilterBtn').on('click',function(){
     hidePagination(table,taskLength)
    clearFilters()
 })
+

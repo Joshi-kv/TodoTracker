@@ -1363,5 +1363,37 @@ h6 {
 }
 
 .recent-sales{
-  height: 322px;
+  height: 390px;
+}
+
+
+.visual-indicator{
+  font-size: x-small;
+  font-weight: bold;
+  width: 80px!important;
+  padding-left: 1rem;
+}
+
+.pending{
+  background: #DC3545;
+  color: #fff;
+  border-radius: 7px;
+  width: 10px;
+}
+.upcoming{
+  background: #FFC107;
+  color: #fff;
+  border-radius: 7px;
+  
+}
+.in-progress{
+  background: #007BFF;
+  color: #fff;
+  border-radius: 7px;
+}
+
+.completed{
+  background: #28A745;
+  color: #fff;
+  border-radius: 7px;
 }
