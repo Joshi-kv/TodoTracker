@@ -457,7 +457,7 @@ class TaskDeleteView(View) :
             task.delete()
             activity_log = ActivityLog.objects.create(
                 user = request.user,
-                activity = f' "{task.task_title}" deleted'
+                activity = f' "{task.task_title}" task deleted'
             )
             activity_log.save()
             total_tasks = Todo.objects.filter(user=task.user).count()

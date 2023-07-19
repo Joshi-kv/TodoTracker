@@ -55,6 +55,10 @@ function listTable(){
         // table.on('search.dt',function(){
         //     hidePagination(table,table.data().count())
         // })
+
+        // $('input[type="search"]').on('keyup',function(){
+        //     hidePagination(table,table.data().count())
+        // })
     })
 }
 
