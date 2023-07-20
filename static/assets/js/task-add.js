@@ -18,9 +18,15 @@ $(document).ready(() => {
             }
         },
         errorElement: "div",
+        highlight: function(element) {
+            $(element).addClass("is-invalid").removeClass("is-valid");
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid')
+        },
         errorPlacement: function(error, element) {
             error.addClass('text-danger');
-            error.insertBefore(element);
+            error.insertAfter(element);
         },
     });
 
@@ -54,7 +60,14 @@ $(document).ready(() => {
         formData.append('task_duedate', $('input[name="duedate"]').val());
         formData.append('task_status', $('select[name="status"]').val());
         formData.append('task_priority', $('select[name="priority"]').val());
-        if($('input[name="duedate"]').val() !== ''){
+
+        let title = $('input[name="title"]').val()
+        let description = $('textarea[name="description"]').val()
+        let duedate =  $('input[name="duedate"]').val()
+        let status = $('select[name="status"]').val()
+        let priority = $('select[name="priority"]').val()
+
+        if(title && description && duedate && status && priority ){
             $.ajax({
                 type: 'post',
                 url: '/create-task/',
