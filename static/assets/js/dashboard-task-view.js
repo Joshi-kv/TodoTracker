@@ -40,6 +40,7 @@ $(document).ready(() => {
                 </tr>
                 
                 `
+                $('#taskTableHeading').show()
                 taskDiv.append(taskContent)
             })
         }else{
@@ -107,6 +108,7 @@ $(document).ready(() => {
                         </tr>
                         
                         `
+                        $('#taskTableHeading').show()
                         taskDiv.append(taskContent)
                     })
 
@@ -168,6 +170,7 @@ $(document).ready(() => {
                     </tr>
                     
                     `
+                    $('#taskTableHeading').show()
                     taskDiv.append(taskContent)
                 })
 
