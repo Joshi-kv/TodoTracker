@@ -901,26 +901,26 @@ class AllNewsFilter(View):
         filter_by_year = request.GET.get('filterByYear')
 
         current_date = date.today()
-        filtered_my_news = News.objects.all().exclude(user=user).order_by('-published_date', '-published_time')
+        filtered_all_news = News.objects.all().exclude(user=user).order_by('-published_date', '-published_time')
 
         if filter_category and filter_category != 'All':
-            filtered_my_news = filtered_my_news.filter(category=filter_category)
+            filtered_all_news = filtered_all_news.filter(category=filter_category)
 
         if filter_by_month and filter_by_month != '' : 
-            filtered_my_news = filtered_my_news.filter(published_date__month=filter_by_month)
+            filtered_all_news = filtered_all_news.filter(published_date__month=filter_by_month)
         
         if filter_by_year and filter_by_year != '' : 
-            filtered_my_news = filtered_my_news.filter(published_date__year=filter_by_year)
+            filtered_all_news = filtered_all_news.filter(published_date__year=filter_by_year)
 
         if filter_by == 'Today':
-            filtered_my_news = filtered_my_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
+            filtered_all_news = filtered_all_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
         elif filter_by == 'This Month':
-            filtered_my_news = filtered_my_news.filter(published_date__month=current_date.month, published_date__year=current_date.year).order_by('-published_date', '-published_time')
+            filtered_all_news = filtered_all_news.filter(published_date__month=current_date.month, published_date__year=current_date.year).order_by('-published_date', '-published_time')
         elif filter_by == 'This Year':
-            filtered_my_news = filtered_my_news.filter(published_date__year=current_date.year).order_by('-published_date', '-published_time')
+            filtered_all_news = filtered_all_news.filter(published_date__year=current_date.year).order_by('-published_date', '-published_time')
 
         result = []
-        for news in filtered_my_news:
+        for news in filtered_all_news:
             result.append({
                 'news_id': news.id,
                 'author': news.user.username,
@@ -1130,12 +1130,25 @@ class MyNewsFilter(View):
         user = request.user.id
         filter_category = request.GET.get('filterCategory')
         filter_by = request.GET.get('filterBy')
+        
+        filter_by_month = request.GET.get('filterByMonth')
+        filter_by_year = request.GET.get('filterByYear')
+        
         current_date = date.today()
 
         filtered_my_news = News.objects.filter(user=user).order_by('-published_date', '-published_time')
 
-        if filter_category and filter_category != 'Show all':
+        if filter_category and filter_category != 'All':
             filtered_my_news = filtered_my_news.filter(category=filter_category).order_by('-published_date', '-published_time')
+    
+        if filter_by_month and filter_by_month != '' : 
+            filtered_my_news = filtered_my_news.filter(published_date__month=filter_by_month)
+            
+            print(filtered_my_news)
+        
+        if filter_by_year and filter_by_year != '' : 
+            filtered_my_news = filtered_my_news.filter(published_date__year=filter_by_year)
+
 
         if filter_by == 'Today':
             filtered_my_news = filtered_my_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
