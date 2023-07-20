@@ -24,6 +24,7 @@ $(document).ready(() => {
         },
     });
 
+
     // fetching csrf token
     function getCookie(name) {
         let cookieValue = null;
@@ -53,66 +54,74 @@ $(document).ready(() => {
         formData.append('task_duedate', $('input[name="duedate"]').val());
         formData.append('task_status', $('select[name="status"]').val());
         formData.append('task_priority', $('select[name="priority"]').val());
-        $.ajax({
-            type: 'post',
-            url: '/create-task/',
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-CSRFToken', csrftoken);
-            },
-            data: formData,
-            success: function(response) {
-                let task = response.task;
-                let total = response.total
-                let table = $('#taskTable').DataTable();
-                let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy');
-                let taskId = task.task_id
-                let newRow = table.row.add([
-                    `${task.task_title}`,
-                    `${task.task_description}`,
-                    `${convertedTaskDuedate}`,
-                    `${task.task_priority}`,
-                    `${task.task_status}`,
-                    `
-                    <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
-                    `
-                ]).node();
-                $(newRow).attr('data-task-id',taskId)
-                table.draw()
-                alertify.set('notifier', 'position', 'top-right');
-                alertify.success('New task added successfully');
-
-                // Call changePagination with the updated total number of tasks
-                showPagination(total);
-                //custom filtering
-                $('select[name="filterStatus"]').on('change',function(){
-                    let status = $(this).val()
-                    table.column(4).search(status).draw()
-                    showPagination(total)
-                })
-                $('select[name="filterPriority"]').on('change',function(){
-                    let priority = $(this).val()
-                    table.column(3).search(priority).draw()
-                    showPagination(total)
-                })
-        
-                $('input[name="filterDate"]').on('change',function(){
-                    let date = $(this).val()
-                    convertedDate = moment(date).format('DD/MM/yy')
-                    table.column(2).search(convertedDate).draw()
-                    showPagination(total)
-                })
-            },
-
-        });
-        $('#basicModal').modal('toggle');
-        $('#taskForm')[0].reset();
+        if($('input[name="duedate"]').val() !== ''){
+            $.ajax({
+                type: 'post',
+                url: '/create-task/',
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                },
+                data: formData,
+                success: function(response) {
+                    let task = response.task;
+                    let total = response.total
+                    let table = $('#taskTable').DataTable();
+                    let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy');
+                    let taskId = task.task_id
+                    let newRow = table.row.add([
+                        `${task.task_title}`,
+                        `${task.task_description}`,
+                        `${convertedTaskDuedate}`,
+                        `${task.task_priority}`,
+                        `${task.task_status}`,
+                        `
+                        <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
+                        `
+                    ]).node();
+                    $(newRow).attr('data-task-id',taskId)
+                    table.draw()
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.success('New task added successfully');
+    
+                    // Call changePagination with the updated total number of tasks
+                    showPagination(total);
+                    //custom filtering
+                    $('select[name="filterStatus"]').on('change',function(){
+                        let status = $(this).val()
+                        table.column(4).search(status).draw()
+                        showPagination(total)
+                    })
+                    $('select[name="filterPriority"]').on('change',function(){
+                        let priority = $(this).val()
+                        table.column(3).search(priority).draw()
+                        showPagination(total)
+                    })
+            
+                    $('input[name="filterDate"]').on('change',function(){
+                        let date = $(this).val()
+                        convertedDate = moment(date).format('DD/MM/yy')
+                        table.column(2).search(convertedDate).draw()
+                        showPagination(total)
+                    })
+                },
+    
+            });
+            $('#basicModal').modal('toggle');
+            $('#taskForm')[0].reset();
+        }
     });
 
+    $('#close').on('click',function(e){
+        e.preventDefault()
+        $('#taskForm')[0].reset()
+    })
+
 });
+
 
 // function to hide pagination dynamically 
 function showPagination(totalTasks) {

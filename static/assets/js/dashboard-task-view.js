@@ -74,6 +74,7 @@ $(document).ready(() => {
             },
             success:function(response){
                 $('#dashboardTasks').empty()
+                $('#filterOption').html(target.innerHTML)
                 if(response.tasks.length > 0){
                     response.tasks.forEach((task,index) => {
                         let convertedDate = moment(task.duedate).format('DD/MM/yy')
@@ -108,6 +109,7 @@ $(document).ready(() => {
                         </tr>
                         
                         `
+                        
                         $('#taskTableHeading').show()
                         taskDiv.append(taskContent)
                     })
@@ -129,6 +131,7 @@ $(document).ready(() => {
     }
     $('#taskClearFilter').on('click',function(){
         $('#dashboardTasks').empty()
+        $('#filterOption').html('Recent')
         const url = 'http://127.0.0.1:8000/dashboard-task/'
         fetch(url)
         .then(response => response.json())

@@ -67,6 +67,7 @@ $(document).ready(() => {
             success:function(response){
                 let activityContentDiv = $('.activity')
                 activityContentDiv.empty()
+                $('#filterOptionRecent').html(target.innerHTML)
                 if(response.filtered_recent_logs.length > 0){
                     response.filtered_recent_logs.forEach((item) => {
                         let activity_time = item.activity_time
@@ -117,6 +118,7 @@ $(document).ready(() => {
     //clear filter 
     $('#recentLogClearFilter').on('click',function(){
         $('.activity').empty()
+        $('#filterOptionRecent').html('')
         const url = 'http://127.0.0.1:8000/activity-logs/'
         fetch(url)
         .then(response => response.json())

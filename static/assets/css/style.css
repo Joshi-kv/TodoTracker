@@ -1346,6 +1346,7 @@ h6 {
 
 .recent-log{
   height: 400px;
+  width: 400px;
   overflow: auto;
 }
 
