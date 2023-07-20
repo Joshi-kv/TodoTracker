@@ -29,11 +29,11 @@ class FAQ(models.Model) :
  
 #model for user feedback    
 class Feedback(models.Model) : 
-    user_name = models.CharField(max_length=256)
-    user_email = models.CharField(max_length=300)
-    subject = models.CharField(max_length=500)
-    message = models.TextField()
-    message_date = models.DateTimeField(auto_now_add=True)
+    user_name = models.CharField(max_length=256,blank=False)
+    user_email = models.CharField(max_length=300,blank=False)
+    subject = models.CharField(max_length=500,blank=False)
+    message = models.TextField(blank=False)
+    message_date = models.DateTimeField(auto_now_add=True,blank=False)
     
     def __str__(self) : 
         return f'{self.subject}'

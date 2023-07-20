@@ -498,47 +498,53 @@ class FeedbackCreateView(View) :
         feedback_subject = request.POST.get('feedback_subject')
         feedback_message = request.POST.get('feedback_message')
         
-        new_feedback = Feedback.objects.create(
-            user_name = feedback_username,
-            user_email = feedback_useremail,
-            subject = feedback_subject,
-            message = feedback_message
+        if feedback_username and feedback_useremail and feedback_message and feedback_subject != None : 
             
-        )
         
-        new_feedback.save()
+            new_feedback = Feedback.objects.create(
+                user_name = feedback_username,
+                user_email = feedback_useremail,
+                subject = feedback_subject,
+                message = feedback_message
+                
+            )
+            
+            new_feedback.save()
         
-        context = {
-            'feedback_username':feedback_username,
-            'feedback_subject':feedback_subject,
-            'feedback_message':feedback_message
-        }
-        
-        #sending mail to admin 
-        admin_user = User.objects.get(is_superuser=True)
-        subject = f'{feedback_subject} - {feedback_username}'
-        message = get_template('feedback-email.html').render(context)
-        from_mail = feedback_useremail
-        to_mail = admin_user.email
-        
-        email = EmailMessage(
-            subject,
-            message,
-            from_email=from_mail,
-            to=[to_mail],
-            reply_to=[from_mail]
-        )
-        email.content_subtype = 'html'
-        email.send()
-        
-        activity_log = ActivityLog.objects.create(
-            user = request.user,
-            activity = 'Feedback submitted'
-        )
-        
-        activity_log.save()
-        
-        return JsonResponse({'status':'created'})
+            context = {
+                'feedback_username':feedback_username,
+                'feedback_subject':feedback_subject,
+                'feedback_message':feedback_message
+            }
+            
+            #sending mail to admin 
+            admin_user = User.objects.get(is_superuser=True)
+            subject = f'{feedback_subject} - {feedback_username}'
+            message = get_template('feedback-email.html').render(context)
+            from_mail = feedback_useremail
+            to_mail = admin_user.email
+            
+            email = EmailMessage(
+                subject,
+                message,
+                from_email=from_mail,
+                to=[to_mail],
+                reply_to=[from_mail]
+            )
+            email.content_subtype = 'html'
+            email.send()
+            
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = 'Feedback submitted'
+            )
+            
+            activity_log.save()
+            
+            return JsonResponse({'status':'created'})
+        else : 
+            print('empty')
+            return JsonResponse({'error':'Form fields are empty'})
     
 #view to render newspage 
 class MainNewsPageView(View) : 

@@ -1,4 +1,6 @@
 $(document).ready(() =>{
+    $('.spinner').hide()
+    $('.loading').hide()
     $('#feedbackForm').validate({
         rules:{
             feedbackUserName:{
@@ -80,36 +82,38 @@ $(document).ready(() =>{
     const csrftoken = getCookie('csrftoken')
 
     //feedback form submitting
-    $('#feedbackForm').on('submit',(e) => {
-        e.preventDefault()
-        $.ajax({
-            type:'post',
-            url:'/feedback-submission/',
-            dataType:'json',
-            data:{
-                csrfmiddlewaretoken:csrftoken,
-                feedback_username:$('input[name="feedbackUserName"]').val(),
-                feedback_useremail:$('input[name="feedbackUserEmail"]').val(),
-                feedback_subject:$('input[name="feedbackSubject"]').val(),
-                feedback_message:$('textarea[name="feedbackMessage"]').val()
-            },
-            beforeSend:function(){
-                $('.loading').show()
-            },
-            // success:function(response){
-            //     if(response){
-            //         alertify.set('notifier','position','top-right')
-            //         alertify.success('Thank you for the feedback. Will contact you soon ')
-            //     }
-            // },
-            complete:function(response){
-                alertify.set('notifier','position','top-right')
-                alertify.success('Thank you for the feedback. Will contact you soon ')
-                $('.loading').hide()
-                $('#feedbackForm')[0].reset()
-            }
+    $('#feedbackForm').submit((e) => {
 
-        })
+            $.ajax({
+                type:'post',
+                url:'/feedback-submission/',
+                dataType:'json',
+                data:{
+                    csrfmiddlewaretoken:csrftoken,
+                    feedback_username:$('input[name="feedbackUserName"]').val(),
+                    feedback_useremail:$('input[name="feedbackUserEmail"]').val(),
+                    feedback_subject:$('input[name="feedbackSubject"]').val(),
+                    feedback_message:$('textarea[name="feedbackMessage"]').val()
+                },
+                success:function(response){
+                    if(response.error){
+                        $('.spinner').hide()
+                        $('.loading').hide()
+                        alertify.set('notifier','position','top-right')
+                        alertify.error('Form must be filled')
+                    }
+                    if(response.status == 'created'){
+                        $('.spinner').show()
+                        $('.loading').show()
+                        alertify.set('notifier','position','top-right')
+                        alertify.success('Thank you for the feedback. Will contact you soon ')
+                        $('.spinner').hide()
+                        $('.loading').hide()
+                        $('#feedbackForm')[0].reset()
 
+                    }
+                },    
+            })
+        return false
     })
 })
