@@ -1,6 +1,4 @@
 $(document).ready(() =>{
-    $('.spinner').hide()
-    $('.loading').hide()
     $('#feedbackForm').validate({
         rules:{
             feedbackUserName:{
@@ -97,18 +95,12 @@ $(document).ready(() =>{
                 },
                 success:function(response){
                     if(response.error){
-                        $('.spinner').hide()
-                        $('.loading').hide()
                         alertify.set('notifier','position','top-right')
                         alertify.error('Form must be filled')
                     }
                     if(response.status == 'created'){
-                        $('.spinner').show()
-                        $('.loading').show()
                         alertify.set('notifier','position','top-right')
                         alertify.success('Thank you for the feedback. Will contact you soon ')
-                        $('.spinner').hide()
-                        $('.loading').hide()
                         $('#feedbackForm')[0].reset()
 
                     }
