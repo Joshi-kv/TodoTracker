@@ -27,13 +27,17 @@ class DashBoardCountView(View) :
         user = request.user
         total_tasks = Todo.objects.filter(user=user).count()
         completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
+        upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming').count()
+        in_progress_tasks = Todo.objects.filter(user=user,task_status='In progress').count()
         
         
         pending_tasks = Todo.objects.filter(user=user,task_status='Pending').count()
         context = {
             'total_tasks':total_tasks,
             'completed_tasks':completed_tasks,
-            'pending_tasks':pending_tasks
+            'pending_tasks':pending_tasks,
+            'in_progress_tasks':in_progress_tasks,
+            'upcoming_tasks':upcoming_tasks
         }
         return JsonResponse(context,safe=False)
 

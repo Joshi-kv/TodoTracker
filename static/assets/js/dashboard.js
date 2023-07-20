@@ -6,5 +6,7 @@ $(document).ready(() => {
         $('#totalTask').html(data.total_tasks)
         $('#completedTask').html(data.completed_tasks)
         $('#pendingTask').html(data.pending_tasks)
+        $('#inProgressTask').html(data.in_progress_tasks)
+        $('#upcomingTask').html(data.upcoming_tasks)
     })
 })

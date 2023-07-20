@@ -1402,3 +1402,14 @@ h6 {
 #startDate,#toDate{
   width: 10rem;
 }
+
+.dashboard .upcoming-card .card-icon {
+  color: #fd2b2b;
+  background: #fff7df;
+}
+
+.dashboard .inprogress-card .card-icon {
+  color: #2bb0fd;
+  background: #f6feff;
+}
+
