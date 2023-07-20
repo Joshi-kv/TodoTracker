@@ -1,14 +1,18 @@
 $(document).ready(() => {
-    $('select[name="filterCategory"], select[name="filterBy"]').on('change', function (e) {
+    $('select[name="filterCategory"], select[name="filterBy"], select[name="filterByMonth"], select[name="filterByYear"]').on('change', function (e) {
         var filterCategory = $('select[name="filterCategory"]').val();
         var filterBy = $('select[name="filterBy"]').val();
+        var filterByMonth = $('select[name="filterByMonth"]').val();
+        var filterByYear = $('select[name="filterByYear"]').val();
       
         $.ajax({
           url: '/all-news-filter',
           dataType: 'json',
           data: {
             filterCategory: filterCategory,
-            filterBy: filterBy
+            filterBy: filterBy,
+            filterByMonth:filterByMonth,
+            filterByYear:filterByYear
           },
           success:function(response){
                 console.log(response)
@@ -53,6 +57,8 @@ $(document).ready(() => {
         $('#newsDiv').empty()
         $('#filterCategory').val('')
         $('#filterBy').val('')
+        $('#filterByMonth').val('')
+        $('#filterByYear').val('')
         const url = 'http://127.0.0.1:8000/news-list/'
         fetch(url) 
         .then(response => response.json())

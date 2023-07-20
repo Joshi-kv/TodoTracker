@@ -897,12 +897,20 @@ class AllNewsFilter(View):
         user = request.user.id
         filter_category = request.GET.get('filterCategory')
         filter_by = request.GET.get('filterBy')
-        current_date = date.today()
+        filter_by_month = request.GET.get('filterByMonth')
+        filter_by_year = request.GET.get('filterByYear')
 
+        current_date = date.today()
         filtered_my_news = News.objects.all().exclude(user=user).order_by('-published_date', '-published_time')
 
-        if filter_category and filter_category != 'Show all':
+        if filter_category and filter_category != 'All':
             filtered_my_news = filtered_my_news.filter(category=filter_category)
+
+        if filter_by_month and filter_by_month != '' : 
+            filtered_my_news = filtered_my_news.filter(published_date__month=filter_by_month)
+        
+        if filter_by_year and filter_by_year != '' : 
+            filtered_my_news = filtered_my_news.filter(published_date__year=filter_by_year)
 
         if filter_by == 'Today':
             filtered_my_news = filtered_my_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
