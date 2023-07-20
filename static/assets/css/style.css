@@ -1398,3 +1398,7 @@ h6 {
   color: #fff;
   border-radius: 7px;
 }
+
+#startDate,#toDate{
+  width: 10rem;
+}

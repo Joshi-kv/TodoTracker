@@ -81,7 +81,7 @@ $(document).ready(() => {
                 success: function(response) {
                     let task = response.task;
                     let total = response.total
-                    let table = $('#taskTable').DataTable();
+                    let table = $('#taskTable').DataTable()
                     let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy');
                     let taskId = task.task_id
                     let newRow = table.row.add([

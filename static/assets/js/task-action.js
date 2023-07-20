@@ -71,7 +71,7 @@
                     if(response.status === 'updated'){
                         let updatedTask = response.task
                         let convertedTaskDuedate = moment(updatedTask.task_duedate).format('DD/MM/yy')
-                        let table = $('#taskTable').DataTable()
+                        let table = $('#taskTable').DataTable();
                         const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
 
                         table.row(rowIndex).data([

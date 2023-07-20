@@ -21,15 +21,16 @@
     <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
     <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
     <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
-    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+
+		<link href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+
+
+
+
     <!-- Template Main CSS File -->
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
-    <!--jquery js files-->
-    <script src="{% static 'assets/vendor/jquery/jquery.js' %}"></script>
-    <script src="{% static 'assets/vendor/jquery/jquery-validate.js' %}"></script>
-    <script src="{% static 'assets/vendor/jquery/jquery-validate-additional.js' %}"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+    
 
 
     <!--Alertify-->
@@ -41,6 +42,11 @@
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
+    <!--jquery js files-->
+    <script src="{% static 'assets/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery-validate.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery/jquery-validate-additional.js' %}"></script>
+
 </head>
 
 <body>
@@ -48,6 +54,8 @@
 
     {% block content %}
     {% endblock content %}
+
+
 
 
 
@@ -67,10 +75,12 @@
   <script src="{% static 'assets/js/main.js' %}"></script>
 
   <!--Alertify-->
-  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-  
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
+
+  <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.js"></script>
+  <script src="https://cdn.datatables.net/plug-ins/1.13.5/sorting/date-uk.js"></script>
 
 </body>
 
