@@ -122,6 +122,49 @@ class FilterPendingTaskView(View) :
         else : 
             filtered_pending_tasks = Todo.objects.filter(user=user,task_status='Pending',).count()
             return JsonResponse({'status':'success','filtered_pending_task':filtered_pending_tasks})   
+
+#view to filter in progress tasks
+class FilterInProgressTaskView(View) : 
+    def get(self,request) : 
+        user = request.user
+        filter_option = request.GET.get('option')
+        current_date = date.today()
+        
+        #filtering 
+        if filter_option == 'Today' : 
+            filtered_inprogress_tasks = Todo.objects.filter(user=user,task_status='In progress',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_inprogress_task':filtered_inprogress_tasks})
+        elif filter_option == 'This Month' : 
+            filtered_inprogress_tasks = Todo.objects.filter(user=user,task_status='In progress',updated_date__month=current_date.month,updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_inprogress_task':filtered_inprogress_tasks})
+        elif filter_option == 'This Year' : 
+            filtered_inprogress_tasks = Todo.objects.filter(user=user,task_status='In progress',updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_inprogress_task':filtered_inprogress_tasks})
+        else : 
+            filtered_inprogress_tasks = Todo.objects.filter(user=user,task_status='In progress',).count()
+            return JsonResponse({'status':'success','filtered_inprogress_task':filtered_inprogress_tasks})   
+
+#view to filter upcoming tasks
+class FilterUpcomingTaskView(View) : 
+    def get(self,request) : 
+        user = request.user
+        filter_option = request.GET.get('option')
+        current_date = date.today()
+        
+        #filtering 
+        if filter_option == 'Today' : 
+            filtered_upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_upcoming_task':filtered_upcoming_tasks})
+        elif filter_option == 'This Month' : 
+            filtered_upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming',updated_date__month=current_date.month,updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_upcoming_task':filtered_upcoming_tasks})
+        elif filter_option == 'This Year' : 
+            filtered_upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming',updated_date__year=current_date.year).count()
+            return JsonResponse({'status':'success','filtered_upcoming_task':filtered_upcoming_tasks})
+        else : 
+            filtered_upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming',).count()
+            return JsonResponse({'status':'success','filtered_upcoming_task':filtered_upcoming_tasks})   
+        
 #view to render activity log
 class ActivityLogView(View) : 
     def get(self,request) : 

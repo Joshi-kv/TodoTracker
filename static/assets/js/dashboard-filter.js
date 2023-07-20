@@ -54,4 +54,39 @@ $(document).ready(function(){
             }
         })
     }
+
+    //filter in progress tasks
+    var inprogressTaskFilterList = document.getElementById('inprogressTaskFilterList')
+    inprogressTaskFilterList.onclick = function(e){
+        let target = getEventTarget(e)
+        $.ajax({
+            type:'get',
+            url:'/filter-inprogress-tasks',
+            dataType:'json',
+            data:{
+                'option':target.innerHTML
+            },
+            success:function(response){
+
+                $('#inProgressTask').html(response.filtered_inprogress_task)
+            }
+        })
+    }
+
+    //filter upcoming tasks
+    var upcomingTaskFilterList = document.getElementById('upcomingTaskFilterList')
+   upcomingTaskFilterList.onclick = function(e){
+        let target = getEventTarget(e)
+        $.ajax({
+            type:'get',
+            url:'/filter-upcoming-tasks',
+            dataType:'json',
+            data:{
+                'option':target.innerHTML
+            },
+            success:function(response){
+                $('#upcomingTask').html(response.filtered_upcoming_task)
+            }
+        })
+    }
 })
