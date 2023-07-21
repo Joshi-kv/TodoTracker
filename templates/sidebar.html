@@ -5,8 +5,8 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'home:index' %}">
+      <li class="nav-item  sidebar-menu active-menu">
+        <a class="nav-link" href="{% url 'home:index' %}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -15,8 +15,8 @@
 
  
 	  
-	   <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'home:todo-page' %}">
+	   <li class="nav-item sidebar-menu">
+        <a class="nav-link " href="{% url 'home:todo-page' %}">
           <i class="bi bi-menu-button-wide"></i>
           <span>To Do</span>
         </a>
@@ -25,22 +25,22 @@
 
       <li class="nav-heading">Account</li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'users:profile-page' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link " href="{% url 'users:profile-page' %}">
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'home:faq' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link " href="{% url 'home:faq' %}">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'home:feedback' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link" href="{% url 'home:feedback' %}">
           <i class="bi bi-envelope"></i>
           <span>Feadback</span>
         </a>
@@ -48,8 +48,8 @@
       
       {% if request.user.is_authenticated %}
       
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'users:logout' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link " href="{% url 'users:logout' %}">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Logout</span>
         </a>
@@ -57,15 +57,15 @@
 
       {% else %}
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'users:register' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link" href="{% url 'users:register' %}">
           <i class="bi bi-card-list"></i>
           <span>Register</span>
         </a>
       </li><!-- End Register Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'users:login' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link " href="{% url 'users:login' %}">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Login</span>
         </a>
@@ -73,8 +73,8 @@
 
       {% endif %}
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'home:all-news' %}">
+      <li class="nav-item sidebar-menu">
+        <a class="nav-link" href="{% url 'home:all-news' %}">
           <i class="bi bi-envelope"></i>
           <span>News & Updates</span>
         </a>

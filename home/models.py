@@ -83,3 +83,17 @@ class Updates(models.Model) :
     
     def __str__(self) : 
         return f'{self.user} - {self.title}'
+    
+    
+class DeactivatedTask(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    task_title = models.CharField(max_length=500)
+    task_description = models.TextField()
+    task_duedate = models.DateField()
+    task_status = models.CharField(max_length=100)
+    task_priority = models.CharField(max_length=100)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) : 
+        return f'{self.task_title}'

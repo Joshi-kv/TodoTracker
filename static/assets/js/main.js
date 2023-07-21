@@ -318,5 +318,18 @@
     }, 200);
   }
 
+  $('#sidebar .sidebar-nav a').on('click',function(e){
+    let menu = $('#sidebar .sidebar-nav').find('li.active-menu').removeClass('active-menu')
+    let link = $('#sidebar .sidebar-nav').find('a')
+    console.log(menu.find('li.active-menu nav-link'))
+    $( this ).parent( 'li' ).addClass( 'active-menu' );
+    // return false
+
+  })
+
+  // $('#sidebar .sidebar-nav a').on('click',function(){
+  //   window.location = $('.active-menu').find('.nav-link').attr('href')
+  // })
+
 
 })();

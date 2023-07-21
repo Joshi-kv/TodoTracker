@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
@@ -294,7 +294,7 @@ class FilterDashboardTaskView(View) :
 class NewsDashboardView(View) : 
     def get(self,request) : 
         user = request.user.id
-        news_obj = News.objects.all().exclude(user=user).order_by('-published_date','-published_time')[:5]
+        news_obj = News.objects.filter(category='Featured').exclude(user=user).order_by('-published_date','-published_time')[:5]
         context = []
         
         for news in news_obj : 
@@ -504,6 +504,18 @@ class TaskDeleteView(View) :
         task = Todo.objects.get(id=task_id)
         if task.user == request.user : 
             task.delete()
+            decativated_task = DeactivatedTask.objects.create(
+                id=task_id,
+                user = request.user,
+                task_title = task.task_title,
+                task_description = task.task_description,
+                task_duedate = task.task_duedate,
+                task_status = task.task_status,
+                task_priority = task.task_priority
+            )
+            
+            decativated_task.save()
+            
             activity_log = ActivityLog.objects.create(
                 user = request.user,
                 activity = f' "{task.task_title}" task deleted'

@@ -684,9 +684,8 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #020f83;
   transition: 0.3;
-  background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
 }
@@ -1407,9 +1406,20 @@ h6 {
   color: #fd2b2b;
   background: #fff7df;
 }
-
+collapsed
 .dashboard .inprogress-card .card-icon {
   color: #2bb0fd;
   background: #f6feff;
 }
 
+.active-menu{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #5184fb;
+    transition: 0.3;
+    background: #f6f9ff;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
