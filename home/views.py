@@ -378,7 +378,8 @@ class TodoPageView(LoginRequiredMixin,View) :
 class TaskListView(View) : 
     def get(self,request) : 
         user_obj = request.user
-        tasks = Todo.objects.filter(user=user_obj)
+        tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day')
+        print(tasks)
         context = []
         for task in tasks : 
             context.append({
@@ -389,6 +390,7 @@ class TaskListView(View) :
                 'task_priority':task.task_priority,
                 'task_status':task.task_status
             })
+            print(context)
         return JsonResponse({'tasks':context},safe=False)
     
 #view to create todo 

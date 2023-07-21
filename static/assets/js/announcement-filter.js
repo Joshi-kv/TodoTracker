@@ -10,7 +10,7 @@ $(document).ready(() => {
                 $('#newsDiv').empty()
                 if(response.result.length > 0){
                     response.result.forEach((announcement) => {
-                        let convertedDate = moment(announcement.published_on).format('DD-MM-yy')   
+                        let convertedDate = moment(announcement.published_on).format('DD-MM-YYYY')   
                         let convertedTime = moment(announcement.published_time,'HH:mm').format('hh:mm A')                 
                         let announcementContent = 
                         
@@ -54,7 +54,7 @@ $(document).ready(() => {
             let announcemtDiv = $('#newsDiv')
             if(data.announcements.length > 0){
                     data.announcements.forEach((announcement) => {
-                    let convertedDate = moment(announcement.published_date).format('DD-MM-yy')   
+                    let convertedDate = moment(announcement.published_date).format('DD-MM-YYYY')   
                     let convertedTime = moment(announcement.published_time,'HH:mm').format('hh:mm A')                 
                     let announcemtContent = 
                     

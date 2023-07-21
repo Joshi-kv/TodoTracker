@@ -87,7 +87,7 @@ $(document).ready(() => {
 
                 console.log(response)
                 let news = response.news
-                let convertedDate = moment(news.published_on).format('DD-MM-yy')   
+                let convertedDate = moment(news.published_on).format('DD-MM-YYYY')   
                 let convertedTime = moment(news.published_time,'HH:mm').format('hh:mm A')                 
                 let newsDiv = $('#myNewsDiv')
                 $('#newsImage').attr('src','')

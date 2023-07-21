@@ -6,7 +6,7 @@ $(document).ready(() => {
         let announcemtDiv = $('#newsDiv')
         if(data.announcements.length > 0){
                 data.announcements.forEach((announcement) => {
-                let convertedDate = moment(announcement.published_date).format('DD-MM-yy')   
+                let convertedDate = moment(announcement.published_date).format('DD-MM-YYYY')   
                 let convertedTime = moment(announcement.published_time,'HH:mm').format('hh:mm A')                 
                 let announcemtContent = 
                 

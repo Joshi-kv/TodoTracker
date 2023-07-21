@@ -1,14 +1,16 @@
+
 $(document).ready(() => {
     const url = 'http://127.0.0.1:8000/dashboard-task/'
     fetch(url)
     .then(response => response.json())
     .then((data) => {
+
         if(data.tasks.length > 0){
             $('#taskTableHeading').show()
         data.tasks.forEach((task,index) => {
                 let status;
                 let taskDiv = $('#dashboardTasks')
-                let convertedDate = moment(task.duedate).format('DD/MM/yy')
+                let convertedDate = moment(task.duedate).format('DD/MM/YYYY')
 
                 switch(task.status){
                     case 'Pending' : 
@@ -77,7 +79,7 @@ $(document).ready(() => {
                 $('#filterOption').html(target.innerHTML)
                 if(response.tasks.length > 0){
                     response.tasks.forEach((task,index) => {
-                        let convertedDate = moment(task.duedate).format('DD/MM/yy')
+                        let convertedDate = moment(task.duedate).format('DD/MM/YYYY')
                         let taskDiv = $('#dashboardTasks')
                         let status;
                         switch(task.status){

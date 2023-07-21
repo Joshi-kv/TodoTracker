@@ -15,7 +15,7 @@ $(document).ready(() => {
 
                             response.news.forEach((data) => {
                                 
-                                let convertedDate = moment(data.published_on).format('DD-MM-yy')   
+                                let convertedDate = moment(data.published_on).format('DD-MM-YYYY')   
                                 let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
                                
                                 let newsContent = 
@@ -57,7 +57,7 @@ $(document).ready(() => {
                 if(data.news.length > 0){
                     console.log(data)
                         data.news.forEach((news) => {
-                        let convertedDate = moment(news.published_on).format('DD-MM-yy')   
+                        let convertedDate = moment(news.published_on).format('DD-MM-YYYY')   
                         let convertedTime = moment(news.published_time,'HH:mm').format('hh:mm A')                 
                         let newsContent = 
                         

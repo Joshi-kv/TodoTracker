@@ -1,24 +1,30 @@
 let table;
 let taskLength;
 $(document).ready(() =>{
+
+
+
+
     // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/tasks/'
     fetch(url)
     .then(response => response.json())
     .then((data) => {
+
         table = $('#taskTable').DataTable({
-            "order":[2,'asc'],
+            "order":[2,'desc'],
             "columnDefs": [{
                 "targets": [0,1,5], // Targets all columns
                 "orderable": false // Disable sorting for all columns
             }, {
                 "targets": 2, // Target the column with index 2 (task_duedate)
+                "type":['date','month'],
                 "orderable": true // Enable sorting for duedate column
             }]
            
         })
         data.tasks.forEach((task) =>{
-            let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy')
+            let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/YYYY')
             let taskId = task.task_id
             let taskRow = table.row.add([
                 `${task.task_title}`,
@@ -48,17 +54,20 @@ $(document).ready(() =>{
                 table.column(3).search(priority).draw()
                 hidePagination(table,table.data().count())
             })
+            
+              $("#startDate, #toDate").on('change',function() {
+                if ($("#startDate").val() !== "" || $("#toDate").val() !== "") {
+                  let startDate = moment($('#startDate').val()).format('DD/MM/YYYY')
+                  let endDate = moment($('#toDate').val()).format('DD/MM/YYYY')
+                  
+                  const start = new Date($('#startDate').val()) 
+                  const end = new Date($('#toDate').val())
 
-            $('#startDate, #toDate').on('change',function(){
-                let startDate = $('#startDate').val()
-                let toDate = $('#toDate').val()
-                
-                let convertedStartDate = moment(startDate).format('DD/MM/yy')
-                let convertedToDate = moment(toDate).format('DD/MM/yy')
-                
-                table.column(2).search(convertedStartDate + "|" + convertedToDate,true,true).draw()
-
-            })
+                  console.log(start,end)
+                  // search and draw
+                  table.column(2).search(startDate).draw()
+                }
+              });
 
         })
     })

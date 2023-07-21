@@ -82,7 +82,7 @@ $(document).ready(() => {
                     let task = response.task;
                     let total = response.total
                     let table = $('#taskTable').DataTable()
-                    let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/yy');
+                    let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/YYYY');
                     let taskId = task.task_id
                     let newRow = table.row.add([
                         `${task.task_title}`,
@@ -116,7 +116,7 @@ $(document).ready(() => {
             
                     $('input[name="filterDate"]').on('change',function(){
                         let date = $(this).val()
-                        convertedDate = moment(date).format('DD/MM/yy')
+                        convertedDate = moment(date).format('DD/MM/YYYY')
                         table.column(2).search(convertedDate).draw()
                         showPagination(total)
                     })
