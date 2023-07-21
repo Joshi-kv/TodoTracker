@@ -10,15 +10,14 @@ $(document).ready(() =>{
     fetch(url)
     .then(response => response.json())
     .then((data) => {
-
+        $.fn.dataTable.moment( "DD/MM/YYYY" );
         table = $('#taskTable').DataTable({
-            "order":[2,'desc'],
+            "order":[2,'asc'],
             "columnDefs": [{
                 "targets": [0,1,5], // Targets all columns
                 "orderable": false // Disable sorting for all columns
             }, {
                 "targets": 2, // Target the column with index 2 (task_duedate)
-                "type":['date','month'],
                 "orderable": true // Enable sorting for duedate column
             }]
            

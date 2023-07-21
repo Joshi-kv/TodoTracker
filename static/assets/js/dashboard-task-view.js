@@ -141,7 +141,7 @@ $(document).ready(() => {
             if(data.tasks.length > 0){
                 data.tasks.forEach((task,index) => {
                     let taskDiv = $('#dashboardTasks')
-                    let convertedDate = moment(task.duedate).format('DD/MM/yy')
+                    let convertedDate = moment(task.duedate).format('DD/MM/YYYY')
                     let status;
                     switch(task.status){
                         case 'Pending' : 
