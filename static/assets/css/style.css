@@ -1275,7 +1275,7 @@ h6 {
 }
 
 .select-container {
-  height: 265px;
+  height: auto;
   width:420px;
   border-radius: 10px;
   border: 2px dashed royalblue;
@@ -1340,7 +1340,7 @@ h6 {
 }
 
 #newsUpdateImage,#newsImage{
-  width: 350px;
+  width: 300px;
   height: auto;
 }
 
