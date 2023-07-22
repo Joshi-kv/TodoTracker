@@ -46,15 +46,14 @@ $(document).ready(() =>{
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(4).search(status).draw()
-                hidePagination(table,table.rows().count())
+                hidePagination(table,table.data().count())
             })
             $('select[name="filterPriority"]').on('change',function(){
                 let priority = $(this).val()
                 table.column(3).search(priority).draw()
-                hidePagination(table,taskLength)
+                hidePagination(table,table.data().count())
             })            
 
-            console.log(table.rows().count())
             //filter daterange
             $('#dateSearch').on('click',function(){
                 $.ajax({
@@ -129,7 +128,14 @@ $('#clearFilterBtn').on('click',function(){
     $('#filterPriority').val('')
     $('#startDate').val('')
     $('#endDate').val('')
-    hidePagination(table,table.rows().count())
+    // hidePagination(table,table.rows().count())
+    if(table.rows().count() > 10 ){
+        $('#taskTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#taskTable_length').hide()
+        $('.pagination').hide()
+    }
    clearFilters()
 })
 
