@@ -379,7 +379,6 @@ class TaskListView(View) :
     def get(self,request) : 
         user_obj = request.user
         tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day')
-        print(tasks)
         context = []
         for task in tasks : 
             context.append({
@@ -390,7 +389,6 @@ class TaskListView(View) :
                 'task_priority':task.task_priority,
                 'task_status':task.task_status
             })
-            print(context)
         return JsonResponse({'tasks':context},safe=False)
     
 #view to create todo 
@@ -430,6 +428,28 @@ class TodoCreateView(View) :
         
         total_tasks = Todo.objects.filter(user=user).count()
         return JsonResponse({'status':'success','task':context,'total':total_tasks})
+    
+
+#date range filter 
+class DateRangeFilter(View) : 
+    def get(self,request) : 
+        user = request.user
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        
+        tasks = Todo.objects.filter(user=user,task_duedate__range=(start_date,end_date))
+        context = []
+        for task in tasks : 
+            context.append({
+                'task_id':task.id,
+                'task_title':task.task_title,
+                'task_descritpion':task.task_description,
+                'task_duedate':task.task_duedate,
+                'task_priority':task.task_priority,
+                'task_status':task.task_status,
+            })
+        
+        return JsonResponse({'status':'success','tasks':context})
     
 #view to update page view
 class UpdateTaskPageView(View) : 
@@ -513,7 +533,7 @@ class TaskDeleteView(View) :
                 task_status = task.task_status,
                 task_priority = task.task_priority
             )
-            
+            print(decativated_task.id)
             decativated_task.save()
             
             activity_log = ActivityLog.objects.create(

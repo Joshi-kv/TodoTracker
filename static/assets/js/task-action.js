@@ -54,43 +54,54 @@
         $('#updateTaskForm').on('submit',(e)=>{
             e.preventDefault()
             let taskId = $('#updateModal').attr('edit-modal')
-            $.ajax({
-                type:'post',
-                url:'/update-task/',
-                dataType:'json',
-                data:{
-                    'csrfmiddlewaretoken':csrftoken,
-                    'task_id':taskId,
-                    'task_title':$('input[name="updateTitle"]').val(),
-                    'task_description':$('textarea[name="updateDescription"]').val(),
-                    'task_duedate':$('input[name="updateDuedate"]').val(),
-                    'task_priority':$('select[name="updatePriority"]').val(),
-                    'task_status':$('select[name="updateStatus"]').val(),
-                },
-                success:function(response){
-                    if(response.status === 'updated'){
-                        let updatedTask = response.task
-                        let convertedTaskDuedate = moment(updatedTask.task_duedate).format('DD/MM/YYYY')
-                        let table = $('#taskTable').DataTable();
-                        const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
+            let title = $('input[name="updateTitle"]').val()
+            let description = $('textarea[name="updateDescription"]').val()
+            let duedate = $('input[name="updateDuedate"]').val()
+            let priority = $('select[name="updatePriority"]').val()
+            let status = $('select[name="updateStatus"]').val()
+            if (title && description && duedate && priority && status){
+                $.ajax({
+                    type:'post',
+                    url:'/update-task/',
+                    dataType:'json',
+                    data:{
+                        'csrfmiddlewaretoken':csrftoken,
+                        'task_id':taskId,
+                        'task_title':$('input[name="updateTitle"]').val(),
+                        'task_description':$('textarea[name="updateDescription"]').val(),
+                        'task_duedate':$('input[name="updateDuedate"]').val(),
+                        'task_priority':$('select[name="updatePriority"]').val(),
+                        'task_status':$('select[name="updateStatus"]').val(),
+                    },
+                    success:function(response){
+                        if(response.status === 'updated'){
+                            let updatedTask = response.task
+                            let convertedTaskDuedate = moment(updatedTask.task_duedate).format('DD/MM/YYYY')
+                            let table = $('#taskTable').DataTable();
+                            const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
+    
+                            table.row(rowIndex).data([
+                                updatedTask.task_title,
+                                updatedTask.task_description,
+                                convertedTaskDuedate,
+                                updatedTask.task_priority,
+                                updatedTask.task_status,
+                                `
+                                <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                                `
+                            ]).draw(false)
+                        }
+                        alertify.set('notifier','position','top-right')
+                        alertify.warning('Task edited successfully')
+                    },
+                })
 
-                        table.row(rowIndex).data([
-                            updatedTask.task_title,
-                            updatedTask.task_description,
-                            convertedTaskDuedate,
-                            updatedTask.task_priority,
-                            updatedTask.task_status,
-                            `
-                            <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
-                            `
-                        ]).draw(false)
-                    }
-                    alertify.set('notifier','position','top-right')
-                    alertify.warning('Task edited successfully')
-                },
-            })
-            $('#updateModal').modal('toggle')
+                $('#updateModal').modal('toggle')
+            }else{
+                alertify.set('notifier','position','top-right')
+                alertify.error('Please fill all the fields')
+            }
         })
 
         //task update functions end 

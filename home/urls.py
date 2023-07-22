@@ -20,6 +20,7 @@ urlpatterns = [
     path('todo/',views.TodoPageView.as_view(),name='todo-page'),
     path('tasks/',views.TaskListView.as_view(),name='task-list'),
     path('create-task/',views.TodoCreateView.as_view(),name='create-task'),
+    path('date-range-filter/',views.DateRangeFilter.as_view(),name='date-range-filter'),
     path('update-view/',views.UpdateTaskPageView.as_view(),name='update-view'),
     path('update-task/',views.UpdateTaskView.as_view(),name='update-task'),
     path('delete-task/',views.TaskDeleteView.as_view(),name='delete-task'),

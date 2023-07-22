@@ -11,45 +11,14 @@ $(document).ready(() =>{
     .then(response => response.json())
     .then((data) => {
         $.fn.dataTable.moment( "DD/MM/YYYY" );
-
-        let startDate, endDate;
- 
-        // Custom filtering function which will search data in column four between two values
-        DataTable.ext.search.push(function (settings, data, dataIndex) {
-            let start = startDate.val();
-            let end = endDate.val();
-            let date = new Date(data[2]);
-
-        
-            if (
-                (start=== null && end === null) ||
-                (start=== null && date <= end) ||
-                (start<= date && end === null) ||
-                (start<= date && date <= end)
-            ) {
-                
-                return true;
-            }
-            return false;
-        });
-
-        // Create date inputs
-        startDate = new DateTime('#startDate', {
-            format: 'MMMM Do YYYY'
-        });
-        endDate = new DateTime('#toDate', {
-            format: 'MMMM Do YYYY'
-        });
-        console.log(startDate)
-
         table = $('#taskTable').DataTable({
             "order":[2,'asc'],
             "columnDefs": [{
-                "targets": [0,1,5], // Targets all columns
-                "orderable": false // Disable sorting for all columns
+                "targets": [0,1,5], 
+                "orderable": false 
             }, {
-                "targets": 2, // Target the column with index 2 (task_duedate)
-                "orderable": true // Enable sorting for duedate column
+                "targets": 2, 
+                "orderable": true 
             }]
            
         })
@@ -77,25 +46,53 @@ $(document).ready(() =>{
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(4).search(status).draw()
-                hidePagination(table,table.data().count())
+                hidePagination(table,table.rows().count())
             })
             $('select[name="filterPriority"]').on('change',function(){
                 let priority = $(this).val()
                 table.column(3).search(priority).draw()
-                hidePagination(table,table.data().count())
+                hidePagination(table,taskLength)
+            })            
+
+            console.log(table.rows().count())
+            //filter daterange
+            $('#dateSearch').on('click',function(){
+                $.ajax({
+                    url:'/date-range-filter',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        start_date:$('#startDate').val(),
+                        end_date:$('#endDate').val(),
+                    },
+                    success:function(response){
+                        let date = []
+                        response.tasks.forEach((task) => {
+                            table = $('#taskTable').DataTable()                        
+                            let convertedDueDate = moment(task.task_duedate).format('DD/MM/YYYY')
+                            date.push('(?=.*' + convertedDueDate + ')');
+                        })
+                        table.column(2).search(date.join('|'),true,false,true).draw()
+                        if(date){
+                            if(date.length > 10 ){
+                                $('#taskTable_length').show()
+                                $('.pagination').show()
+                            }else{
+                                $('#taskTable_length').hide()
+                                $('.pagination').hide()
+                            }
+                        }else{
+                            hidePagination(table,table.data().count())
+                        }
+                    }
+                })
             })
-            
-            // Refilter the table
-            document.querySelectorAll('#startDate, #toDate').forEach((el) => {
-                el.addEventListener('change', () => {
-                    
-                    table.draw()
-                });
-            });
 
         })
     })
 })
+
+
 
 
 
@@ -131,8 +128,8 @@ $('#clearFilterBtn').on('click',function(){
     $('#filterStatus').val('')
     $('#filterPriority').val('')
     $('#startDate').val('')
-    $('#toDate').val('')
-    hidePagination(table,taskLength)
+    $('#endDate').val('')
+    hidePagination(table,table.rows().count())
    clearFilters()
 })
 

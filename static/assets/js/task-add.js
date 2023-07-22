@@ -1,3 +1,4 @@
+
 $(document).ready(() => {
     $('#taskForm').validate({
         rules: {
@@ -101,24 +102,24 @@ $(document).ready(() => {
                     alertify.success('New task added successfully');
     
                     // Call changePagination with the updated total number of tasks
-                    showPagination(total);
+                    pagination(table,total)
                     //custom filtering
                     $('select[name="filterStatus"]').on('change',function(){
                         let status = $(this).val()
                         table.column(4).search(status).draw()
-                        showPagination(total)
+                        showPagination(table,table.data().count())
                     })
                     $('select[name="filterPriority"]').on('change',function(){
                         let priority = $(this).val()
                         table.column(3).search(priority).draw()
-                        showPagination(total)
+                        showPagination(table,table.data().count())
                     })
             
                     $('input[name="filterDate"]').on('change',function(){
                         let date = $(this).val()
                         convertedDate = moment(date).format('DD/MM/YYYY')
                         table.column(2).search(convertedDate).draw()
-                        showPagination(total)
+                        showPagination(table,table.data().count())
                     })
                 },
     
@@ -136,9 +137,19 @@ $(document).ready(() => {
 });
 
 
+function pagination(table,tasks){
+    if (tasks > 10) {
+        $('#taskTable_length').show();
+        $('.pagination').show();
+    } else {
+        $('#taskTable_length').hide();
+        $('.pagination').hide();
+    }
+}
+
 // function to hide pagination dynamically 
-function showPagination(totalTasks) {
-    if (totalTasks > 10) {
+function showPagination(table,tasks) {
+    if (tasks.length > 10) {
         $('#taskTable_length').show();
         $('.pagination').show();
     } else {
@@ -147,8 +158,7 @@ function showPagination(totalTasks) {
     }
 
     $('select[name="taskTable_length"]').on('change', () => {
-        console.log($('select[name="taskTable_length"]').val());
-        if (totalTasks > $('select[name="taskTable_length"]').val()) {
+        if (tasks > $('select[name="taskTable_length"]').val()) {
             $('.pagination').show();
         } else {
             $('.pagination').hide();

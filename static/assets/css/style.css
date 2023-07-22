@@ -1423,3 +1423,13 @@ collapsed
     padding: 10px 15px;
     border-radius: 4px;
 }
+
+.search-btn{
+  margin-right:11rem!important;
+}
+#filterPriority,#filterStatus{
+  margin-right: 5rem!important;
+}
+#filterPriority{
+  width: 200px;
+}
