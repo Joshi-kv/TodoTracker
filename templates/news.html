@@ -81,12 +81,12 @@
     </div>
   </div>
 
-    <div class="pagetitle ">
+    <div class="pagetitle mt-4">
       <h1 class="my-3">All news </h1>
       <nav>
         <ul class="nav nav-tabs">
 
-          <li class="nav-item mx-1" role="presentation">
+          <li class="nav-item mx-1 tab-pane" role="presentation">
             <button type="button" class="nav-link active"  ><a href="{% url 'home:all-news' %}" >All News</a></button>
           </li>
 {% comment %} 
@@ -98,8 +98,8 @@
             <button type="button" class="nav-link active" ><a href="{% url 'home:featured-news' %}" >Featured News</a></button>
           </li> {% endcomment %}
 
-          <li class="nav-item mx-1">
-            <button type="button" class="nav-link active" ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
+          <li class="nav-item  mx-1">
+            <button type="button" class="nav-link active " ><a href="{% url 'home:announcements' %}" >Announcements</a></button>
           </li>
 
           <li class="nav-item mx-1">
@@ -124,6 +124,7 @@
 
 {% include 'footer.html' %}
 
+<script src="{% static 'assets/js/news-tab.js' %}"></script>
 <script src="{% static 'assets/js/news.js' %}"></script>
 <script src="{% static 'assets/js/search-all-news.js' %}"></script>
 <script src="{% static 'assets/js/all-news-filter.js' %}"></script>

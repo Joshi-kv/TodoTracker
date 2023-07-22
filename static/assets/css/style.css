@@ -707,11 +707,12 @@ h6 {
 
 .sidebar-nav .nav-link:hover {
   color: #4154f1;
-  background: #f6f9ff;
+  background: #eaf0fb;
 }
 
 .sidebar-nav .nav-link:hover i {
   color: #4154f1;
+  
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -1419,7 +1420,7 @@ collapsed
     font-weight: 600;
     color: #5184fb;
     transition: 0.3;
-    background: #f6f9ff;
+    background: #eaf0fb;
     padding: 10px 15px;
     border-radius: 4px;
 }
@@ -1432,4 +1433,12 @@ collapsed
 }
 #filterPriority{
   width: 200px;
+}
+
+.active-tab{
+  color: red;
+}
+
+.announcement{
+  margin-top: 5rem;
 }
