@@ -1442,3 +1442,8 @@ collapsed
 .announcement{
   margin-top: 5rem;
 }
+
+.top-selling{
+  height: 320px;
+  overflow: auto;
+}

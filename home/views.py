@@ -288,8 +288,6 @@ class FilterDashboardTaskView(View) :
             return JsonResponse({'status':'success','tasks':context})
         
         
-        
-
 #news dashboard view
 class NewsDashboardView(View) : 
     def get(self,request) : 
@@ -390,6 +388,83 @@ class TaskListView(View) :
                 'task_status':task.task_status
             })
         return JsonResponse({'tasks':context},safe=False)
+    
+#view to list deactivated tasks
+class DeactivatedTaskView(View) : 
+    def get(self,request) : 
+        user = request.user.id,
+        deactivated_tasks = DeactivatedTask.objects.all().filter(user=user).order_by('-created_date__date','-created_date__time')[:5]
+        
+        context = []
+        
+        for deactivated_task in deactivated_tasks : 
+            context.append({
+                'task_id':deactivated_task.id,
+                'task_title':deactivated_task.task_title,
+                'task_description':deactivated_task.task_description,
+                'task_status':deactivated_task.task_status,
+                'deactivated_date':deactivated_task.created_date,
+            })
+        
+        return JsonResponse({'status':'success','deactivated_tasks':context})
+    
+#view to filter deactivated tasks
+class DeactivatedTaskFilterView(View):
+    def get(self,request):
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        current_date = date.today()
+        
+        context = []
+        
+        print(filter_option)
+        
+        
+        if filter_option == 'Today':
+            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__day=current_date.day).order_by('-created_date__date','-created_date__time')
+            for deactivated_task in deactivated_tasks:  
+                context.append({
+                    'task_id':deactivated_task.id,
+                    'task_title':deactivated_task.task_title,
+                    'task_description':deactivated_task.task_description,
+                    'task_status':deactivated_task.task_status,
+                    'deactivated_date':deactivated_task.created_date,
+            })
+            return JsonResponse({'status':'success','deactivated_tasks':context})
+        elif filter_option == 'This Month':
+            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__month=current_date.month).order_by('-created_date__date','-created_date__time')
+            for deactivated_task in deactivated_tasks:  
+                context.append({
+                    'task_id':deactivated_task.id,
+                    'task_title':deactivated_task.task_title,
+                    'task_description':deactivated_task.task_description,
+                    'task_status':deactivated_task.task_status,
+                    'deactivated_date':deactivated_task.created_date,
+            })
+            return JsonResponse({'status':'success','deactivated_tasks':context})
+        elif filter_option == 'This Year':
+            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__year=current_date.year).order_by('-created_date__date','-created_date__time')
+            for deactivated_task in deactivated_tasks:  
+                context.append({
+                    'task_id':deactivated_task.id,
+                    'task_title':deactivated_task.task_title,
+                    'task_description':deactivated_task.task_description,
+                    'task_status':deactivated_task.task_status,
+                    'deactivated_date':deactivated_task.created_date,
+            })
+            return JsonResponse({'status':'success','deactivated_tasks':context})
+        else : 
+            deactivated_tasks = DeactivatedTask.objects.all().filter(user=user).order_by('-created_date__date','-created_date__time')
+            for deactivated_task in deactivated_tasks:  
+                context.append({
+                    'task_id':deactivated_task.id,
+                    'task_title':deactivated_task.task_title,
+                    'task_description':deactivated_task.task_description,
+                    'task_status':deactivated_task.task_status,
+                    'deactivated_date':deactivated_task.created_date,
+            })
+            return JsonResponse({'status':'success','deactivated_tasks':context})
     
 #view to create todo 
 class TodoCreateView(View) : 
