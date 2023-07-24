@@ -21,5 +21,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def websocket_receive(self, event):
         print("Receiving ",event)
     
+        
+    
     async def websocket_disconnect(self, event):
         print('Disconnecting',event)

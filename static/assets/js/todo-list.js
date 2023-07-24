@@ -55,7 +55,7 @@ $(document).ready(() =>{
             })            
 
             //filter daterange
-            $('#dateSearch').on('click',function(){
+            $('#dateSearch').off().on('click',function(){
                 $.ajax({
                     url:'/date-range-filter',
                     type:'get',
@@ -65,23 +65,28 @@ $(document).ready(() =>{
                         end_date:$('#endDate').val(),
                     },
                     success:function(response){
-                        let date = []
-                        response.tasks.forEach((task) => {
-                            table = $('#taskTable').DataTable()                        
-                            let convertedDueDate = moment(task.task_duedate).format('DD/MM/YYYY')
-                            date.push('(?=.*' + convertedDueDate + ')');
-                        })
-                        table.column(2).search(date.join('|'),true,false,true).draw()
-                        if(date){
-                            if(date.length > 10 ){
-                                $('#taskTable_length').show()
-                                $('.pagination').show()
+                        if(response.tasks.length > 0){
+                            let date = []
+                            response.tasks.forEach((task) => {
+                                table = $('#taskTable').DataTable()                        
+                                let convertedDueDate = moment(task.task_duedate).format('DD/MM/YYYY')
+                                date.push('(?=.*' + convertedDueDate + ')');
+                            })
+                            table.column(2).search(date.join('|'),true,false,true).draw()
+                            if(date){
+                                if(date.length > 10 ){
+                                    $('#taskTable_length').show()
+                                    $('.pagination').show()
+                                }else{
+                                    $('#taskTable_length').hide()
+                                    $('.pagination').hide()
+                                }
                             }else{
-                                $('#taskTable_length').hide()
-                                $('.pagination').hide()
+                                hidePagination(table,table.data().count())
                             }
                         }else{
-                            hidePagination(table,table.data().count())
+                            alertify.set('notifier', 'position', 'top-right');
+                            alertify.success('No data avilable in this range');
                         }
                     }
                 })
