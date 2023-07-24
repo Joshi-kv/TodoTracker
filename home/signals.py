@@ -8,7 +8,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 @receiver(post_save, sender=Notification)
-def notification_count(sender, instance, created, **kwargs) :
+def notification_count_update(sender, instance, created, **kwargs) :
     if created :
             channel_layer = get_channel_layer()
             
@@ -17,13 +17,15 @@ def notification_count(sender, instance, created, **kwargs) :
             
             data = {
                 'receiver':user_id,
-                'notification_count':Notification.objects.filter(user=user).count()
+                'counted_notification':Notification.objects.filter(user=user).count()
             }
+            
+            print(data)
 
             async_to_sync(channel_layer.group_send)(
-                f'user_{user_id}',
+                f'{user_id}',
                 {
-                    'type': 'notification_count',
-                    'data': json.dumps(data)
+                    'type': 'notification_count_update',
+                    'value': json.dumps(data)
                 }
             )

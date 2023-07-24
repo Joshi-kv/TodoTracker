@@ -22,6 +22,18 @@ socket.onopen = async function(event) {
 
 socket.onmessage = async function(event) {
     console.log('Message from server',event)
+    let data = JSON.parse(event.data)
+    console.log(data.user)
+    if(data.user == user){
+        let countBadge = document.getElementById('count-badge')
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.success('There is some pending tasks');
+        if(data.count > 5){
+            countBadge.innerHTML = '5+'
+        }else{
+            countBadge.innerHTML = data.count
+        }
+    }
 }
 
 
