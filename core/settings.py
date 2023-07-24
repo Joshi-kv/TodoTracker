@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'django_crontab',
     'django_apscheduler',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
+
+# WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
@@ -157,6 +160,12 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-# CRONJOBS = [
-#     ('* * * * *', 'home.cron.UpdatePendingTask')
-# ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # }
+    }
+}

@@ -60,8 +60,8 @@
 
 
 
-
-
+  {{request.user.id|json_script:"user"}}
+  <script src="{% static 'assets/js/notification.js' %}"></script>
 
   <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
