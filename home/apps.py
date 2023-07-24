@@ -8,3 +8,4 @@ class HomeConfig(AppConfig):
     def ready(self) -> None:
         from . import scheduler
         scheduler.start()
+        from . import signals 

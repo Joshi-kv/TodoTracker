@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask,Notification
 
 
 # Register your models here.
@@ -48,3 +48,8 @@ class DeactivatedTaskAdmin(admin.ModelAdmin) :
     list_per_page = 10
     
 admin.site.register(DeactivatedTask,DeactivatedTaskAdmin)
+
+class NotificationAdmin(admin.ModelAdmin) : 
+    list_display = ['user','task_title','task_description','task_duedate']
+    
+admin.site.register(Notification,NotificationAdmin)

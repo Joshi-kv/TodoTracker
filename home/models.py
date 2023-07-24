@@ -97,3 +97,12 @@ class DeactivatedTask(models.Model) :
     
     def __str__(self) : 
         return f'{self.task_title}'
+
+class Notification(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    task_title = models.CharField(max_length=500)
+    task_description = models.TextField()
+    task_duedate = models.DateField()
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.task_title}'

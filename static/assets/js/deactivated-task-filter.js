@@ -76,6 +76,17 @@ $(document).ready(function() {
                     `
                     deactivatedTaskDiv.append(deactivatedTaskContent)
                 })
+            }else{
+                $('#deactivatedTaskHeading').hide()
+                let deactivatedTaskDiv = $('#deactivatedTask')
+                let deactivatedTaskContent =
+                `
+                <tr>
+                    <td class="col-span-5 text-center">No deactivated task</td>
+                </tr>
+                
+                `
+                deactivatedTaskDiv.append(deactivatedTaskContent) 
             }
         })
     })
