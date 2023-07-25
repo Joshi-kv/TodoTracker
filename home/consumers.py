@@ -30,10 +30,12 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         data = json.loads(event['value'])
         user = data['receiver']
         count = data['counted_notification']
+        notifications = data['notifications']
         
         await self.send(text_data=json.dumps({
             'count':count,
-            'user':user
+            'user':user,
+            'notifications':notifications
         }))
     
     async def websocket_disconnect(self, event):

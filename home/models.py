@@ -103,6 +103,7 @@ class Notification(models.Model):
     task_title = models.CharField(max_length=500)
     task_description = models.TextField()
     task_duedate = models.DateField()
+    created_at = models.DateTimeField()
     
     def __str__(self) : 
         return f'{self.user} - {self.task_title}'

@@ -14,10 +14,20 @@ def notification_count_update(sender, instance, created, **kwargs) :
             
             user_id = instance.user.id
             user = instance.user
-            
+            notifications = []
+
+            for notification in Notification.objects.filter(user=user):
+                notifications.append({
+                    'user':notification.user.username,
+                    'task_title':notification.task_title,
+                    'task_description':notification.task_description,
+                    'task_duedate':notification.task_duedate
+                })
+                    
             data = {
                 'receiver':user_id,
-                'counted_notification':Notification.objects.filter(user=user).count()
+                'counted_notification':Notification.objects.filter(user=user).count(),
+                'notifications':notifications
             }
             
             print(data)
@@ -26,6 +36,6 @@ def notification_count_update(sender, instance, created, **kwargs) :
                 f'{user_id}',
                 {
                     'type': 'notification_count_update',
-                    'value': json.dumps(data)
+                    'value': json.dumps(data,default=str)
                 }
             )

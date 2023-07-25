@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask,Notification
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from newsapi import NewsApiClient
@@ -40,6 +40,25 @@ class DashBoardCountView(View) :
             'upcoming_tasks':upcoming_tasks
         }
         return JsonResponse(context,safe=False)
+    
+#view to list peding tasks notifications
+class PendingTasksNotificationView(View):
+    def get(self,request) : 
+        user = request.user
+        notification_count = Notification.objects.filter(user=user).count()
+        
+        notifications = Notification.objects.filter(user=user).order_by('-created_at','-created_at__time')
+        
+        context = []
+        
+        for notification in notifications :
+            context.append({
+                'task_title': notification.task_title,
+                'task_description': notification.task_description,
+                'task_duedate': notification.task_duedate
+            })
+        
+        return JsonResponse({'status':'success','notifications':context,'notification_count':notification_count})
 
 #view to show dashboard task
 class DashboardTaskView(View) : 

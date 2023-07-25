@@ -1447,3 +1447,8 @@ collapsed
   height: 320px;
   overflow: auto;
 }
+.notifications{
+  height: 300px;
+  width: 400px;
+  overflow: auto;
+}
