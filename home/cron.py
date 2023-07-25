@@ -32,13 +32,7 @@ def update_pending_task() :
             context={
                 'pending_tasks':pending_tasks
             }
-            
-            print(context)
-            
 
-            
-            print('task pending')
-            
             #sending pending task reminder to only notification enabled users
             if UserProfile.objects.filter(user=user,enable_notification=True) :
                 subject = 'Pending task reminder'

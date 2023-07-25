@@ -17,7 +17,6 @@
                     $('#taskUpdateDuedate').val(task.task_duedate)
                     $('#taskUpdatePriority').val(task.task_priority)
                     if(task.task_status == 'Pending'){
-                        console.log('Pending')
                         let optionValue = 'Pending'
                         $("#taskUpdateStatus").append(`<option id="pending" value="${optionValue}"></option>`)
                         $('#pending').text('Pending')
@@ -123,7 +122,6 @@
                     task_id:taskId
                 },
                 success:function(response){
-                    console.log(response)
                     if(response.status === 'success'){
                         let total = response.total_tasks
                         

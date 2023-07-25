@@ -317,16 +317,5 @@
       }).observe(mainContainer);
     }, 200);
   }
-    function setActiveMenu() {
-      const currentURL = window.location.href;
-
-      $('#sidebar .sidebar-nav li').each(function () {
-          const link = $(this).find('a').attr('href');
-
-          if (currentURL.includes(link)) {
-              $(this).addClass('active-menu');
-          }
-      });
-  }
 
 })();

@@ -69,7 +69,6 @@ $(document).on('click','#newsUpdate',function(){
         dataType:'json',
         data:{'news_id':newsId},
         success:function(response){
-            console.log(response)
             if(response.status=='success'){
                 $('#newsUpdateTitle').val(response.news.news_title)
                 $('#newsUpdateImage').attr('src',response.news.news_image)
@@ -133,7 +132,6 @@ $('#updateNewsForm').on('submit',function(e){
             },
             data:formData,
             success:function(response){
-                console.log(response)
                 $(`#title-${newsId}`).html(response.news.news_title)
                 $(`#slug-${newsId}`).attr('href',response.news.news_slug)
                 $(`#image-${newsId}`).attr('src',response.news.news_image)

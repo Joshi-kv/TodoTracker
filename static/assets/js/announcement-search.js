@@ -10,7 +10,6 @@ $(document).ready(() => {
                 },
                 dataType : 'json',
                 success:function(response){
-                    console.log(response)
                     let announcemtDiv = $('#newsDiv')
                     if(response.status == 'success'){
                         if(response.announcements.length > 0){

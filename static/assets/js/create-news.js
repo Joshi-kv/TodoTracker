@@ -17,7 +17,6 @@ $(document).ready(() => {
         },
         errorElement: "div",
         highlight: function(element) {
-            console.log(element)
             $(element).addClass("is-invalid").removeClass("is-valid");
         },
         unhighlight: function(element) {
@@ -88,8 +87,6 @@ $(document).ready(() => {
                 },
                 data:formData,
                 success:function(response){
-    
-                    console.log(response)
                     let news = response.news
                     let convertedDate = moment(news.published_on).format('DD-MM-YYYY')   
                     let convertedTime = moment(news.published_time,'HH:mm').format('hh:mm A')                 

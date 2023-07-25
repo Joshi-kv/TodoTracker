@@ -15,7 +15,6 @@ $(document).ready(() => {
             filterByYear:filterByYear
           },
           success:function(response){
-                console.log(response)
                 $('#myNewsDiv').empty()
                 if(response.result.length > 0){
                     response.result.forEach((news) => {

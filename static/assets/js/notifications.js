@@ -20,7 +20,6 @@ function updateNotifications(){
     fetch(url)
     .then(response => response.json())
     .then((data) => {
-        console.log(data);
         if(data.notification_count > 0){
             $('#clearAllBtn').show()
             data.notifications.forEach((notification) => {

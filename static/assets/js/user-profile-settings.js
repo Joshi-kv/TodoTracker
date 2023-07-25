@@ -1,7 +1,4 @@
 $(document).ready(() =>{
-
-    
-
     $('#userSettingsForm').validate({
         rules:{
             phone_number:{

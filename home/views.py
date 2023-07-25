@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask,Notification
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
-from newsapi import NewsApiClient
 from django.template.loader import get_template
 from datetime import date
 from django.utils.text import slugify
@@ -444,10 +443,7 @@ class DeactivatedTaskFilterView(View):
         current_date = date.today()
         
         context = []
-        
-        print(filter_option)
-        
-        
+
         if filter_option == 'Today':
             deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__day=current_date.day).order_by('-created_date__date','-created_date__time')
             for deactivated_task in deactivated_tasks:  
@@ -820,7 +816,7 @@ class CreateNewsView(View) :
             'published_on':news.published_date,
             'published_time':news.published_time
         }
-        print(news)
+
         return JsonResponse({'status':'success','news':context})
 
 #view to fetch my news 
@@ -882,9 +878,7 @@ class NewsUpdateView(View) :
             news_image = news.news_image
             news_category = request.POST.get('news_category')
 
-            news_slug = slugify(news_title)
-            print(news_slug)
-            
+            news_slug = slugify(news_title)            
             news.title = news_title
             news.slug = news_slug
             news.news_image = news_image

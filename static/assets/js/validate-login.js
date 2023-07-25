@@ -29,7 +29,6 @@ $(document).ready(()=>{
                 success:function(response){
                     if(response.success === false){
                         let loginErrorDiv = $('.login-error')
-                        console.log(loginErrorDiv)
                         loginErrorDiv.html('Invalid username or password!')
                     }else{
                         window.location.href = '/'

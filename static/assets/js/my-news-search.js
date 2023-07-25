@@ -10,13 +10,9 @@ $(document).ready(() => {
                 },
                 dataType : 'json',
                 success:function(response){
-                    console.log(response)
                     if(response.status == 'success'){
                         if(response.news.length > 0){
-
-                            response.news.forEach((data) => {
-                                console.log(data)
-                                
+                            response.news.forEach((data) => {                              
                                 let convertedDate = moment(data.published_on).format('DD-MM-YYYY')   
                                 let convertedTime = moment(data.published_time,'HH:mm').format('hh:mm A')  
                                

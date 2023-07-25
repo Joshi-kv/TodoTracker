@@ -10,7 +10,6 @@ $(document).ready(() => {
                 },
                 dataType : 'json',
                 success:function(response){
-                    console.log(response)
                     if(response.status == 'success'){
                         if(response.news.length > 0){
                             

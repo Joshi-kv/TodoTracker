@@ -23,7 +23,6 @@ socket.onopen = async function(event) {
 socket.onmessage = async function(event) {
     console.log('Message from server',event)
     let data = JSON.parse(event.data)
-    console.log(data)
     if(data.user == user){
         let countBadge = document.getElementById('count-badge')
         alertify.set('notifier', 'position', 'top-right');

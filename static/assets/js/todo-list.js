@@ -1,10 +1,6 @@
 let table;
 let taskLength;
 $(document).ready(() =>{
-
-
-
-
     // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/tasks/'
     fetch(url)
