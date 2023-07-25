@@ -59,6 +59,14 @@ class PendingTasksNotificationView(View):
             })
         
         return JsonResponse({'status':'success','notifications':context,'notification_count':notification_count})
+    
+#view for clear all notification 
+class ClearAllNotifications(View) :
+    def get(self,request) :
+        user = request.user 
+        notifications =  Notification.objects.all().filter(user=user)
+        notifications.delete()
+        return JsonResponse({'status':'success',})
 
 #view to show dashboard task
 class DashboardTaskView(View) : 

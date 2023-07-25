@@ -25,7 +25,6 @@ def update_pending_task() :
                     task_title = pending_task.task_title,
                     task_description = pending_task.task_description,
                     task_duedate = pending_task.task_duedate,
-                    
                 )
             
                 notification.save()

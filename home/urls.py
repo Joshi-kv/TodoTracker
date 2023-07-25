@@ -7,6 +7,7 @@ urlpatterns = [
     path('',views.HomePageView.as_view(),name='index'),
     path('dashboard-count/',views.DashBoardCountView.as_view(),name='dashboard-count'),
     path('pending-notifications/',views.PendingTasksNotificationView.as_view(),name='pending-notifications'),
+    path('clear-notifications/',views.ClearAllNotifications.as_view(),name='clear-notifications'),
     path('dashboard-task/',views.DashboardTaskView.as_view(),name='dashboard-task'),
     path('filter-total-tasks/',views.TotalTaskFilterView.as_view(),name='filter-total-task'),
     path('filter-completed-tasks/',views.FilterCompletedTaskView.as_view(),name='filter-completed-tasks'),

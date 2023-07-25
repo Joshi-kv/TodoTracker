@@ -1,10 +1,28 @@
 $(document).ready(function() {
+
+    updateNotifications()
+
+    $('#clearAllBtn').click(function(){
+        $.ajax({
+            url:'/clear-notifications',
+            type:'GET',
+            success:function(data){
+                if(data.status == 'success'){
+                    updateNotifications()
+                }
+            }
+        })
+    })
+})
+
+function updateNotifications(){
     const url = 'http://127.0.0.1:8000/pending-notifications/'
     fetch(url)
     .then(response => response.json())
     .then((data) => {
         console.log(data);
         if(data.notification_count > 0){
+            $('#clearAllBtn').show()
             data.notifications.forEach((notification) => {
                 let notificationContent = 
                 `
@@ -26,6 +44,7 @@ $(document).ready(function() {
             }
         }else{
             $('#count-badge').html('')
+            $('#clearAllBtn').hide()
             $('#notification-count').html('no notifications');
         }
 
@@ -37,4 +56,4 @@ $(document).ready(function() {
             $('#count-badge').html('5+')
         }
     })
-})
+}
