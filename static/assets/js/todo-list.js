@@ -10,7 +10,7 @@ $(document).ready(() =>{
     fetch(url)
     .then(response => response.json())
     .then((data) => {
-        $.fn.dataTable.moment( "DD/MM/YYYY" );
+        $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#taskTable').DataTable({
             "order":[2,'asc'],
             "columnDefs": [{
@@ -22,6 +22,7 @@ $(document).ready(() =>{
             }]
            
         })
+        hidePagination(table,table.rows().count())
         data.tasks.forEach((task) =>{
             let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/YYYY')
             let taskId = task.task_id
@@ -85,8 +86,9 @@ $(document).ready(() =>{
                                 hidePagination(table,table.data().count())
                             }
                         }else{
-                            alertify.set('notifier', 'position', 'top-right');
-                            alertify.success('No data avilable in this range');
+                            // table.clear().draw()
+                            alertify.set('notifier', 'position', 'top-right')
+                            alertify.success('No data avilable in this range')
                         }
                     }
                 })
@@ -102,6 +104,7 @@ $(document).ready(() =>{
 
 //function to hide pagination dynamically 
 function hidePagination(table,tasks){
+    console.log(tasks.length)
     if(tasks.length > 10 ){
         $('#taskTable_length').show()
         $('.pagination').show()
@@ -123,9 +126,9 @@ function hidePagination(table,tasks){
 
 //function to clear filter
 function clearFilters() {
-    table.column(4).search('').draw(); // Clear status filter
-    table.column(3).search('').draw(); // Clear priority filter
-    table.column(2).search('').draw(); // Clear date filter
+    table.column(4).search('').draw() // Clear status filter
+    table.column(3).search('').draw() // Clear priority filter
+    table.column(2).search('').draw() // Clear date filter
   }
 
 $('#clearFilterBtn').on('click',function(){
