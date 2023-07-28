@@ -1443,12 +1443,8 @@ collapsed
   margin-top: 5rem;
 }
 
-.top-selling{
-  height: 320px;
-  overflow: auto;
-}
 .notifications{
-  height: 300px;
+  max-height: 300px;
   width: 400px;
   overflow: auto;
 }

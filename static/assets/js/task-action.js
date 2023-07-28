@@ -132,7 +132,7 @@
                         
                     }
                     alertify.set('notifier','position','top-right')
-                    alertify.error('Task deleted!')
+                    alertify.error('Task deactivated!')
                 },
             })
             $('#deleteModal').modal('toggle')

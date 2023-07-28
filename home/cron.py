@@ -14,7 +14,7 @@ def update_pending_task() :
     pending_tasks = None
     
     for user in users : 
-        pending_tasks = Todo.objects.filter(user=user,task_duedate__lt=current_datetime,).exclude(Q(task_status='Completed') | Q(task_status="Pending"))
+        pending_tasks = Todo.objects.filter(user=user,task_duedate__lt=current_datetime,).exclude(Q(task_status='Completed') | Q(task_status="Pending") | Q(task_status='Deactivated'))
         if pending_tasks : 
             for pending_task in pending_tasks : 
                 pending_task.task_status = 'Pending'

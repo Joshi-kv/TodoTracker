@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,DeactivatedTask,Notification
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -24,7 +24,7 @@ class HomePageView(LoginRequiredMixin,View) :
 class DashBoardCountView(View) : 
     def get(self,request) : 
         user = request.user
-        total_tasks = Todo.objects.filter(user=user).count()
+        total_tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').count()
         completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
         upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming').count()
         in_progress_tasks = Todo.objects.filter(user=user,task_status='In progress').count()
@@ -71,7 +71,7 @@ class ClearAllNotifications(View) :
 class DashboardTaskView(View) : 
     def get(self,request) : 
         user = request.user
-        tasks = Todo.objects.filter(user=user).order_by('-created_date','-updated_date')[:5]
+        tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').order_by('-created_date','-updated_date')[:5]
         
         context = []
         
@@ -95,16 +95,16 @@ class TotalTaskFilterView(View) :
         
         #filtering 
         if filter_option == 'Today' : 
-            filtered_total_tasks = Todo.objects.filter(user=user,created_date__day=current_date.day,created_date__year=current_date.year).count()
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__day=current_date.day,created_date__year=current_date.year).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
         elif filter_option == 'This Month' : 
-            filtered_total_tasks = Todo.objects.filter(user=user,created_date__month=current_date.month,created_date__year=current_date.year).count()
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__month=current_date.month,created_date__year=current_date.year).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
         elif filter_option == 'This Year' : 
-            filtered_total_tasks = Todo.objects.filter(user=user,created_date__year=current_date.year).count()
+            filtered_total_tasks = Todo.objects.filter(user=user,created_date__year=current_date.year).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
         else :
-            filtered_total_tasks = Todo.objects.filter(user=user).count()
+            filtered_total_tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
         
 #view to filter completed tasks
@@ -266,7 +266,7 @@ class FilterDashboardTaskView(View) :
         
         #condition checking for filter 
         if filter_option == 'Today' : 
-            tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
             context = []
             for task in tasks : 
                 context.append({
@@ -278,7 +278,7 @@ class FilterDashboardTaskView(View) :
             return JsonResponse({'status':'success','tasks':context})
         
         elif filter_option == 'This Month' : 
-            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
             context = []
             for task in tasks : 
                 context.append({
@@ -291,7 +291,7 @@ class FilterDashboardTaskView(View) :
         
         
         elif filter_option == 'This Year' : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
             context = []
             for task in tasks : 
                 context.append({
@@ -302,7 +302,7 @@ class FilterDashboardTaskView(View) :
                 })
             return JsonResponse({'status':'success','tasks':context})
         else : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
             context = []
             for task in tasks : 
                 context.append({
@@ -402,7 +402,7 @@ class TodoPageView(LoginRequiredMixin,View) :
 class TaskListView(View) : 
     def get(self,request) : 
         user_obj = request.user
-        tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day')
+        tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
         context = []
         for task in tasks : 
             context.append({
@@ -414,80 +414,6 @@ class TaskListView(View) :
                 'task_status':task.task_status
             })
         return JsonResponse({'tasks':context},safe=False)
-    
-#view to list deactivated tasks
-class DeactivatedTaskView(View) : 
-    def get(self,request) : 
-        user = request.user.id,
-        deactivated_tasks = DeactivatedTask.objects.all().filter(user=user).order_by('-created_date__date','-created_date__time')[:5]
-        
-        context = []
-        
-        for deactivated_task in deactivated_tasks : 
-            context.append({
-                'task_id':deactivated_task.id,
-                'task_title':deactivated_task.task_title,
-                'task_description':deactivated_task.task_description,
-                'task_status':deactivated_task.task_status,
-                'deactivated_date':deactivated_task.created_date,
-            })
-        
-        return JsonResponse({'status':'success','deactivated_tasks':context})
-    
-#view to filter deactivated tasks
-class DeactivatedTaskFilterView(View):
-    def get(self,request):
-        user = request.user
-        filter_option = request.GET.get('option')
-        
-        current_date = date.today()
-        
-        context = []
-
-        if filter_option == 'Today':
-            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__day=current_date.day).order_by('-created_date__date','-created_date__time')
-            for deactivated_task in deactivated_tasks:  
-                context.append({
-                    'task_id':deactivated_task.id,
-                    'task_title':deactivated_task.task_title,
-                    'task_description':deactivated_task.task_description,
-                    'task_status':deactivated_task.task_status,
-                    'deactivated_date':deactivated_task.created_date,
-            })
-            return JsonResponse({'status':'success','deactivated_tasks':context})
-        elif filter_option == 'This Month':
-            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__month=current_date.month).order_by('-created_date__date','-created_date__time')
-            for deactivated_task in deactivated_tasks:  
-                context.append({
-                    'task_id':deactivated_task.id,
-                    'task_title':deactivated_task.task_title,
-                    'task_description':deactivated_task.task_description,
-                    'task_status':deactivated_task.task_status,
-                    'deactivated_date':deactivated_task.created_date,
-            })
-            return JsonResponse({'status':'success','deactivated_tasks':context})
-        elif filter_option == 'This Year':
-            deactivated_tasks = DeactivatedTask.objects.filter(user=user,created_date__year=current_date.year).order_by('-created_date__date','-created_date__time')
-            for deactivated_task in deactivated_tasks:  
-                context.append({
-                    'task_id':deactivated_task.id,
-                    'task_title':deactivated_task.task_title,
-                    'task_description':deactivated_task.task_description,
-                    'task_status':deactivated_task.task_status,
-                    'deactivated_date':deactivated_task.created_date,
-            })
-            return JsonResponse({'status':'success','deactivated_tasks':context})
-        else : 
-            deactivated_tasks = DeactivatedTask.objects.all().filter(user=user).order_by('-created_date__date','-created_date__time')
-            for deactivated_task in deactivated_tasks:  
-                context.append({
-                    'task_id':deactivated_task.id,
-                    'task_title':deactivated_task.task_title,
-                    'task_description':deactivated_task.task_description,
-                    'task_status':deactivated_task.task_status,
-                    'deactivated_date':deactivated_task.created_date,
-            })
-            return JsonResponse({'status':'success','deactivated_tasks':context})
     
 #view to create todo 
 class TodoCreateView(View) : 
@@ -621,25 +547,15 @@ class TaskDeleteView(View) :
         
         task = Todo.objects.get(id=task_id)
         if task.user == request.user : 
-            task.delete()
-            decativated_task = DeactivatedTask.objects.create(
-                id=task_id,
-                user = request.user,
-                task_title = task.task_title,
-                task_description = task.task_description,
-                task_duedate = task.task_duedate,
-                task_status = task.task_status,
-                task_priority = task.task_priority
-            )
-            print(decativated_task.id)
-            decativated_task.save()
+            task.task_status = 'Deactivated'
+            task.save()
             
             activity_log = ActivityLog.objects.create(
                 user = request.user,
-                activity = f' "{task.task_title}" task deleted'
+                activity = f' "{task.task_title}" task deactivated'
             )
             activity_log.save()
-            total_tasks = Todo.objects.filter(user=task.user).count()
+            total_tasks = Todo.objects.filter(user=task.user).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','total_tasks':total_tasks})   
     
 #view to render faq page

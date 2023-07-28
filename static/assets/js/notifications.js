@@ -8,6 +8,7 @@ $(document).ready(function() {
             type:'GET',
             success:function(data){
                 if(data.status == 'success'){
+                    $('#notifications').empty()
                     updateNotifications()
                 }
             }

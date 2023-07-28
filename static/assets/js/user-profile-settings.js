@@ -32,13 +32,6 @@ $(document).ready(() =>{
         highlight: function(element) {
             $(element).addClass("is-invalid").removeClass("is-valid");
         },
-        unhighlight: function(element) {
-            if($(element).attr('name')=='email'){
-                $(element).addClass('is-valid').removeClass('is-invalid')
-            }else{
-                $(element).removeClass('is-invalid')
-            }
-        },
         errorPlacement : function(error,element){
             error.addClass(' text-danger')
             error.insertBefore(element)

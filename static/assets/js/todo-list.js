@@ -83,6 +83,8 @@ $(document).ready(() =>{
                             }
                         }else{
                             // table.clear().draw()
+                            table = $('#taskTable').DataTable()  
+                            table.column(2).search('').draw()
                             alertify.set('notifier', 'position', 'top-right')
                             alertify.success('No data avilable in this range')
                         }
@@ -125,6 +127,7 @@ function clearFilters() {
     table.column(4).search('').draw() // Clear status filter
     table.column(3).search('').draw() // Clear priority filter
     table.column(2).search('').draw() // Clear date filter
+    table.draw() // Clear
   }
 
 $('#clearFilterBtn').on('click',function(){
