@@ -36,20 +36,27 @@ $(document).ready(() =>{
             $(taskRow).attr('data-task-id',taskId)
             table = $('#taskTable').DataTable();
             table.draw()
-            taskLength = data.tasks
-            hidePagination(table,data.tasks)
+            taskLength = data.tasks.length
+            hidePagination(table,taskLength)
 
             //custom filtering
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(4).search(status).draw()
-                hidePagination(table,table.data().count())
+                hidePagination(table,table.rows({search:'applied'}).count())
+                if(status == ''){
+                    hidePagination(table,table.rows({search:'applied'}).count())
+                }
             })
             $('select[name="filterPriority"]').on('change',function(){
                 let priority = $(this).val()
                 table.column(3).search(priority).draw()
-                hidePagination(table,table.data().count())
+                hidePagination(table,table.rows({search:'applied'}).count())
+                if(priority == ''){
+                    hidePagination(table,table.rows({search:'applied'}).count())
+                }
             })            
+
 
             //filter daterange
             $('#dateSearch').off().on('click',function(){
@@ -71,15 +78,9 @@ $(document).ready(() =>{
                             })
                             table.column(2).search(date.join('|'),true,false,true).draw()
                             if(date){
-                                if(date.length > 10 ){
-                                    $('#taskTable_length').show()
-                                    $('.pagination').show()
-                                }else{
-                                    $('#taskTable_length').hide()
-                                    $('.pagination').hide()
-                                }
+                                hidePagination(table,table.rows({search:'applied'}).count())
                             }else{
-                                hidePagination(table,table.data().count())
+                                hidePagination(table,table.rows({search:'applied'}).count())
                             }
                         }else{
                             // table.clear().draw()
@@ -102,8 +103,7 @@ $(document).ready(() =>{
 
 //function to hide pagination dynamically 
 function hidePagination(table,tasks){
-    console.log(tasks.length)
-    if(tasks.length > 10 ){
+    if(tasks > 10 ){
         $('#taskTable_length').show()
         $('.pagination').show()
     }else{
@@ -112,8 +112,7 @@ function hidePagination(table,tasks){
     }
 
     $('select[name="taskTable_length"]').on('change',() =>{
-        console.log($('select[name="taskTable_length').val())
-        if(tasks.length > $('select[name="taskTable_length"]').val() ){
+        if(tasks > $('select[name="taskTable_length"]').val() ){
             $('.pagination').show()
         }else{
             $('.pagination').hide()
@@ -135,7 +134,6 @@ $('#clearFilterBtn').on('click',function(){
     $('#filterPriority').val('')
     $('#startDate').val('')
     $('#endDate').val('')
-    // hidePagination(table,table.rows().count())
     if(table.rows().count() > 10 ){
         $('#taskTable_length').show()
         $('.pagination').show()
