@@ -94,7 +94,13 @@ $(document).ready(() =>{
             })
 
         })
+    
+        //dynamically hiding pagination on search results
+        table.on('search.dt',function(){
+            hidePagination(table,table.rows({search:'applied'}).count())
+        })
     })
+
 })
 
 
