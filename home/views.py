@@ -278,7 +278,7 @@ class FilterDashboardTaskView(View) :
             return JsonResponse({'status':'success','tasks':context})
         
         elif filter_option == 'This Month' : 
-            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
             context = []
             for task in tasks : 
                 context.append({
@@ -291,7 +291,7 @@ class FilterDashboardTaskView(View) :
         
         
         elif filter_option == 'This Year' : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
             context = []
             for task in tasks : 
                 context.append({
@@ -302,7 +302,7 @@ class FilterDashboardTaskView(View) :
                 })
             return JsonResponse({'status':'success','tasks':context})
         else : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
+            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
             context = []
             for task in tasks : 
                 context.append({
