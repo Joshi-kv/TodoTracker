@@ -82,12 +82,13 @@ $(document).ready(() =>{
                             }else{
                                 hidePagination(table,table.rows({search:'applied'}).count())
                             }
+                            $('#no-data').hide()
+                            $('tbody').show()
                         }else{
-                            // table.clear().draw()
+                            $('#no-data').show()
+                            $('tbody').hide()
                             table = $('#taskTable').DataTable()  
                             table.column(2).search('').draw()
-                            alertify.set('notifier', 'position', 'top-right')
-                            alertify.success('No data avilable in this range')
                         }
                     }
                 })
@@ -132,7 +133,7 @@ function clearFilters() {
     table.column(4).search('').draw() // Clear status filter
     table.column(3).search('').draw() // Clear priority filter
     table.column(2).search('').draw() // Clear date filter
-    table.draw() // Clear
+    table.draw() 
   }
 
 $('#clearFilterBtn').on('click',function(){
@@ -140,6 +141,8 @@ $('#clearFilterBtn').on('click',function(){
     $('#filterPriority').val('')
     $('#startDate').val('')
     $('#endDate').val('')
+    $('#no-data').hide()
+    $('tbody').show()
     if(table.rows().count() > 10 ){
         $('#taskTable_length').show()
         $('.pagination').show()
