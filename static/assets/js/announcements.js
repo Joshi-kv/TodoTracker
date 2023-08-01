@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //function to fetch announcements
     const url = 'http://127.0.0.1:8000/announcements-list/'
     fetch(url) 
     .then(response => response.json())

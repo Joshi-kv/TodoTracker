@@ -1,4 +1,6 @@
 $(document).ready(() =>{
+
+    //validation for user profile settings form
     $('#userSettingsForm').validate({
         rules:{
             phone_number:{
@@ -59,6 +61,7 @@ $(document).ready(() =>{
     const csrftoken = getCookie('csrftoken')
 
 
+    //user profile settings form submission
     $('#userSettingsForm').on('submit',(e) =>{
         e.preventDefault()
 

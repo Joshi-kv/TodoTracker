@@ -7,6 +7,7 @@ import json
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
+#signal to update notification count
 @receiver(post_save, sender=Notification)
 def notification_count_update(sender, instance, created, **kwargs) :
     if created :

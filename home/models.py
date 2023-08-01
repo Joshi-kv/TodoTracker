@@ -68,7 +68,7 @@ class News(models.Model) :
         return f'{self.user} - {self.title}'
     
     
-#model for updated 
+#model for updates or announcements
 class Updates(models.Model) : 
     user = models.ForeignKey(User,on_delete=models.CASCADE) 
     title = models.CharField(max_length=500)
@@ -84,7 +84,7 @@ class Updates(models.Model) :
     def __str__(self) : 
         return f'{self.user} - {self.title}'
     
-
+#model for notifications
 class Notification(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task_title = models.CharField(max_length=500)

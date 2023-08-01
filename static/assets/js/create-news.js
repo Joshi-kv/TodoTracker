@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    //client side validation for news creation form
     $('#addNewsForm').validate({
         rules:{
            newsTitle:{
@@ -57,6 +58,7 @@ $(document).ready(() => {
 
     const csrftoken = getCookie('csrftoken')
 
+    //news creation form submission function
     $('#addNewsForm').on('submit',(e) =>{
         e.preventDefault()
 

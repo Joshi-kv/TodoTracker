@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //ajax request to enable or disable email notification for pending tasks
     $('#reminderSettingsForm').on('submit',function(e){
         e.preventDefault()
         let reminderCheckbox = $('#reminder').prop('checked')

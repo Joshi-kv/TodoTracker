@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +10,8 @@ from django.template.loader import get_template
 from datetime import date
 from django.utils.text import slugify
 
+
+#view to render home page
 class HomePageView(LoginRequiredMixin,View) :
     login_url = 'users:login' 
     def get(self,request) : 
@@ -18,9 +20,9 @@ class HomePageView(LoginRequiredMixin,View) :
             current_user = UserProfile.objects.get(user=user_model)
             return render(request,'index.html',{'current_user':current_user})
         except : 
-            return render(request,'index.html')
+            return redirect('users:login')
         
-#view to show counts in dashboard
+#view to show task summary in dashboard
 class DashBoardCountView(View) : 
     def get(self,request) : 
         user = request.user
@@ -40,7 +42,7 @@ class DashBoardCountView(View) :
         }
         return JsonResponse(context,safe=False)
     
-#view to list peding tasks notifications
+#view to list pending tasks notifications on header notification section
 class PendingTasksNotificationView(View):
     def get(self,request) : 
         user = request.user
@@ -67,7 +69,7 @@ class ClearAllNotifications(View) :
         notifications.delete()
         return JsonResponse({'status':'success',})
 
-#view to show dashboard task
+#view to list tasks in dashboard
 class DashboardTaskView(View) : 
     def get(self,request) : 
         user = request.user
@@ -93,7 +95,7 @@ class TotalTaskFilterView(View) :
         
         current_date = date.today()
         
-        #filtering 
+        #conditions for filtering total tasks
         if filter_option == 'Today' : 
             filtered_total_tasks = Todo.objects.filter(user=user,created_date__day=current_date.day,created_date__year=current_date.year).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','filtered_total_task':filtered_total_tasks})
@@ -114,7 +116,7 @@ class FilterCompletedTaskView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        #filtering completed tasks
+        #condition for filtering completed tasks
         if filter_option == 'Today' : 
             filtered_complete_tasks = Todo.objects.filter(user=user,task_status='Completed',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
             return JsonResponse({'status':'success','filtered_complete_task':filtered_complete_tasks})
@@ -135,7 +137,7 @@ class FilterPendingTaskView(View) :
         filter_option = request.GET.get('option')
         current_date = date.today()
         
-        #filtering 
+        #conditons for filtering pending tasks
         if filter_option == 'Today' : 
             filtered_pending_tasks = Todo.objects.filter(user=user,task_status='Pending',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
             return JsonResponse({'status':'success','filtered_pending_task':filtered_pending_tasks})
@@ -156,7 +158,7 @@ class FilterInProgressTaskView(View) :
         filter_option = request.GET.get('option')
         current_date = date.today()
         
-        #filtering 
+        #conditions for filtering in progress tasks 
         if filter_option == 'Today' : 
             filtered_inprogress_tasks = Todo.objects.filter(user=user,task_status='In progress',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
             return JsonResponse({'status':'success','filtered_inprogress_task':filtered_inprogress_tasks})
@@ -177,7 +179,7 @@ class FilterUpcomingTaskView(View) :
         filter_option = request.GET.get('option')
         current_date = date.today()
         
-        #filtering 
+        #conditons to filter upcoming tasks
         if filter_option == 'Today' : 
             filtered_upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming',updated_date__day=current_date.day,updated_date__year=current_date.year).count()
             return JsonResponse({'status':'success','filtered_upcoming_task':filtered_upcoming_tasks})
@@ -219,7 +221,7 @@ class FilterRecentActivityView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        #condition checking for filter 
+        #condition to filter recent activities
         if filter_option == 'Today' : 
             filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year).order_by('-activity_date','-activity_time')
             context = []
@@ -253,7 +255,7 @@ class FilterRecentActivityView(View) :
                 })
             return JsonResponse({'status':'success','filtered_recent_logs':context})
     
-#view to filter dasboardTask
+#view to filter tasks listed in dashboard
 class FilterDashboardTaskView(View) : 
     def get(self,request) : 
         current_date = date.today()
@@ -264,7 +266,7 @@ class FilterDashboardTaskView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        #condition checking for filter 
+        #conditions to filter tasks based on day,month and year 
         if filter_option == 'Today' : 
             tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
             context = []
@@ -314,7 +316,7 @@ class FilterDashboardTaskView(View) :
             return JsonResponse({'status':'success','tasks':context})
         
         
-#news dashboard view
+#views to list latest five featured news in dashboard
 class NewsDashboardView(View) : 
     def get(self,request) : 
         user = request.user.id
@@ -330,7 +332,7 @@ class NewsDashboardView(View) :
             })    
         return JsonResponse({'status':'success','news':context})
     
-#view to filter news
+#view to featured news in dashboard
 class FilterNewsView(View) : 
     def get(self,request) : 
         user = request.user.id
@@ -342,9 +344,9 @@ class FilterNewsView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        #condition checking for filter 
+        #conditions to filter featured news in dashboard
         if filter_option == 'Today' : 
-            news_obj = News.objects.filter(published_date__day=current_day,published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
+            news_obj = News.objects.filter(category='Featured',published_date__day=current_day,published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
             context = []
             for news in news_obj : 
                 context.append({
@@ -356,7 +358,7 @@ class FilterNewsView(View) :
             return JsonResponse({'status':'success','news':context})
         
         elif filter_option == 'This Month' : 
-            news_obj = News.objects.filter(published_date__month=current_month,published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
+            news_obj = News.objects.filter(category='Featured',published_date__month=current_month,published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
             context = []
             for news in news_obj : 
                 context.append({
@@ -368,7 +370,7 @@ class FilterNewsView(View) :
             return JsonResponse({'status':'success','news':context})
         
         elif filter_option == 'This Year' : 
-            news_obj = News.objects.filter(published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
+            news_obj = News.objects.filter(category='Featured',published_date__year=current_year).exclude(user=user).order_by('-published_date','-published_time')
             context = []
             for news in news_obj : 
                 context.append({
@@ -379,7 +381,7 @@ class FilterNewsView(View) :
                 })
             return JsonResponse({'status':'success','news':context})
         else :
-            news_obj = News.objects.all().exclude(user=user).order_by('-published_date','-published_time')
+            news_obj = News.objects.filter(category='Featured').exclude(user=user).order_by('-published_date','-published_time')
             context = []
             for news in news_obj : 
                 context.append({
@@ -398,7 +400,7 @@ class TodoPageView(LoginRequiredMixin,View) :
         current_user = UserProfile.objects.get(user=user_model)
         return render(request, 'todo.html',{'current_user':current_user})
     
-#view to list tasks
+#view to list tasks in datatable
 class TaskListView(View) : 
     def get(self,request) : 
         user_obj = request.user
@@ -427,13 +429,13 @@ class TodoCreateView(View) :
         
         #creating new task
         new_task = Todo.objects.create(
-                    user=user,
-                    task_title=task_title,
-                    task_description=task_description,
-                    task_duedate=task_duedate,
-                    task_status=task_status,
-                    task_priority=task_priority
-                )
+            user=user,
+            task_title=task_title,
+            task_description=task_description,
+            task_duedate=task_duedate,
+            task_status=task_status,
+            task_priority=task_priority
+        )
         new_task.save()
         context = {
             'task_id':new_task.id,
@@ -454,13 +456,14 @@ class TodoCreateView(View) :
         return JsonResponse({'status':'success','task':context,'total':total_tasks})
     
 
-#date range filter 
+#view to filter tasks based on date range
 class DateRangeFilter(View) : 
     def get(self,request) : 
         user = request.user
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
         
+        #filtering tasks using date range by range orm method
         tasks = Todo.objects.filter(user=user,task_duedate__range=(start_date,end_date))
         context = []
         for task in tasks : 
@@ -475,7 +478,7 @@ class DateRangeFilter(View) :
         
         return JsonResponse({'status':'success','tasks':context})
     
-#view to update page view
+#view to render task edit page
 class UpdateTaskPageView(View) : 
     def get(self,request) : 
         task_id = request.GET.get('task_id')
@@ -490,7 +493,7 @@ class UpdateTaskPageView(View) :
         }
         return JsonResponse({'task':context})
       
-#view to update task
+#view to update or edit task
 class UpdateTaskView(View) : 
     def post(self,request) : 
         task_id = request.POST.get('task_id')
@@ -650,7 +653,7 @@ class MainNewsPageView(View) :
     
 
     
-# #view to fetch news from newsapi
+# #view to fetch news 
 class NewsListView(View) : 
     def get(self,request) : 
         user = request.user  
@@ -756,16 +759,20 @@ class MyNewsListView(View) :
         return JsonResponse({'status':'success','news':context})
     
 #view to render single news
-def single_news_page(request,slug) : 
-    if slug != None : 
-        news = News.objects.get(slug=slug)
-    return render(request,'single-news.html',{'news':news})
+class SingleNewsPage(View) : 
+    def get(self,request,slug) : 
+        if slug!= None : 
+            news = News.objects.get(slug=slug)
+            return render(request,'single-news.html',{'news':news})
     
 #view to render single announcement
-def single_announcement_page(request,slug) : 
-    if slug != None : 
-        announcement = Updates.objects.get(slug=slug)
-    return render(request,'single-announcement.html',{'announcement':announcement})
+class SingleAnnouncementPage(View) : 
+    def get(self,requser,slug) : 
+        if slug!= None : 
+            announcement = Updates.objects.get(slug=slug)
+            return render(requser,'single-announcement.html',{'announcement':announcement})
+
+
 
 #view to update news 
 class NewsUpdatePageView(View) : 
@@ -834,14 +841,13 @@ class NewsUpdateView(View) :
 #view to delete news 
 class NewsDeleteView(View) : 
     def post(self,request) : 
-        user = request.user 
         news_id = request.POST.get('news_id')
         news = News.objects.get(id=news_id)
         news.delete()
 
         return JsonResponse({'status':'success'})
     
-#view for all news search
+#view to handle all news search ajax request
 class AllNewsSearchView(View) : 
     def get(self,request) : 
         user = request.user
@@ -859,7 +865,7 @@ class AllNewsSearchView(View) :
             })
         return JsonResponse({'status':'success','news':news_results})
         
-#view for announcement search
+#view to handle ajax request for announcement search
 class announcementSearchView(View) : 
     def get(self,request) : 
         user = request.user
@@ -877,7 +883,7 @@ class announcementSearchView(View) :
             })
         return JsonResponse({'status':'success','announcements':announcement_results})
     
-#view for my search
+#view to handle my news search ajax request
 class MyNewsSearchView(View) : 
     def get(self,request) : 
         user = request.user
@@ -896,7 +902,7 @@ class MyNewsSearchView(View) :
             })
         return JsonResponse({'status':'success','news':news_results})
 
-#my news filter       
+#view to filter my news     
 class AllNewsFilter(View):
     def get(self, request):
         user = request.user.id
@@ -907,7 +913,9 @@ class AllNewsFilter(View):
 
         current_date = date.today()
         filtered_all_news = News.objects.all().exclude(user=user).order_by('-published_date', '-published_time')
-
+        
+        
+        #conditions to filter my news by category
         if filter_category and filter_category != 'All':
             filtered_all_news = filtered_all_news.filter(category=filter_category)
 
@@ -917,6 +925,7 @@ class AllNewsFilter(View):
         if filter_by_year and filter_by_year != '' : 
             filtered_all_news = filtered_all_news.filter(published_date__year=filter_by_year)
 
+        #conditons to filter my news by day,month and year
         if filter_by == 'Today':
             filtered_all_news = filtered_all_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
         elif filter_by == 'This Month':
@@ -938,13 +947,14 @@ class AllNewsFilter(View):
 
         return JsonResponse({'status': 'success', 'result': result})
 
-#announcement filterby filter
+#view to filter announcements by filterby options
 class AnnouncementFilterByFilter(View) : 
     def get(self,request) : 
         user = request.user.id,
         filter_option = request.GET.get('filter_option')
         current_date = date.today()
         
+        #conditions to filter announcements by filterby options
         if filter_option == 'Today' : 
             filterby_filtered_annnouncement = Updates.objects.all().filter(published_date__day=current_date.day,published_date__year=current_date.year).order_by('-published_date','-published_time')
             result = []
@@ -1002,13 +1012,12 @@ class AnnouncementFilterByFilter(View) :
                 })
             return JsonResponse({'status':'success','result':result})
 
-#my news filter       
+#view to filter my news     
 class MyNewsFilter(View):
     def get(self, request):
         user = request.user.id
         filter_category = request.GET.get('filterCategory')
         filter_by = request.GET.get('filterBy')
-        
         filter_by_month = request.GET.get('filterByMonth')
         filter_by_year = request.GET.get('filterByYear')
         
@@ -1016,18 +1025,17 @@ class MyNewsFilter(View):
 
         filtered_my_news = News.objects.filter(user=user).order_by('-published_date', '-published_time')
 
+        #conditions fo filter my news by category
         if filter_category and filter_category != 'All':
             filtered_my_news = filtered_my_news.filter(category=filter_category).order_by('-published_date', '-published_time')
     
         if filter_by_month and filter_by_month != '' : 
             filtered_my_news = filtered_my_news.filter(published_date__month=filter_by_month)
-            
-            print(filtered_my_news)
         
         if filter_by_year and filter_by_year != '' : 
             filtered_my_news = filtered_my_news.filter(published_date__year=filter_by_year)
 
-
+        #conditions to filter my news by day,month and year
         if filter_by == 'Today':
             filtered_my_news = filtered_my_news.filter(published_date__day=current_date.day, published_date__year=current_date.year).order_by('-published_date', '-published_time')
         elif filter_by == 'This Month':

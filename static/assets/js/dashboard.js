@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //fucntion to fetch tasks summary
     url = 'http://127.0.0.1:8000/dashboard-count/'
     fetch(url)
     .then(response => response.json())

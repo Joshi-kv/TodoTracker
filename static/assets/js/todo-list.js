@@ -8,7 +8,7 @@ $(document).ready(() =>{
     .then((data) => {
         $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#taskTable').DataTable({
-            "order":[2,'asc'],
+            "order":[2,'asc'],//sorting data based on ascending order order of date and month
             "columnDefs": [{
                 "targets": [0,1,5], 
                 "orderable": false 
@@ -58,7 +58,7 @@ $(document).ready(() =>{
             })            
 
 
-            //filter daterange
+            //filter date range
             $('#dateSearch').off().on('click',function(){
                 $.ajax({
                     url:'/date-range-filter',
@@ -136,6 +136,7 @@ function clearFilters() {
     table.draw() 
   }
 
+//function to clear filter
 $('#clearFilterBtn').on('click',function(){
     $('#filterStatus').val('')
     $('#filterPriority').val('')

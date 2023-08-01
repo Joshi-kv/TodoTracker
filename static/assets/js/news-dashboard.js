@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //fetching featured news and displaying on dashboard
     const url = 'http://127.0.0.1:8000/news-dashboard-view/'
     fetch(url)
     .then(response => response.json())
@@ -50,7 +52,7 @@ $(document).ready(() => {
         return e.target || e.srcElement; 
     }
     
-    //filter news
+    //ajax request for filter news
     var newsFilter = document.getElementById('newsFilter')
     newsFilter.onclick = function(e){
         var target = getEventTarget(e)

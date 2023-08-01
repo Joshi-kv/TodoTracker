@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //ajax request for announcements live search
     let searchInput = $('input[name ="announcementSearch"]')
     searchInput.keyup((e) =>{
          $('#newsDiv').empty()

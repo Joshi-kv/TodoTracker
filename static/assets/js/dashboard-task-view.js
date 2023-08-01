@@ -1,5 +1,6 @@
-
 $(document).ready(() => {
+
+    //fetching
     const url = 'http://127.0.0.1:8000/dashboard-task/'
     fetch(url)
     .then(response => response.json())
@@ -12,6 +13,7 @@ $(document).ready(() => {
                 let taskDiv = $('#dashboardTasks')
                 let convertedDate = moment(task.duedate).format('DD/MM/YYYY')
 
+                //conditon for visual indication based on task status
                 switch(task.status){
                     case 'Pending' : 
                         status = 'pending'
@@ -63,7 +65,7 @@ $(document).ready(() => {
         return e.target || e.srcElement; 
     }
     
-    //filter total task
+    //ajax request for filter tasks
     var taskFilter = document.getElementById('taskFilter')
     taskFilter.onclick = function(e){
         var target = getEventTarget(e)
@@ -131,6 +133,8 @@ $(document).ready(() => {
             }
         })
     }
+
+    //function to clear filters
     $('#taskClearFilter').on('click',function(){
         $('#dashboardTasks').empty()
         $('#filterOption').html('Recent')

@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //function to remove profile picture
     $('#removeBtn').on('click',(e) => { 
         let requestedUser = $('#removeBtn').attr('data-user')
         $.ajax({

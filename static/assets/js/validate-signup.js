@@ -1,4 +1,6 @@
 $(document).ready(()=>{
+
+    //validation for signup form
     $('#signup-form').validate({
         rules:{
             name:{

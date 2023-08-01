@@ -10,10 +10,12 @@ from django.views.decorators.csrf import csrf_protect
 from home.models import ActivityLog
 # Create your views here.
 
-#user registration
+#view for new user registration and profile creation
 class UserRegistrationView(View) : 
     def get(self,request) : 
         return render(request,'register.html')
+    
+    #to handle user registration form ajax request to create a new user
     def post(self,request) :
         if request.method == 'POST' : 
             name = request.POST.get('name')
@@ -44,7 +46,7 @@ class UserRegistrationView(View) :
             return JsonResponse({'success':False,'error':'invalid request method'})
         
     
-#user login view
+#view to handle request for user login
 class UserLoginView(View) : 
     def get(self,request) : 
         return render(request,'login.html')
@@ -58,9 +60,7 @@ class UserLoginView(View) :
                 username = user.username
                 user = auth.authenticate(username=username,password=password)
             except User.DoesNotExist : 
-                return JsonResponse({'success':False})
-            
-            
+                return JsonResponse({'success':False})      
             
             if user is not None : 
                 auth.login(request,user)
@@ -75,7 +75,7 @@ class UserLoginView(View) :
         else : 
             return JsonResponse({'success':False,'error':'invalid request'})
         
-#user logout function 
+#view to handle logout request 
 class UserLogoutView(View) : 
     def get(self,request) :
         activity_log = ActivityLog.objects.create(
@@ -184,18 +184,16 @@ class UserSettingsView(View) :
         
         return JsonResponse(context,safe=False)
     
-#view to change reminder settings 
+#view to disable or enable email notifications for pending tasks 
 class ReminderSettingsView(View) :
     def post(self,request) : 
         user = request.user
         reminder_option = request.POST.get('reminder')
         user_profile = UserProfile.objects.get(user=user)
         if reminder_option == 'turnoff' : 
-            print('turnoff')
             user_profile.enable_notification = False
             user_profile.save()
         else : 
-            print('turnon')
             user_profile.enable_notification = True
             user_profile.save()
         reminder = user_profile.enable_notification
@@ -237,7 +235,7 @@ class ChangePasswordView(View) :
 
         
     
-#view to check email already exist 
+#view to check email already exist. used for remote email validation in jquery validation 
 class CheckEmail(View) : 
     def get(self,request) : 
         email = request.GET.get('email')
@@ -247,7 +245,7 @@ class CheckEmail(View) :
         else : 
             return JsonResponse({'is_available':True})
 
-#view to check username already taken 
+#view to check username already taken . used for remote username validation jquery validation
 class CheckUsername(View) : 
     def get(self,request) : 
         username = request.GET.get('username')

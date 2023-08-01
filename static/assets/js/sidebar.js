@@ -1,5 +1,6 @@
 $(document).ready(() => {
 
+    //function to higlight selected menu
     var navLinks = document.querySelectorAll('.sidebar-nav .nav-link')
     var windowPathname = window.location.pathname
 

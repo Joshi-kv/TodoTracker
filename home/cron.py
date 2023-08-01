@@ -46,5 +46,5 @@ def update_pending_task() :
                     to=[to_mail]
                 )
                 email.content_subtype = 'html'
-                # email.send()
+                email.send()
 

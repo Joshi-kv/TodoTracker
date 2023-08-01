@@ -2,7 +2,6 @@ let loc = window.location
 let start = 'ws://'
 let user = document.getElementById('user').innerHTML
 
-console.log(user)
 
 if(loc.protocol == 'https:'){
     start = 'wss://'
@@ -12,6 +11,8 @@ let endpoint = start + loc.host + '/notification/'
 
 let socket = new WebSocket(endpoint)
 
+
+// websocket  connection for live notification of pending tasks
 socket.onopen = async function(event) {
     console.log('Connected to server',event)
     let data = {
@@ -20,6 +21,7 @@ socket.onopen = async function(event) {
     socket.send(JSON.stringify(data))
 }
 
+//updating notification count and notification section on header
 socket.onmessage = async function(event) {
     console.log('Message from server',event)
     let data = JSON.parse(event.data)

@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //ajax request to filter announcements
     $('select[name="filterBy"]').on('change',function(e){
         $.ajax({
             url:'/announcement-filter-filterby',
@@ -44,6 +46,7 @@ $(document).ready(() => {
         })
     })
 
+    // function to clear filters
     $('#clearFilter').on('click',function(){
         $('#newsDiv').empty()
         $('#filterBy').val('')

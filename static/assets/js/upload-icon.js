@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+    //function to display selected profile picture
     let uploadBtn = $('#uploadBtn')
     uploadBtn.click(function(){
         $('#uploadProfile').trigger('click')

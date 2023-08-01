@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //fetching my news 
     const url = 'http://127.0.0.1:8000/my-news-list/'
     fetch(url)
     .then(response => response.json())
@@ -45,7 +47,7 @@ $(document).ready(() => {
         }
     })
 
-    //function show selected file
+    //function to show selected image
     $('#UpdateFile').change(function(e){
         console.log('file')
         let file = e.target.files[0]
@@ -100,6 +102,7 @@ function getCookie(name) {
 
 const csrftoken = getCookie('csrftoken')
 
+//news update form submission
 $('#updateNewsForm').on('submit',function(e){
     e.preventDefault()
         let file = $('#UpdateFile')[0].files[0]

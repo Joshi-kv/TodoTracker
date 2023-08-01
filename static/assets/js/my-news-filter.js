@@ -1,4 +1,6 @@
 $(document).ready(() => {
+
+    //ajax request for my news filter
     $('select[name="filterCategory"], select[name="filterBy"], select[name="filterByMonth"], select[name="filterByYear"]').on('change', function (e) {
         var filterCategory = $('select[name="filterCategory"]').val();
         var filterBy = $('select[name="filterBy"]').val();
@@ -52,7 +54,7 @@ $(document).ready(() => {
         });
     });
       
-
+    //function to clear filters
     $('#clearFilter').on('click',function(){
         $('#myNewsDiv').empty()
         $('#filterCategory').val('')

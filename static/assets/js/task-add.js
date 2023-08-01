@@ -1,5 +1,7 @@
 
 $(document).ready(() => {
+
+    //task creation form validation
     $('#taskForm').validate({
         rules: {
             title: {

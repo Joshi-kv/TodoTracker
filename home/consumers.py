@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
+#consumer to connect channels with websocket
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def websocket_connect(self, message):
         print("Connecting ",message)
@@ -25,6 +26,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def websocket_receive(self, message):
         print("Received websocket message", message)
     
+    #sending updated notification count to websocket
     async def notification_count_update(self,event):
         print('Receiving notification',event)
         data = json.loads(event['value'])

@@ -1,4 +1,5 @@
 $(document).ready(()=>{
+    //validation for login form
     $('#loginForm').validate({
         rules:{
             email:{

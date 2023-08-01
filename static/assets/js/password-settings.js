@@ -1,5 +1,6 @@
 $(document).ready(() =>{
     
+    // validation for change password
     $('#passwordChangeForm').validate({
        rules:{
         current_password:{
@@ -27,6 +28,7 @@ $(document).ready(() =>{
         }
        },
        submitHandler:function(form){
+        //ajax request to change password
         $.ajax({
             type:form.method,
             url:'/user/change-password/',

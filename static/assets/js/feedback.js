@@ -1,4 +1,6 @@
 $(document).ready(() =>{
+
+    //jquery validation for feedback form
     $('#feedbackForm').validate({
         rules:{
             feedbackUserName:{
