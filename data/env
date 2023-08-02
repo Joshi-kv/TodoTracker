@@ -1,0 +1,12 @@
+DJANGO_SECRET_KEY='django-insecure-n@b9aj@bgx%m@5lo1_ktlx&g24px+%$!ex+y@f7e3-edmo@rjm'
+
+EMAIL_HOST='smtp-relay.sendinblue.com'
+EMAIL_HOST_USER='djangomail89@gmail.com'
+EMAIL_HOST_PASSWORD='PgG13AZQynjbUJps'
+
+DB_NAME='todo_tracker'
+DB_USER='postgres'
+DB_PASSWORD='1234'
+DB_PORT='5432'
+DB_HOST='localhost'
+
