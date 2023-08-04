@@ -25,22 +25,39 @@ class HomePageView(LoginRequiredMixin,View) :
 #view to show task summary in dashboard
 class DashBoardCountView(View) : 
     def get(self,request) : 
-        user = request.user
-        total_tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').count()
-        completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
-        upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming').count()
-        in_progress_tasks = Todo.objects.filter(user=user,task_status='In progress').count()
-        
-        
-        pending_tasks = Todo.objects.filter(user=user,task_status='Pending').count()
-        context = {
-            'total_tasks':total_tasks,
-            'completed_tasks':completed_tasks,
-            'pending_tasks':pending_tasks,
-            'in_progress_tasks':in_progress_tasks,
-            'upcoming_tasks':upcoming_tasks
-        }
-        return JsonResponse(context,safe=False)
+        if request.user.is_staff == True :
+            total_tasks = Todo.objects.all().exclude(task_status='Deactivated').count()
+            completed_tasks = Todo.objects.filter(task_status='Completed').count() 
+            upcoming_tasks = Todo.objects.filter(task_status='Upcoming').count()
+            in_progress_tasks = Todo.objects.filter(task_status='In progress').count()
+            
+            
+            pending_tasks = Todo.objects.filter(task_status='Pending').count()
+            context = {
+                'total_tasks':total_tasks,
+                'completed_tasks':completed_tasks,
+                'pending_tasks':pending_tasks,
+                'in_progress_tasks':in_progress_tasks,
+                'upcoming_tasks':upcoming_tasks
+            }
+            return JsonResponse(context,safe=False)
+        else : 
+            user = request.user
+            total_tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').count()
+            completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
+            upcoming_tasks = Todo.objects.filter(user=user,task_status='Upcoming').count()
+            in_progress_tasks = Todo.objects.filter(user=user,task_status='In progress').count()
+            
+            
+            pending_tasks = Todo.objects.filter(user=user,task_status='Pending').count()
+            context = {
+                'total_tasks':total_tasks,
+                'completed_tasks':completed_tasks,
+                'pending_tasks':pending_tasks,
+                'in_progress_tasks':in_progress_tasks,
+                'upcoming_tasks':upcoming_tasks
+            }
+            return JsonResponse(context,safe=False)
     
 #view to list pending tasks notifications on header notification section
 class PendingTasksNotificationView(View):
@@ -72,19 +89,33 @@ class ClearAllNotifications(View) :
 #view to list tasks in dashboard
 class DashboardTaskView(View) : 
     def get(self,request) : 
-        user = request.user
-        tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').order_by('-created_date','-updated_date')[:5]
-        
-        context = []
-        
-        for task in tasks : 
-            context.append({
-                'title':task.task_title,
-                'description':task.task_description,
-                'duedate':task.task_duedate,
-                'status':task.task_status
-            })
-        return JsonResponse({'status':'success','tasks':context})
+        if request.user.is_staff == True : 
+            tasks = Todo.objects.all().exclude(task_status='Deactivated').order_by('-created_date','-updated_date')[:5]
+            
+            context = []
+            
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
+        else : 
+            user = request.user
+            tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').order_by('-created_date','-updated_date')[:5]
+            
+            context = []
+            
+            for task in tasks : 
+                context.append({
+                    'title':task.task_title,
+                    'description':task.task_description,
+                    'duedate':task.task_duedate,
+                    'status':task.task_status
+                })
+            return JsonResponse({'status':'success','tasks':context})
 
 #view to filter total tasks
 class TotalTaskFilterView(View) : 
@@ -196,19 +227,45 @@ class FilterUpcomingTaskView(View) :
 #view to render activity log
 class ActivityLogView(View) : 
     def get(self,request) : 
-        user = request.user
-        current_date = date.today()
-        activity_logs = ActivityLog.objects.filter(user=user,activity_date=current_date).order_by('-activity_date','-activity_time')[:6]
-        if activity_logs.count() < 6 : 
-            activity_logs = ActivityLog.objects.filter(user=user).order_by('-activity_date','-activity_time')[:6]
-        context = []
-        for activity_log in activity_logs : 
-            context.append({
-                'activity':activity_log.activity,
-                'activity_date':activity_log.activity_date,
-                'activity_time':activity_log.activity_time
-            })
-        return JsonResponse({'status':'success','activity':context})
+        if request.user.is_staff == True:
+            current_date = date.today()
+            activity_logs = ActivityLog.objects.filter(activity_date=current_date).order_by('-activity_date','-activity_time')[:6]
+            if activity_logs.count() < 6 : 
+                activity_logs = ActivityLog.objects.all().order_by('-activity_date','-activity_time')[:6]
+            context = []
+            for activity_log in activity_logs : 
+                user = activity_log.user.is_staff == True
+                if user : 
+                    context.append({
+                        'username':'',
+                        'activity':activity_log.activity,
+                        'activity_date':activity_log.activity_date,
+                        'activity_time':activity_log.activity_time,
+                        'staff_status':'project_manager',
+                    })
+                else : 
+                    context.append({
+                        'username':activity_log.user.username,
+                        'activity':activity_log.activity,
+                        'activity_date':activity_log.activity_date,
+                        'activity_time':activity_log.activity_time,
+                        'staff_status':'project_manager',
+                    })                   
+            return JsonResponse({'status':'success','activity':context})
+        else:
+            user = request.user
+            current_date = date.today()
+            activity_logs = ActivityLog.objects.filter(user=user,activity_date=current_date).order_by('-activity_date','-activity_time')[:6]
+            if activity_logs.count() < 6 : 
+                activity_logs = ActivityLog.objects.filter(user=user).order_by('-activity_date','-activity_time')[:6]
+            context = []
+            for activity_log in activity_logs : 
+                context.append({
+                    'activity':activity_log.activity,
+                    'activity_date':activity_log.activity_date,
+                    'activity_time':activity_log.activity_time
+                })
+            return JsonResponse({'status':'success','activity':context})
     
 #view to filter recent activities 
 class FilterRecentActivityView(View) : 
