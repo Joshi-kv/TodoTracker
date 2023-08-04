@@ -584,6 +584,14 @@ class FilterNewsView(View) :
                 })
             return JsonResponse({'status':'success','news':context})
 
+#view to render project page
+class ProjectPageView(LoginRequiredMixin,View) : 
+    login_url = 'users:login'
+    def get(self, request) : 
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        return render(request, 'project.html',{'current_user':current_user})
+
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
     login_url = 'users:login'
