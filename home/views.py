@@ -367,42 +367,85 @@ class FilterRecentActivityView(View) :
         current_month = current_date.month
         current_year = current_date.year
         
-        user = request.user
-        filter_option = request.GET.get('option')
-        
-        #condition to filter recent activities
-        if filter_option == 'Today' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year).order_by('-activity_date','-activity_time')
-            context = []
-            for filtered_recent_log in filtered_recent_logs : 
-                context.append({
-                    'activity':filtered_recent_log.activity,
-                    'activity_date':filtered_recent_log.activity_date,
-                    'activity_time':filtered_recent_log.activity_time
-                })
-            return JsonResponse({'status':'success','filtered_recent_logs':context})
-        
-        elif filter_option == 'This Month' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__month=current_month,activity_date__year=current_year).order_by('-activity_date','-activity_time')
-            context = []
-            for filtered_recent_log in filtered_recent_logs : 
-                context.append({
-                    'activity':filtered_recent_log.activity,
-                    'activity_date':filtered_recent_log.activity_date,
-                    'activity_time':filtered_recent_log.activity_time
-                })
-            return JsonResponse({'status':'success','filtered_recent_logs':context})
-        
-        elif filter_option == 'This Year' : 
-            filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__year=current_year).order_by('-activity_date','-activity_time')
-            context = []
-            for filtered_recent_log in filtered_recent_logs : 
-                context.append({
-                    'activity':filtered_recent_log.activity,
-                    'activity_date':filtered_recent_log.activity_date,
-                    'activity_time':filtered_recent_log.activity_time
-                })
-            return JsonResponse({'status':'success','filtered_recent_logs':context})
+        if request.user.is_staff == True : 
+            filter_option = request.GET.get('option')
+            
+            #condition to filter recent activities
+            if filter_option == 'Today' : 
+                filtered_recent_logs = ActivityLog.objects.filter(activity_date__day=current_day,activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'username': '' if filtered_recent_log.user.is_staff else filtered_recent_log.user.username,
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time,
+                        'staff_status':request.user.is_staff,
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
+            
+            elif filter_option == 'This Month' : 
+                filtered_recent_logs = ActivityLog.objects.filter(activity_date__month=current_month,activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'username': '' if filtered_recent_log.user.is_staff else filtered_recent_log.user.username,
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time,
+                        'staff_status':request.user.is_staff,
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
+            
+            elif filter_option == 'This Year' : 
+                filtered_recent_logs = ActivityLog.objects.filter(activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'username': '' if filtered_recent_log.user.is_staff else filtered_recent_log.user.username,
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time,
+                        'staff_status':request.user.is_staff,
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
+        else :
+            user = request.user
+            filter_option = request.GET.get('option')
+            
+            #condition to filter recent activities
+            if filter_option == 'Today' : 
+                filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__day=current_day,activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
+            
+            elif filter_option == 'This Month' : 
+                filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__month=current_month,activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
+            
+            elif filter_option == 'This Year' : 
+                filtered_recent_logs = ActivityLog.objects.filter(user=user,activity_date__year=current_year).order_by('-activity_date','-activity_time')
+                context = []
+                for filtered_recent_log in filtered_recent_logs : 
+                    context.append({
+                        'activity':filtered_recent_log.activity,
+                        'activity_date':filtered_recent_log.activity_date,
+                        'activity_time':filtered_recent_log.activity_time
+                    })
+                return JsonResponse({'status':'success','filtered_recent_logs':context})
     
 #view to filter tasks listed in dashboard
 class FilterDashboardTaskView(View) : 

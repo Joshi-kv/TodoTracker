@@ -24,7 +24,8 @@ $(document).ready(() => {
                       <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
                       <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                       <div class="activity-content">
-                        ${activity} - (${item.username})
+                      ${activity} <br>
+                      - ( ${item.username} )
                       </div>
                     </div>
                   `
@@ -83,6 +84,7 @@ $(document).ready(() => {
               $('#filterOptionRecent').html(target.innerHTML)
               if(response.filtered_recent_logs.length > 0){
                   response.filtered_recent_logs.forEach((item) => {
+                    console.log(item)
                       let activity_time = item.activity_time
                       let activity = item.activity
                       let activity_date = item.activity_date
@@ -92,23 +94,45 @@ $(document).ready(() => {
                       let convertedTime = moment(activity_time,'HH:mm').format('hh:mm a')
           
                       let activityContentDiv = $('.activity')
-                          let activityContent = 
-                          `
-                          <div class="activity-item d-flex">
-                              <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
-                              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                              <div class="activity-content">
-                              ${activity}
-                              </div>
-                          </div>
-              
-                          `
-                          if(convertedActivityDate != convertedCurrentDate){
-                              activityContentDiv.append(activityContent)
-          
-                          }else{
-                              activityContentDiv.append(activityContent)
-                          }
+                      let activityContent;
+                      if(item.staff_status == true && item.username != '') {
+                        activityContent = 
+                        `
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
+                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                            <div class="activity-content">
+                            ${activity} <br>
+                            - ( ${item.username} )
+                            </div>
+                        </div>
+            
+                        `
+                        if(convertedActivityDate != convertedCurrentDate){
+                            activityContentDiv.append(activityContent)
+        
+                        }else{
+                            activityContentDiv.append(activityContent)
+                        }
+                      }else{
+                        activityContent = 
+                        `
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
+                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                            <div class="activity-content">
+                            ${activity}
+                            </div>
+                        </div>
+            
+                        `
+                        if(convertedActivityDate != convertedCurrentDate){
+                            activityContentDiv.append(activityContent)
+        
+                        }else{
+                            activityContentDiv.append(activityContent)
+                        }
+                      }
                     })
               }else{
 
@@ -155,7 +179,8 @@ $(document).ready(() => {
                           <div class="activite-label">${convertedTime},<br><span>${convertedActivityDate}<br></span><br></div><br>
                           <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                           <div class="activity-content">
-                            ${activity} - (${item.username})
+                          ${activity} <br>
+                          - ( ${item.username} )
                           </div>
                         </div>
                       `
