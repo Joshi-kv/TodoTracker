@@ -1448,3 +1448,7 @@ collapsed
   width: 400px;
   overflow: auto;
 }
+
+.modal-dialog{
+  height: auto !important;
+}

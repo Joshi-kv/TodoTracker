@@ -3,6 +3,23 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 # Create your models here.
 
+#model for project 
+class Project(models.Model):
+    assignee = models.ForeignKey(User, on_delete=models.CASCADE)
+    project_title = models.CharField(max_length=256)
+    project_description = models.TextField()
+    project_type = models.CharField(max_length=150)
+    project_status = models.CharField(max_length=150)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    duration = models.CharField(max_length=4)
+    estimated_hours = models.CharField(max_length=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) : 
+        return f'{self.project_title}'
+
 #model for todo
 class Todo(models.Model) : 
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -62,7 +79,7 @@ class News(models.Model) :
     def get_absolute_url(self):
         return reverse("home:single-news", kwargs={"slug": self.slug})
     
-    
+        
     
     def __str__(self) : 
         return f'{self.user} - {self.title}'

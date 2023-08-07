@@ -17,7 +17,8 @@
       <h1>Projects</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>          
+          <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
+          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>          
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -38,83 +39,86 @@
             <div class="card-body">
 
             
+              {% if request.user.is_staff %}
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
                 Create Project
               </button>
-              <div class="modal fade" id="basicModal" tabindex="-1">
-                <div class="modal-dialog">
+              {% endif %}
+              <div class="modal" id="basicModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">Create Project</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                     <div class="card-body">
-              <h5 class="card-title">Create Project</h5>
-
-              <!-- Vertical Form -->
-              <form class="row g-3" id="projectForm" method='post'>
-                {% csrf_token %}
-                <div class="col-12">
-                  <label for="taskTitle" class="form-label">Project Title</label>
-                  <input type="text" name="project_title" class="form-control" id="projectTitle">
-                </div>
-                <div class="col-12">
-                  <label for="taskDescription" class="form-label">Project Description</label>
-                  <textarea class="form-control" name="project_description" placeholder="Description" id="projectDescription" style="height: 100px;"></textarea>
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">Start Date</label>
-                  <input type="date" name="startdate" class="form-control">
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">End Date</label>
-                  <input type="date" name="enddate" class="form-control">
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
-                  <input type="text" name="duration" class="form-control">
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">Estimated Hours</label>
-                  <input type="text" name="estimatedHours" class="form-control">
-                </div>
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Project Type</label>
-                    <select class="form-select" name="projectType" aria-label="Default select example" id="projectType">
-                      <option value="" >select type of the project</option>
-                      <option value="Type 1" >Type 1</option>
-                      <option value="Type 2" >Type 2</option>
-                      <option value="Type 3" >Type 3</option>
-                  </select>
-                </div>
-            
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Status</label>
-                    <select class="form-select" name="projectStatus" id="projectStatus" aria-label="Default select example">
-                        <option value=''>select status of the project</option>
-                        <option value="On Hold" >On Hold</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Canceled">Canceled</option>
-                      </select>
-                </div>
-                
-              </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                      <div class="card-body">
+                        <h5 class="card-title">Create Project</h5>
+                        <form class="row g-3" method="post">
+                          {% csrf_token %}
+                          <div class="col-12">
+                            <label for="taskTitle" class="form-label">Project Title</label>
+                            <input type="text" name="project_title" class="form-control" id="projectTitle">
+                          </div>
+                          <div class="col-12">
+                            <label for="taskDescription" class="form-label">Project Description</label>
+                            <textarea class="form-control" name="project_description" placeholder="Description" id="projectDescription" style="height: 100px;"></textarea>
+                          </div class='col-12'>
+                              <label for="inputAddress" class="form-label">Assignee</label>
+                              <select class="form-select" name="projectType" aria-label="Default select example" id="projectType">
+                                <option value="" >select assignee</option>
+                                {% for assignee in assignees  %}
+                                <option value="{{assignee.id}}" >{{assignee.username}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Start Date</label>
+                            <input type="date" name="startdate" class="form-control">
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">End Date</label>
+                            <input type="date" name="enddate" class="form-control">
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
+                            <input type="text" name="duration" class="form-control">
+                          </div> 
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Estimated Hours</label>
+                            <input type="text" name="estimatedHours" class="form-control">
+                          </div>
+                          <div class="col-12 mt-2">
+                              <label for="inputAddress" class="form-label">Project Type</label>
+                              <select class="form-select" name="projectType" aria-label="Default select example" id="projectType">
+                                <option value="" >select type of the project</option>
+                                <option value="Type 1" >Type 1</option>
+                                <option value="Type 2" >Type 2</option>
+                                <option value="Type 3" >Type 3</option>
+                            </select>
+                          </div>
+                      
+                          <div class="col-12 mt-2">
+                              <label for="inputAddress" class="form-label">Status</label>
+                              <select class="form-select" name="projectStatus" id="projectStatus" aria-label="Default select example">
+                                  <option value=''>select status of the project</option>
+                                  <option value="On Hold" >On Hold</option>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Canceled">Canceled</option>
+                                </select>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
-                </div><!-- End Basic Modal-->
-  
+                </div>
               </div>
-            </form><!-- Vertical Form -->
-            
-            
-            
+                       
             <div class="filters mb-5 mx-2" id="filters">
               <div class="row">
                 <div class="col-md-2">
@@ -159,6 +163,7 @@
                   <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Assignee</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
                     <th scope="col">Duration(in days)</th>
@@ -170,6 +175,7 @@
                   <tr>
                     <td>Sample</td>
                     <td>Sample</td>
+                    <td>User</td>
                     <td>01/01/1999</td>
                     <td>02/01/1999</td>
                     <td>30</td>
@@ -179,7 +185,8 @@
                     <td>
                      <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
                      <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                     <button class="btn btn-success btn-sm"><i class="fas fa-eye"></i></button>
+                     <button class="btn btn-info btn-sm"><i class="fas fa-list"></i></button>
+                     <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
                     </td>
                   </tr>
                   <tr>

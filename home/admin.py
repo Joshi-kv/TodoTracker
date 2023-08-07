@@ -1,8 +1,15 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project
 
 
 # Register your models here.
+
+class ProjectAdmin(admin.ModelAdmin) : 
+    list_display = ['project_title','project_description','assignee','start_date','end_date','project_type','project_status','duration','estimated_hours','created_at','updated_at']
+    list_per_page = 20
+    
+admin.site.register(Project,ProjectAdmin)
+
 class TaskAdmin(admin.ModelAdmin) : 
     list_display = ['user','task_title','task_description','task_duedate','task_priority','task_status','created_date','updated_date']
     list_per_page = 10

@@ -590,7 +590,8 @@ class ProjectPageView(LoginRequiredMixin,View) :
     def get(self, request) : 
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
-        return render(request, 'project.html',{'current_user':current_user})
+        assignee_list = User.objects.all().exclude(is_staff=True)
+        return render(request, 'project.html',{'current_user':current_user,'assignees':assignee_list})
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
