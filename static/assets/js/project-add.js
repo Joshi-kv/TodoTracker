@@ -1,7 +1,7 @@
 
 $(document).ready(() => {
 
-    //task creation form validation
+    //porject creation form validation
     $('#projectForm').validate({
         rules: {
             project_title: {
