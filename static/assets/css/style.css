@@ -1452,3 +1452,12 @@ collapsed
 .modal-dialog{
   height: auto !important;
 }
+
+#projectTable th{
+  margin-left: 3rem!important; 
+  margin: 10rem; 
+}
+
+.project-table{
+  width: 1200px!important;
+}

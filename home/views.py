@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -592,6 +592,80 @@ class ProjectPageView(LoginRequiredMixin,View) :
         current_user = UserProfile.objects.get(user=user_model)
         assignee_list = User.objects.all().exclude(is_staff=True)
         return render(request, 'project.html',{'current_user':current_user,'assignees':assignee_list})
+    
+#view to list projects in datatable
+class ProjectListView(View) : 
+    def get(self,request) : 
+        user_obj = request.user
+        projects = Project.objects.all()   
+        context = []
+        for project in projects : 
+            context.append({
+                'project_id': project.id,
+                'project_title': project.project_title,
+                'project_description': project.project_description,
+                'project_assignee': project.assignee.username,
+                'project_startdate': project.start_date,
+                'project_enddate': project.end_date,
+                'duration': project.duration,
+                'estimated_hours': project.estimated_hours,
+                'project_type': project.project_type,
+                'project_status': project.project_status,
+            })
+        return JsonResponse({'projects':context},safe=False)    
+    
+        
+#view to create project 
+class ProjectCreateView(View) : 
+    def post(self,request) : 
+        
+        project_title = request.POST.get('project_title')
+        project_description = request.POST.get('project_description')
+        project_assignee = request.POST.get('project_assignee')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        duration = request.POST.get('duration')
+        estimated_hours = request.POST.get('estimated_hours')
+        project_status = request.POST.get('project_status')
+        project_type = request.POST.get('project_type')
+        
+        #creating new project
+        
+        new_project = Project.objects.create(
+            assignee=User.objects.get(id=project_assignee),
+            project_title=project_title,
+            project_description=project_description,
+            start_date=start_date,
+            end_date=end_date,
+            project_type=project_type,
+            project_status=project_status,
+            duration=duration,
+            estimated_hours=estimated_hours
+        )
+        
+        new_project.save()
+        
+        context = {
+            'project_id':new_project.id,
+            'project_title':new_project.project_title,
+            'project_description':new_project.project_description,
+            'project_startdate':new_project.start_date,
+            'project_enddate':new_project.end_date,
+            'project_status':new_project.project_status,
+            'project_type':new_project.project_type,
+            'duration':new_project.duration,
+            'assignee':new_project.assignee.username,
+            'estimatedHours':new_project.estimated_hours,
+        }
+        
+        # activity_log = ActivityLog.objects.create(
+        #     user = user,
+        #     activity=f'"{task_title}" task added'
+        # )
+        # activity_log.save()
+        
+        total_projects = Project.objects.all().count()
+        return JsonResponse({'status':'success','project':context,'total':total_projects})
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 

@@ -6,14 +6,14 @@ from django.urls import reverse
 #model for project 
 class Project(models.Model):
     assignee = models.ForeignKey(User, on_delete=models.CASCADE)
-    project_title = models.CharField(max_length=256)
+    project_title = models.CharField(max_length=500)
     project_description = models.TextField()
-    project_type = models.CharField(max_length=150)
-    project_status = models.CharField(max_length=150)
+    project_type = models.CharField(max_length=500)
+    project_status = models.CharField(max_length=500)
     start_date = models.DateField()
     end_date = models.DateField()
-    duration = models.CharField(max_length=4)
-    estimated_hours = models.CharField(max_length=4)
+    duration = models.CharField(max_length=256)
+    estimated_hours = models.CharField(max_length=265)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

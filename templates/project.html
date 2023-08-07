@@ -18,12 +18,12 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
-          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>          
+          <li class="breadcrumb-item"><a class="active" href="{% url 'home:project-page' %}">Projects</a></li>          
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <section class="section project-table" >
       <div class="row">
         <div class="col-lg-12">
 
@@ -54,43 +54,44 @@
                     <div class="modal-body">
                       <div class="card-body">
                         <h5 class="card-title">Create Project</h5>
-                        <form class="row g-3" method="post">
+                        <form class="row g-3" method="post" id="projectForm">
                           {% csrf_token %}
                           <div class="col-12">
-                            <label for="taskTitle" class="form-label">Project Title</label>
+                            <label for="projectTitle" class="form-label">Project Title</label>
                             <input type="text" name="project_title" class="form-control" id="projectTitle">
                           </div>
                           <div class="col-12">
-                            <label for="taskDescription" class="form-label">Project Description</label>
+                            <label for="projectDescription" class="form-label">Project Description</label>
                             <textarea class="form-control" name="project_description" placeholder="Description" id="projectDescription" style="height: 100px;"></textarea>
-                          </div class='col-12'>
+                          </div>
+                          <div class='col-12'>
                               <label for="inputAddress" class="form-label">Assignee</label>
-                              <select class="form-select" name="projectType" aria-label="Default select example" id="projectType">
+                              <select class="form-select" name="projectAssignee" aria-label="Default select example" id="projectAssignee">
                                 <option value="" >select assignee</option>
                                 {% for assignee in assignees  %}
-                                <option value="{{assignee.id}}" >{{assignee.username}}</option>
+                                <option value={{assignee.id}}>{{assignee}}</option>
                                 {% endfor %}
                             </select>
                           </div>
                           <div class="col-12 mt-2">
                             <label for="inputPassword4" class="form-label">Start Date</label>
-                            <input type="date" name="startdate" class="form-control">
+                            <input type="date" name="start_date" class="form-control" id="start_date">
                           </div>
                           <div class="col-12 mt-2">
                             <label for="inputPassword4" class="form-label">End Date</label>
-                            <input type="date" name="enddate" class="form-control">
+                            <input type="date" name="end_date" class="form-control" id="endDate">
                           </div>
                           <div class="col-12 mt-2">
                             <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
-                            <input type="text" name="duration" class="form-control">
+                            <input type="text" name="duration" id="duration" class="form-control">
                           </div> 
                           <div class="col-12 mt-2">
                             <label for="inputPassword4" class="form-label">Estimated Hours</label>
-                            <input type="text" name="estimatedHours" class="form-control">
+                            <input type="text" name="estimatedHours" id="estimatedHours" class="form-control">
                           </div>
                           <div class="col-12 mt-2">
                               <label for="inputAddress" class="form-label">Project Type</label>
-                              <select class="form-select" name="projectType" aria-label="Default select example" id="projectType">
+                              <select class="form-select" name="project_type" aria-label="Default select example" id="projectType">
                                 <option value="" >select type of the project</option>
                                 <option value="Type 1" >Type 1</option>
                                 <option value="Type 2" >Type 2</option>
@@ -100,7 +101,7 @@
                       
                           <div class="col-12 mt-2">
                               <label for="inputAddress" class="form-label">Status</label>
-                              <select class="form-select" name="projectStatus" id="projectStatus" aria-label="Default select example">
+                              <select class="form-select" name="project_status" id="projectStatus" aria-label="Default select example">
                                   <option value=''>select status of the project</option>
                                   <option value="On Hold" >On Hold</option>
                                   <option value="Pending">Pending</option>
@@ -158,7 +159,7 @@
               </div>
             </div>
               <!-- Table with stripped rows -->
-              <table class="table datatable" id="taskTable">
+              <table class="table datatable" id="projectTable">
                 <thead>
                   <tr>
                     <th scope="col">Title</th>
@@ -170,28 +171,11 @@
                     <th scope="col">Estimated Hours</th>
                     <th scope="col">Type</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Actions</th>					
+                    <th scope="col">Actions</th>
                   </tr>
-                  <tr>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>User</td>
-                    <td>01/01/1999</td>
-                    <td>02/01/1999</td>
-                    <td>30</td>
-                    <td>72</td>
-                    <td>Type 1</td>
-                    <td>Pending</td>
-                    <td>
-                     <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                     <button class="btn btn-info btn-sm"><i class="fas fa-list"></i></button>
-                     <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
+                  {% comment %} <tr>
                     <td colspan='6' class="text-center" id="no-data" style='display:none'>No data available</td>
-                  </tr>
+                  </tr> {% endcomment %}
                 </thead>
               </table>
               <!-- End Table with stripped rows -->
@@ -306,9 +290,9 @@
   </main><!-- End #main -->
 
   {% include 'footer.html' %}
+  <script src="{% static 'assets/js/project-add.js' %}"></script>
+  <script src="{% static 'assets/js/project-list.js' %}"></script>
 {% comment %} 
-<script src="{% static 'assets/js/todo-list.js' %}"></script>
-<script src="{% static 'assets/js/task-add.js' %}"></script>
 <script src="{% static 'assets/js/task-action.js' %}"></script> {% endcomment %}
 
 {% endblock content %}
