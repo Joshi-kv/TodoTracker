@@ -266,17 +266,17 @@
     </section>
 
     <!--Delete modal-->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm </h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="" method="post">
+            <form action="" method="post" id='projectDeleteForm'>
               {% csrf_token %}
-              Are you sure do you want to deactivate this task ?
+              Are you sure do you want to deactivate this project ?
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-danger">Deactivate</button>
@@ -292,8 +292,7 @@
   {% include 'footer.html' %}
   <script src="{% static 'assets/js/project-add.js' %}"></script>
   <script src="{% static 'assets/js/project-list.js' %}"></script>
-{% comment %} 
-<script src="{% static 'assets/js/task-action.js' %}"></script> {% endcomment %}
+  <script src="{% static 'assets/js/project-action.js' %}"></script> 
 
 {% endblock content %}
 

@@ -137,13 +137,20 @@ $(document).ready(() => {
                         `${project.project_type}`,
                         `${project.project_status}`,
                         `
-                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button><br><br>
-                        <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
+                        <div class="d-flex">
+                            <div class="mx-3 ">
+                            <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
+                            <i class="fas fa-trash"></i></button>
+                            </div>
+                            <div class="mx-3">
+                            <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
+                            <button class="btn btn-danger btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                            </div>
+                        </div>
                         `
                     ]).node()
-                    $(projectRow).attr('data-task-id',projectId)
+                    $(projectRow).attr('data-project-id',projectId)
                     table.draw()
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New project added successfully');

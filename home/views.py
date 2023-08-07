@@ -596,23 +596,42 @@ class ProjectPageView(LoginRequiredMixin,View) :
 #view to list projects in datatable
 class ProjectListView(View) : 
     def get(self,request) : 
-        user_obj = request.user
-        projects = Project.objects.all()   
-        context = []
-        for project in projects : 
-            context.append({
-                'project_id': project.id,
-                'project_title': project.project_title,
-                'project_description': project.project_description,
-                'project_assignee': project.assignee.username,
-                'project_startdate': project.start_date,
-                'project_enddate': project.end_date,
-                'duration': project.duration,
-                'estimated_hours': project.estimated_hours,
-                'project_type': project.project_type,
-                'project_status': project.project_status,
-            })
-        return JsonResponse({'projects':context},safe=False)    
+        if request.user.is_staff == True : 
+            projects = Project.objects.all()   
+            context = []
+            for project in projects : 
+                context.append({
+                    'project_id': project.id,
+                    'project_title': project.project_title,
+                    'project_description': project.project_description,
+                    'project_assignee': project.assignee.username,
+                    'project_startdate': project.start_date,
+                    'project_enddate': project.end_date,
+                    'duration': project.duration,
+                    'estimated_hours': project.estimated_hours,
+                    'project_type': project.project_type,
+                    'project_status': project.project_status,
+                    'is_staff': True,
+                })
+            return JsonResponse({'projects':context},safe=False)   
+        else : 
+            projects = Project.objects.filter(assignee=request.user)   
+            context = []
+            for project in projects : 
+                context.append({
+                    'project_id': project.id,
+                    'project_title': project.project_title,
+                    'project_description': project.project_description,
+                    'project_assignee': project.assignee.username,
+                    'project_startdate': project.start_date,
+                    'project_enddate': project.end_date,
+                    'duration': project.duration,
+                    'estimated_hours': project.estimated_hours,
+                    'project_type': project.project_type,
+                    'project_status': project.project_status,
+                    'is_staff':False,
+                })
+            return JsonResponse({'projects':context},safe=False)   
     
         
 #view to create project 
@@ -666,6 +685,23 @@ class ProjectCreateView(View) :
         
         total_projects = Project.objects.all().count()
         return JsonResponse({'status':'success','project':context,'total':total_projects})
+    
+#view to delete project
+class ProjectDeleteView(View) : 
+    def post(self,request) : 
+        project_id = request.POST.get('project_id')
+        
+        project = Project.objects.get(id=project_id)
+        project.project_status = 'Deactivated'
+        project.save()
+        
+        # activity_log = ActivityLog.objects.create(
+        #     user = request.user,
+        #     activity = f' "{task.task_title}" task deactivated'
+        # )
+        # activity_log.save()
+        total_projects = Project.objects.all().exclude(project_status='Deactivated').count()
+        return JsonResponse({'status':'success','total':total_projects})       
 
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 

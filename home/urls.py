@@ -22,6 +22,7 @@ urlpatterns = [
     path('projects/',views.ProjectPageView.as_view(),name='project-page'),
     path('project-list/',views.ProjectListView.as_view(),name='project-list'),
     path('create-project/',views.ProjectCreateView.as_view(),name='create-project'),
+    path('delete-project/',views.ProjectDeleteView.as_view(),name='delete-project'),
     path('todo/',views.TodoPageView.as_view(),name='todo-page'),
     path('tasks/',views.TaskListView.as_view(),name='task-list'),
     path('create-task/',views.TodoCreateView.as_view(),name='create-task'),

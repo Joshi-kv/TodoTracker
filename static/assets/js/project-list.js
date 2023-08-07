@@ -23,25 +23,52 @@ $(document).ready(() =>{
             let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
             let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
             let projectId = project.project_id
-            let projectRow = table.row.add([
-                `${project.project_title}`,
-                `${project.project_description}`,
-                `${project.project_assignee}`,
-                `${convertedStartdate}`,
-                `${convertedEnddate}`,
-                `${project.duration}`,
-                `${project.estimated_hours}`,
-                `${project.project_type}`,
-                `${project.project_status}`,
-                `
-                <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button><br><br>
-                <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
-                <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
-                `
-            ]).node()
-            $(projectRow).attr('data-task-id',projectId)
-            table.draw()
+            if(project.is_staff === true) {
+                let projectRow = table.row.add([
+                    `${project.project_title}`,
+                    `${project.project_description}`,
+                    `${project.project_assignee}`,
+                    `${convertedStartdate}`,
+                    `${convertedEnddate}`,
+                    `${project.duration}`,
+                    `${project.estimated_hours}`,
+                    `${project.project_type}`,
+                    `${project.project_status}`,
+                    `
+                    <div class="d-flex">
+                        <div class="mx-3 ">
+                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
+                        <i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="mx-3">
+                        <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
+                        <button class="btn btn-danger btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                        </div>
+                    </div>
+                    `
+                ]).node()
+                $(projectRow).attr('data-project-id',projectId)
+                table.draw()
+            }else{
+                let projectRow = table.row.add([
+                    `${project.project_title}`,
+                    `${project.project_description}`,
+                    `${project.project_assignee}`,
+                    `${convertedStartdate}`,
+                    `${convertedEnddate}`,
+                    `${project.duration}`,
+                    `${project.estimated_hours}`,
+                    `${project.project_type}`,
+                    `${project.project_status}`,
+                    `
+                    <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
+                    <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
+                    `
+                ]).node()
+                $(projectRow).attr('data-project-id',projectId)
+                table.draw()
+            }
             projectLength = data.projects.length
             hideProjectTablePagination(table,projectLength)
 
