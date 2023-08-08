@@ -89,4 +89,90 @@ $(document).ready(function(){
             }
         })
     }
+
+
+        //filter total projects
+        var totalProjectFilterList = document.getElementById('totalProjectFilterList')
+        totalProjectFilterList.onclick = function(e){
+            var target = getEventTarget(e)
+            $.ajax({
+                type:'get',
+                url:'/filter-total-projects',
+                dataType:'json',
+                data:{
+                    'option':target.innerHTML
+                },
+                success:function(response){
+                    $('#totalProjects').html(response.filtered_total_project)
+                }
+            })
+        }
+
+        //filter completed projects
+        var completedProjectFilterList = document.getElementById('completedProjectFilterList')
+        completedProjectFilterList.onclick = function(e){
+            var target = getEventTarget(e)
+            $.ajax({
+                type:'get',
+                url:'/filter-completed-projects',
+                dataType:'json',
+                data:{
+                    'option':target.innerHTML
+                },
+                success:function(response){
+                    $('#completedProjects').html(response.filtered_completed_project)
+                }
+            })
+        }
+
+        //filter pending projects
+        var pendingProjectFilterList = document.getElementById('pendingProjectFilterList')
+        pendingProjectFilterList.onclick = function(e){
+            var target = getEventTarget(e)
+            $.ajax({
+                type:'get',
+                url:'/filter-pending-projects',
+                dataType:'json',
+                data:{
+                    'option':target.innerHTML
+                },
+                success:function(response){
+                    $('#pendingProjects').html(response.filtered_pending_project)
+                }
+            })
+        }
+
+        //filter on hold projects
+        var onHoldProjectFilterList = document.getElementById('onHoldProjectFilterList')
+        onHoldProjectFilterList.onclick = function(e){
+            var target = getEventTarget(e)
+            $.ajax({
+                type:'get',
+                url:'/filter-on-hold-projects',
+                dataType:'json',
+                data:{
+                    'option':target.innerHTML
+                },
+                success:function(response){
+                    $('#onHoldProjects').html(response.filtered_on_hold_project)
+                }
+            })
+        }
+
+        //filter canceled projects
+        var canceledProjectFilterList = document.getElementById('canceledProjectFilterList')
+        canceledProjectFilterList.onclick = function(e){
+            var target = getEventTarget(e)
+            $.ajax({
+                type:'get',
+                url:'/filter-canceled-projects',
+                dataType:'json',
+                data:{
+                    'option':target.innerHTML
+                },
+                success:function(response){
+                    $('#canceledProjects').html(response.filtered_canceled_project)
+                }
+            })
+        }
 })
