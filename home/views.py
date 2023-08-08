@@ -1269,27 +1269,42 @@ class ProjectDeleteView(View) :
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
     login_url = 'users:login'
-    def get(self, request) : 
+    def get(self, request,project_id) : 
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
-        return render(request, 'todo.html',{'current_user':current_user})
+        return render(request, 'todo.html',{'current_user':current_user,'project':project_id})
     
 #view to list tasks in datatable
 class TaskListView(View) : 
-    def get(self,request) : 
+    def get(self,request,project_id) : 
+        print(project_id)
         user_obj = request.user
-        tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
-        context = []
-        for task in tasks : 
-            context.append({
-                'task_id':task.id,
-                'task_title':task.task_title,
-                'task_description':task.task_description,
-                'task_duedate':task.task_duedate,
-                'task_priority':task.task_priority,
-                'task_status':task.task_status
-            })
-        return JsonResponse({'tasks':context},safe=False)
+        if user_obj.is_staff == True : 
+            tasks = Todo.objects.filter(project=project_id).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+            context = []
+            for task in tasks : 
+                context.append({
+                    'task_id':task.id,
+                    'task_title':task.task_title,
+                    'task_description':task.task_description,
+                    'task_duedate':task.task_duedate,
+                    'task_priority':task.task_priority,
+                    'task_status':task.task_status
+                })
+            return JsonResponse({'tasks':context},safe=False)
+        else : 
+            tasks = Todo.objects.filter(project=project_id,user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+            context = []
+            for task in tasks : 
+                context.append({
+                    'task_id':task.id,
+                    'task_title':task.task_title,
+                    'task_description':task.task_description,
+                    'task_duedate':task.task_duedate,
+                    'task_priority':task.task_priority,
+                    'task_status':task.task_status
+                })
+            return JsonResponse({'tasks':context},safe=False)
     
 #view to create todo 
 class TodoCreateView(View) : 
@@ -1336,21 +1351,40 @@ class DateRangeFilter(View) :
         user = request.user
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
+        project_id = request.GET.get('project_id')
         
-        #filtering tasks using date range by range orm method
-        tasks = Todo.objects.filter(user=user,task_duedate__range=(start_date,end_date))
-        context = []
-        for task in tasks : 
-            context.append({
-                'task_id':task.id,
-                'task_title':task.task_title,
-                'task_descritpion':task.task_description,
-                'task_duedate':task.task_duedate,
-                'task_priority':task.task_priority,
-                'task_status':task.task_status,
-            })
+        if user.is_staff == True : 
         
-        return JsonResponse({'status':'success','tasks':context})
+            #filtering tasks using date range by range orm method
+            tasks = Todo.objects.filter(project=project_id,task_duedate__range=(start_date,end_date))
+            context = []
+            for task in tasks : 
+                context.append({
+                    'task_id':task.id,
+                    'task_title':task.task_title,
+                    'task_descritpion':task.task_description,
+                    'task_duedate':task.task_duedate,
+                    'task_priority':task.task_priority,
+                    'task_status':task.task_status,
+                })
+            
+            return JsonResponse({'status':'success','tasks':context})
+        
+        else : 
+           #filtering tasks using date range by range orm method
+            tasks = Todo.objects.filter(project=project_id,user=user,task_duedate__range=(start_date,end_date))
+            context = []
+            for task in tasks : 
+                context.append({
+                    'task_id':task.id,
+                    'task_title':task.task_title,
+                    'task_descritpion':task.task_description,
+                    'task_duedate':task.task_duedate,
+                    'task_priority':task.task_priority,
+                    'task_status':task.task_status,
+                })
+            
+            return JsonResponse({'status':'success','tasks':context}) 
     
 #view to render task edit page
 class UpdateTaskPageView(View) : 

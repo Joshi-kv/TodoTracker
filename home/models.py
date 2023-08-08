@@ -23,6 +23,7 @@ class Project(models.Model):
 #model for todo
 class Todo(models.Model) : 
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     task_title = models.CharField(max_length=500)
     task_description = models.TextField()
     task_duedate = models.DateField()

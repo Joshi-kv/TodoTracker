@@ -1,8 +1,12 @@
 let table;
-let taskLength;
+let taskLength; 
 $(document).ready(() =>{
+    let pathname = window.location.href.replace(/\/+$/, '');
+    let project_id = pathname.substring(pathname.lastIndexOf('/') +1 )
+    console.log(project_id)
+
     // fetching tasks on page load
-    const url = 'http://127.0.0.1:8000/tasks/'
+    const url = `http://127.0.0.1:8000/tasks/${project_id}`
     fetch(url)
     .then(response => response.json())
     .then((data) => {
@@ -65,6 +69,7 @@ $(document).ready(() =>{
                     type:'get',
                     dataType:'json',
                     data:{
+                        project_id:project_id,
                         start_date:$('#startDate').val(),
                         end_date:$('#endDate').val(),
                     },
