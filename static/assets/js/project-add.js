@@ -204,7 +204,7 @@ function projectTablePagination(table,tasks){
 
 // function to hide pagination dynamically 
 function showProjectTablePagination(table,tasks) {
-    if (tasks.length > 10) {
+    if (tasks > 10) {
         $('#projectTable_length').show();
         $('.pagination').show();
     } else {

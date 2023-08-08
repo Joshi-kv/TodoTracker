@@ -73,23 +73,31 @@ $(document).ready(() =>{
             projectLength = data.projects.length
             hideProjectTablePagination(table,projectLength)
 
-        //     // //custom filtering
-        //     // $('select[name="filterStatus"]').on('change',function(){
-        //     //     let status = $(this).val()
-        //     //     table.column(4).search(status).draw()
-        //     //     hidePagination(table,table.rows({search:'applied'}).count())
-        //     //     if(status == ''){
-        //     //         hidePagination(table,table.rows({search:'applied'}).count())
-        //     //     }
-        //     // })
-        //     // $('select[name="filterPriority"]').on('change',function(){
-        //     //     let priority = $(this).val()
-        //     //     table.column(3).search(priority).draw()
-        //     //     hidePagination(table,table.rows({search:'applied'}).count())
-        //     //     if(priority == ''){
-        //     //         hidePagination(table,table.rows({search:'applied'}).count())
-        //     //     }
-        //     // })            
+            //custom filtering
+            $('select[name="filterProjectStatus"]').on('change',function(){
+                let status = $(this).val()
+                table.column(8).search(status).draw()
+                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                if(status == ''){
+                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                }
+            })
+            $('select[name="filterProjectType"]').on('change',function(){
+                let type = $(this).val()
+                table.column(7).search(type).draw()
+                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                if(type == ''){
+                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                }
+            })            
+            $('select[name="filterAssignee"]').on('change',function(){
+                let assignee = $(this).val()
+                table.column(2).search(assignee).draw()
+                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                if(assignee == ''){
+                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                }
+            })            
 
 
         //     // //filter date range
@@ -130,10 +138,10 @@ $(document).ready(() =>{
 
         })
     
-        // //dynamically hiding pagination on search results
-        // table.on('search.dt',function(){
-        //     hidePagination(table,table.rows({search:'applied'}).count())
-        // })
+        //dynamically hiding pagination on search results
+        table.on('search.dt',function(){
+            hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+        })
     })
 
 })
@@ -162,29 +170,29 @@ function hideProjectTablePagination(table,tasks){
     
 }
 
-// //function to clear filter
-// function clearFilters() {
-//     table.column(4).search('').draw() // Clear status filter
-//     table.column(3).search('').draw() // Clear priority filter
-//     table.column(2).search('').draw() // Clear date filter
-//     table.draw() 
-//   }
+//function to clear filter
+function clearFilters() {
+    table.column(8).search('').draw() // Clear status filter
+    table.column(7).search('').draw() // Clear priority filter
+    table.column(2).search('').draw() // Clear date filter
+    table.draw() 
+  }
 
-// //function to clear filter
-// $('#clearFilterBtn').on('click',function(){
-//     $('#filterStatus').val('')
-//     $('#filterPriority').val('')
-//     $('#startDate').val('')
-//     $('#endDate').val('')
-//     $('#no-data').hide()
-//     $('tbody').show()
-//     if(table.rows().count() > 10 ){
-//         $('#taskTable_length').show()
-//         $('.pagination').show()
-//     }else{
-//         $('#taskTable_length').hide()
-//         $('.pagination').hide()
-//     }
-//    clearFilters()
-// })
+//function to clear filter
+$('#clearFilterBtn').on('click',function(){
+    $('#filterProjectStatus').val('')
+    $('#filterProjectType').val('')
+    $('#startDate').val('')
+    $('#endDate').val('')
+    $('#no-data').hide()
+    $('tbody').show()
+    if(table.rows().count() > 10 ){
+        $('#projectTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#projectTable_length').hide()
+        $('.pagination').hide()
+    }
+   clearFilters()
+})
 
