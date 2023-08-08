@@ -185,78 +185,81 @@
             </div>
             <!--update modal -->
             <div class="card-body">
-          
               <div class="modal fade" id="updateProjectModal" tabindex="-1">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">Edit Project</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                     <div class="card-body">
-              <h5 class="card-title">Edit Project</h5>
-
-              <!-- Vertical Form -->
-              <form class="row g-3" id="updateProjectForm" method='post'>
-                {% csrf_token %}
-                <div class="col-12">
-                  <label for="taskTitle" class="form-label">Project Title</label>
-                  <input type="text" name="updateProjectTitle" class="form-control" id="projectUpdateTitle">
-                </div>
-                <div class="col-12">
-                  <label for="taskDescription" class="form-label">Project Description</label>
-                  <textarea class="form-control" name="updateProjectDescription" placeholder="Description" id="taskUpdateDescription" style="height: 100px;"></textarea>
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">Start Date</label>
-                  <input type="date" name="updateDuedate" class="form-control" id="taskUpdateDuedate">
-                </div>
-                <div class="col-12">
-                  <label for="inputPassword4" class="form-label">End Date</label>
-                  <input type="date" name="updateDuedate" class="form-control" id="taskUpdateDuedate">
-                </div>
-                <div class="col-12">
-                    <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
-                    <input type="text" name="updateDuration" class="form-control" id="updateDuration">
-                </div>
-                <div class="col-12">
-                    <label for="inputPassword4" class="form-label">Estimated Hours</label>
-                    <input type="text" name="updateEstimatedHours" class="form-control" id='updateEstimatedHours'>
-                </div>
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Project Type</label>
-                    <select class="form-select" name="updateProjectType" aria-label="Default select example" id="updateProjectType">
-                        <option value="" >select type of the Project</option>
-                        <option value="Type 1" >Type 1</option>
-                        <option value="Type 2" >Type 2</option>
-                        <option value="Type 3" >Type 3</option>
-                    </select>
-                </div>
-            
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Project Status</label>
-                    <select class="form-select" name="updateProjectStatus" aria-label="Default select example" id="updateProjectStatus">
-                        <option value=''>select status of the project</option>
-                        <option value="On Hold" >On Hold</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Canceled">Canceled</option>
-                      </select>
-                </div>
-                
-              </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                      <div class="card-body">
+                        <h5 class="card-title">Edit Project</h5>
+                        <form class="row g-3" method="post" id="updateProjectForm">
+                          {% csrf_token %}
+                          <div class="col-12">
+                            <label for="" class="form-label">Project Title</label>
+                            <input type="text" name="projectUpdateTitle" class="form-control" id="projectUpdateTitle">
+                          </div>
+                          <div class="col-12">
+                            <label for="projectDescription" class="form-label">Project Description</label>
+                            <textarea class="form-control" name="projectUpdateDescription" placeholder="Description" id="projectUpdateDescription" style="height: 100px;"></textarea>
+                          </div>
+                          <div class='col-12'>
+                              <label for="inputAddress" class="form-label">Assignee</label>
+                              <select class="form-select" name="projectUpdateAssignee" aria-label="Default select example" id="projectUpdateAssignee">
+                                <option value="" >select assignee</option>
+                                {% for assignee in assignees  %}
+                                <option value={{assignee.id}}>{{assignee}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Start Date</label>
+                            <input type="date" name="projectUpdateStartDate" class="form-control" id="projectUpdateStartDate">
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">End Date</label>
+                            <input type="date" name="projectUpdateEndDate" class="form-control" id="projectUpdateEndDate">
+                          </div>
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
+                            <input type="text" name="projectUpdateDuration" id="projectUpdateDuration" class="form-control">
+                          </div> 
+                          <div class="col-12 mt-2">
+                            <label for="inputPassword4" class="form-label">Estimated Hours</label>
+                            <input type="text" name="projectUpdateEstimatedHours" id="projectUpdateEstimatedHours" class="form-control">
+                          </div>
+                          <div class="col-12 mt-2">
+                              <label for="inputAddress" class="form-label">Project Type</label>
+                              <select class="form-select" name="updateProjectType" aria-label="Default select example" id="updateProjectType">
+                                <option value="" >select type of the project</option>
+                                <option value="Type 1" >Type 1</option>
+                                <option value="Type 2" >Type 2</option>
+                                <option value="Type 3" >Type 3</option>
+                            </select>
+                          </div>
+                      
+                          <div class="col-12 mt-2">
+                              <label for="inputAddress" class="form-label">Status</label>
+                              <select class="form-select" name="updateProjectStatus" id="updateProjectStatus" aria-label="Default select example">
+                                  <option value=''>select status of the project</option>
+                                  <option value="On Hold" >On Hold</option>
+                                  <option value="Pending">Pending</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Canceled">Canceled</option>
+                                </select>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
-                </div><!-- End Basic Modal-->
-  
+                </div>
               </div>
-              </form><!-- Vertical Form -->
 
             </div>
           </div>
@@ -295,5 +298,4 @@
   <script src="{% static 'assets/js/project-action.js' %}"></script> 
 
 {% endblock content %}
-
 

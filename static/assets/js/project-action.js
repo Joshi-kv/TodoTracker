@@ -1,29 +1,29 @@
 $(document).ready(() =>{
         
     //task updation functions start
-    //function to load selected task details
-    $(document).on('click','#editBtn',function(){
-        let taskId = $(this).attr('data-edit')
-        let modalId = $('#updateProjectModal').attr('edit-modal',`${taskId}`)
+    //function to load selected project details
+    
+    $(document).on('click','#projectEditBtn',function(){
+        let projectId = $(this).attr('data-project-edit')
+        let modalId = $('#updateProjectModal').attr('data-project-edit',`${projectId}`)
         $.ajax({
             type:'get',
-            url:'/update-view/',
+            url:'/update-project-view/',
             dataType:'json',
-            data:{'task_id':taskId},
+            data:{'project_id':projectId},
             success:function(response){
-                let task = response.task
-                $('#taskUpdateTitle').val(task.task_title)
-                $('#taskUpdateDescription').val(task.task_description)
-                $('#taskUpdateDuedate').val(task.task_duedate)
-                $('#taskUpdatePriority').val(task.task_priority)
-                if(task.task_status == 'Pending'){
-                    let optionValue = 'Pending'
-                    $("#taskUpdateStatus").append(`<option id="pending" value="${optionValue}"></option>`)
-                    $('#pending').text('Pending')
-                    $('#taskUpdateStatus').val(optionValue)
-                }else{
-                    $('#taskUpdateStatus').val(task.task_status)
-                }
+                console.log(response)
+                let data = response.project[0]
+                console.log(data.project_type)
+                $('#projectUpdateTitle').val(data.project_title)
+                $('#projectUpdateDescription').val(data.project_description)
+                $('#projectUpdateAssignee').val(data.project_assignee)
+                $('#projectUpdateStartDate').val(data.project_start_date)
+                $('#projectUpdateEndDate').val(data.project_end_date)
+                $('#projectUpdateDuration').val(data.project_duration)
+                $('#projectUpdateEstimatedHours').val(data.project_estimated_hours)
+                $('#updateProjectType').val(data.project_type)
+                $('#updateProjectStatus').val(data.project_status)
             }
 
         })
@@ -47,47 +47,92 @@ $(document).ready(() =>{
         return cookieValue;
     }
 
+    //calculating duration days and estimated hours
+    $('#projectUpdateStartDate, #projectUpdateEndDate').on('change', function(){
+        let start_date = $('#projectUpdateStartDate').val();
+        let end_date = $('#projectUpdateEndDate').val();
+
+        let startDate = new Date(start_date)
+        let endDate = new Date(end_date)
+
+        let timeDifference = endDate.getTime() - startDate.getTime();
+
+        let duration = timeDifference / (1000 * 60 * 60 * 24)
+        let estimatedHours  = duration * 24
+        if(duration > 0){
+            if(duration == 1){
+                $('#projectUpdateDuration').val(`${duration} day`)
+            }else{
+                $('#projectUpdateDuration').val(`${duration} days`)
+            } 
+            $('#projectUpdateEstimatedHours').val(`${estimatedHours} hours`)           
+        }
+    })
+
     const csrftoken = getCookie('csrftoken')
 
     //update form submission
-    $('#updateTaskForm').on('submit',(e)=>{
+    $('#updateProjectForm').on('submit',(e)=>{
         e.preventDefault()
-        let taskId = $('#updateModal').attr('edit-modal')
-        let title = $('input[name="updateTitle"]').val()
-        let description = $('textarea[name="updateDescription"]').val()
-        let duedate = $('input[name="updateDuedate"]').val()
-        let priority = $('select[name="updatePriority"]').val()
-        let status = $('select[name="updateStatus"]').val()
-        if (title && description && duedate && priority && status){
+        let projectId = $('#updateProjectModal').attr('data-project-edit')
+        let project_title = $('#projectUpdateTitle').val()
+        let project_description = $('#projectUpdateDescription').val()
+        let project_assignee = $('#projectUpdateAssignee').val()
+        let project_start_date = $('#projectUpdateStartDate').val()
+        let project_end_date = $('#projectUpdateEndDate').val()
+        let project_duration = $('#projectUpdateDuration').val()
+        let project_estimated_hours = $('#projectUpdateEstimatedHours').val()
+        let project_type = $('#updateProjectType').val()
+        let project_status = $('#updateProjectStatus').val()
+        if (project_title && project_description && project_assignee && project_start_date && project_end_date && project_duration && project_estimated_hours && project_type && project_status){
             $.ajax({
                 type:'post',
-                url:'/update-task/',
+                url:'/update-project/',
                 dataType:'json',
                 data:{
                     'csrfmiddlewaretoken':csrftoken,
-                    'task_id':taskId,
-                    'task_title':$('input[name="updateTitle"]').val(),
-                    'task_description':$('textarea[name="updateDescription"]').val(),
-                    'task_duedate':$('input[name="updateDuedate"]').val(),
-                    'task_priority':$('select[name="updatePriority"]').val(),
-                    'task_status':$('select[name="updateStatus"]').val(),
+                    'project_id':projectId,
+                    'project_title':project_title,
+                    'project_description':project_description,
+                    'project_assignee':project_assignee,
+                    'project_start_date':project_start_date,
+                    'project_end_date':project_end_date,
+                    'project_duration':project_duration,
+                    'project_estimated_hours':project_estimated_hours,
+                    'project_type':project_type,
+                    'project_status':project_status,
                 },
                 success:function(response){
                     if(response.status === 'updated'){
-                        let updatedTask = response.task
-                        let convertedTaskDuedate = moment(updatedTask.task_duedate).format('DD/MM/YYYY')
-                        let table = $('#taskTable').DataTable();
-                        const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
-
+                        let updatedProject = response.project
+                        let table = $('#projectTable').DataTable()
+                        let convertedStartdate = moment(updatedProject.project_start_date).format('DD/MM/YYYY')
+                        let convertedEnddate = moment(updatedProject.project_end_date).format('DD/MM/YYYY')
+                        let projectId = updatedProject.project_id
+                        const rowIndex = table.row(`tr[data-project-id="${projectId}"]`).index();
                         table.row(rowIndex).data([
-                            updatedTask.task_title,
-                            updatedTask.task_description,
-                            convertedTaskDuedate,
-                            updatedTask.task_priority,
-                            updatedTask.task_status,
+                            `${updatedProject.project_title}`,
+                            `${updatedProject.project_description}`,
+                            `${updatedProject.project_assignee}`,
+                            `${convertedStartdate}`,
+                            `${convertedEnddate}`,
+                            `${updatedProject.project_duration}`,
+                            `${updatedProject.project_estimated_hours}`,
+                            `${updatedProject.project_type}`,
+                            `${updatedProject.project_status}`,
                             `
-                            <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                            <div class="d-flex">
+                                <div class="mx-3 ">
+                                <button class="btn btn-primary btn-sm" id="projectEditBtn" data-bs-toggle="modal" data-bs-target="#updateProjectModal" data-project-edit=${updatedProject.project_id}>
+                                <i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${updatedProject.project_id}>
+                                <i class="fas fa-trash"></i></button>
+                                </div>
+                                <div class="mx-3">
+                                <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
+                                <button class="btn btn-danger btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                                </div>
+                            </div>
                             `
                         ]).draw(false)
                     }
@@ -96,7 +141,7 @@ $(document).ready(() =>{
                 },
             })
 
-            $('#updateModal').modal('toggle')
+            $('#updateProjectModal').modal('toggle')
         }else{
             alertify.set('notifier','position','top-right')
             alertify.error('Please fill all the fields')

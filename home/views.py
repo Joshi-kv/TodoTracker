@@ -597,7 +597,7 @@ class ProjectPageView(LoginRequiredMixin,View) :
 class ProjectListView(View) : 
     def get(self,request) : 
         if request.user.is_staff == True : 
-            projects = Project.objects.all()   
+            projects = Project.objects.all().exclude(project_status='Deactivated')   
             context = []
             for project in projects : 
                 context.append({
@@ -615,7 +615,7 @@ class ProjectListView(View) :
                 })
             return JsonResponse({'projects':context},safe=False)   
         else : 
-            projects = Project.objects.filter(assignee=request.user)   
+            projects = Project.objects.filter(assignee=request.user).exclude(project_status='Deactivated')   
             context = []
             for project in projects : 
                 context.append({
@@ -686,6 +686,89 @@ class ProjectCreateView(View) :
         total_projects = Project.objects.all().count()
         return JsonResponse({'status':'success','project':context,'total':total_projects})
     
+#view to render Project edit page
+class UpdateProjectPageView(View) : 
+    def get(self,request) : 
+        project_id = request.GET.get('project_id')
+        print(project_id)
+        project = Project.objects.get(id=project_id)
+        context = []
+        context.append({
+            'project_title':project.project_title,
+            'project_description':project.project_description,
+            'project_assignee':project.assignee.id,
+            'project_start_date':project.start_date,
+            'project_end_date':project.end_date,
+            'project_type':project.project_type,
+            'project_status':project.project_status,
+            'project_duration':project.duration,
+            'project_estimated_hours':project.estimated_hours,
+        })
+        return JsonResponse({'project':context})    
+    
+
+      
+#view to update or edit project
+class UpdateProjectView(View) : 
+    def post(self,request) : 
+        project_id = request.POST.get('project_id')
+        project_title = request.POST.get('project_title')
+        project_description = request.POST.get('project_description')
+        project_assignee = request.POST.get('project_assignee')
+        project_start_date = request.POST.get('project_start_date')
+        project_end_date = request.POST.get('project_end_date')
+        project_duration = request.POST.get('project_duration')
+        project_estimated_hours = request.POST.get('project_estimated_hours')
+        project_type = request.POST.get('project_type')
+        project_status = request.POST.get('project_status')
+        
+
+        
+        project_update = Project.objects.get(id=project_id)
+
+        #updating project
+        project_update.id = project_id
+        project_update.project_title = project_title
+        project_update.project_description = project_description
+        project_update.assignee = User.objects.get(id=project_assignee)
+        project_update.start_date = project_start_date
+        project_update.end_date = project_end_date 
+        project_update.duration = project_duration 
+        project_update.estimated_hours = project_estimated_hours 
+        project_update.project_status = project_status
+        project_update.project_type = project_type
+        project_update.save()
+        
+        # if task_status == 'Completed' : 
+        #     activity_log = ActivityLog.objects.create(
+        #     user = request.user,
+        #     activity = f' "{task_title}" task completed'
+        #     )
+        
+        #     activity_log.save()
+        # else : 
+        #     activity_log = ActivityLog.objects.create(
+        #         user = request.user,
+        #         activity = f' "{task_title}" task updated'
+        #     )
+            
+        #     activity_log.save()
+        
+        context = {
+            'project_id': project_update.id,
+            'project_title': project_update.project_title,
+            'project_description': project_update.project_description,
+            'project_assignee': project_update.assignee.username,
+            'project_start_date': project_update.start_date,
+            'project_end_date': project_update.end_date,
+            'project_duration': project_update.duration,
+            'project_estimated_hours': project_update.estimated_hours,
+            'project_status': project_update.project_status,
+            'project_type': project_update.project_type
+        }
+        
+        return JsonResponse({'status':'updated','project':context})  
+        
 #view to delete project
 class ProjectDeleteView(View) : 
     def post(self,request) : 

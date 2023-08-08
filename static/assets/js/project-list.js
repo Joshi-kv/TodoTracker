@@ -37,7 +37,8 @@ $(document).ready(() =>{
                     `
                     <div class="d-flex">
                         <div class="mx-3 ">
-                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-primary btn-sm" id="projectEditBtn" data-bs-toggle="modal"  data-bs-target="#updateProjectModal" data-project-edit=${project.project_id}>
+                        <i class="fas fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
                         <i class="fas fa-trash"></i></button>
                         </div>
