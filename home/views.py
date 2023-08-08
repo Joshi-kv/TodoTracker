@@ -677,6 +677,31 @@ class ProjectCreateView(View) :
             'estimatedHours':new_project.estimated_hours,
         }
         
+        #sending email to assignee
+        email_context = {
+            'project_title':project_title,
+            'project_assignee':User.objects.get(id=project_assignee).username,
+            'duration':duration,
+            
+        }
+        
+        super_user = User.objects.get(id=request.user.id)
+        assignee = User.objects.get(id=project_assignee)
+        subject = f'Regarding {project_title} project assinment'
+        message = get_template('project-email.html').render(email_context)
+        from_mail = super_user.email
+        to_mail = assignee.email
+        
+        email = EmailMessage(
+            subject,
+            message,
+            from_email=from_mail,
+            to=[to_mail],
+            reply_to=[from_mail]
+        )
+        email.content_subtype = 'html'
+        email.send()
+        
         # activity_log = ActivityLog.objects.create(
         #     user = user,
         #     activity=f'"{task_title}" task added'
