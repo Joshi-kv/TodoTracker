@@ -24,12 +24,201 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
+      <h3 class="mt-5" style="color:#012970">Project Summary</h3>
       <div class="row">
 
         <!-- Left side columns -->
         <div class="col-lg-8">
           <div class="row">
 
+
+            <div class="row">
+              <div class="col-xxl-4 col-md-6">
+                <div class="card info-card sales-card">
+  
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="totalProjectFilterList">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+  
+                      <li class="dropdown-item">Show all</li>
+                      <li class="dropdown-item">Today</li>
+                      <li class="dropdown-item">This Month</li>
+                      <li class="dropdown-item">This Year</li>
+                    </ul>
+                  </div>
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Total <br> Projects </span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-rectangle-list"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id='totalProject'>0</h6>
+  
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Sales Card -->
+  
+              <!-- Revenue Card -->
+              <div class="col-xxl-4 col-md-6">
+                <div class="card info-card revenue-card">
+  
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="completedProjectFilterList">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+  
+                      <li class="dropdown-item">Show all</li>
+                      <li class="dropdown-item">Today</li>
+                      <li class="dropdown-item">This Month</li>
+                      <li class="dropdown-item">This Year</li>
+                    </ul>
+                  </div>
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Completed <br> Projects</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-circle-check"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="completedProject">0</h6>
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Revenue Card -->
+  
+              <!-- Customers Card -->
+              <div class="col-xxl-4 col-xl-12 ">
+  
+                <div class="card info-card customers-card">
+  
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="pendingProjectFilterList">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+  
+                      <li class="dropdown-item">Show all</li>
+                      <li class="dropdown-item">Today</li>
+                      <li class="dropdown-item">This Month</li>
+                      <li class="dropdown-item">This Year</li>
+                    </ul>
+                  </div>
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Pending <br> Projects</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-clock-rotate-left fa-flip-horizontal"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="pendingProject">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+  
+              <!-- Customers Card -->
+              <div class="col-xxl-4 col-xl-12 ">
+  
+                <div class="card info-card inprogress-card">
+  
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="onHoldProjectFilterList">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+  
+                      <li class="dropdown-item">Show all</li>
+                      <li class="dropdown-item">Today</li>
+                      <li class="dropdown-item">This Month</li>
+                      <li class="dropdown-item">This Year</li>
+                    </ul>
+                  </div>
+  
+                  <div class="card-body">
+                    <h5 class="card-title">On Hold <br> Projects</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-bars-progress"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="onHoldProject">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+  
+              <!-- Customers Card -->
+              <div class="col-xxl-4 col-xl-12 ">
+  
+                <div class="card info-card upcoming-card">
+  
+                  <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="canceledProjectFilterList">
+                      <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                      </li>
+  
+                      <li class="dropdown-item">Show all</li>
+                      <li class="dropdown-item">Today</li>
+                      <li class="dropdown-item">This Month</li>
+                      <li class="dropdown-item">This Year</li>
+                    </ul>
+                  </div>
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Canceled <br> Projects</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="canceledProject">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><br><br> <!-- End Customers Card --> 
+            </div>
+
+            
+
+            <h3 class="mt-5" style="color:#012970">Task Summary</h3>
             <!-- Sales Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">

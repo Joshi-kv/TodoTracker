@@ -450,6 +450,7 @@ class FilterRecentActivityView(View) :
 #view to filter tasks listed in dashboard
 class FilterDashboardTaskView(View) : 
     def get(self,request) : 
+        
         current_date = date.today()
         current_day = current_date.day
         current_month = current_date.month
@@ -458,54 +459,106 @@ class FilterDashboardTaskView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        #conditions to filter tasks based on day,month and year 
-        if filter_option == 'Today' : 
-            tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
-            context = []
-            for task in tasks : 
-                context.append({
-                    'title':task.task_title,
-                    'description':task.task_description,
-                    'duedate':task.task_duedate,
-                    'status':task.task_status
-                })
-            return JsonResponse({'status':'success','tasks':context})
+        if user.is_staff == True : 
         
-        elif filter_option == 'This Month' : 
-            tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
-            context = []
-            for task in tasks : 
-                context.append({
-                    'title':task.task_title,
-                    'description':task.task_description,
-                    'duedate':task.task_duedate,
-                    'status':task.task_status
-                })
-            return JsonResponse({'status':'success','tasks':context})
-        
-        
-        elif filter_option == 'This Year' : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
-            context = []
-            for task in tasks : 
-                context.append({
-                    'title':task.task_title,
-                    'description':task.task_description,
-                    'duedate':task.task_duedate,
-                    'status':task.task_status
-                })
-            return JsonResponse({'status':'success','tasks':context})
+            #conditions to filter tasks based on day,month and year 
+            if filter_option == 'Today' : 
+                tasks =Todo.objects.filter(created_date__day=current_day,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            
+            elif filter_option == 'This Month' : 
+                tasks =Todo.objects.filter(created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            
+            
+            elif filter_option == 'This Year' : 
+                tasks =Todo.objects.filter(created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            else : 
+                tasks =Todo.objects.filter(created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})           
         else : 
-            tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
-            context = []
-            for task in tasks : 
-                context.append({
-                    'title':task.task_title,
-                    'description':task.task_description,
-                    'duedate':task.task_duedate,
-                    'status':task.task_status
-                })
-            return JsonResponse({'status':'success','tasks':context})
+                
+            #conditions to filter tasks based on day,month and year 
+            if filter_option == 'Today' : 
+                tasks =Todo.objects.filter(user=user,created_date__day=current_day,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-created_date')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            
+            elif filter_option == 'This Month' : 
+                tasks =Todo.objects.filter(user=user,created_date__month=current_month,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            
+            
+            elif filter_option == 'This Year' : 
+                tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
+            else : 
+                tasks =Todo.objects.filter(user=user,created_date__year=current_year).exclude(task_status='Deactivated').order_by('-task_duedate__day','-task_duedate__month')
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'title':task.task_title,
+                        'description':task.task_description,
+                        'duedate':task.task_duedate,
+                        'status':task.task_status
+                    })
+                return JsonResponse({'status':'success','tasks':context})
         
         
 #views to list latest five featured news in dashboard
