@@ -137,6 +137,39 @@ class DashboardTaskView(View) :
                     'status':task.task_status
                 })
             return JsonResponse({'status':'success','tasks':context})
+
+#view to list projects in dashboard
+class DashboardProjectView(View) : 
+    def get(self,request) : 
+        if request.user.is_staff == True : 
+            projects = Project.objects.all().exclude(project_status='Deactivated').order_by('-created_at','-updated_at')[:5]
+            
+            context = []
+            
+            for project in projects : 
+                context.append({
+                    'project_title':project.project_title,
+                    'project_description':project.project_description,
+                    'project_assignee':project.assignee.username,
+                    'project_duration':project.duration,
+                    'project_status':project.project_status
+                })
+            return JsonResponse({'status':'success','projects':context})
+        else : 
+            user = request.user
+            projects = Project.objects.filter(user=user).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')[:5]
+            
+            context = []
+            
+            for project in projects : 
+                context.append({
+                    'project_title':project.project_title,
+                    'project_description':project.project_description,
+                    'project_assignee':project.assignee.username,
+                    'project_duration':project.duration,
+                    'project_status':project.project_status
+                })
+            return JsonResponse({'status':'success','projects':context})
         
 #view to filter total projects
 class TotalProjectFilterView(View) : 

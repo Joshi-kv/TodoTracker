@@ -410,6 +410,49 @@
 
                 <div class="filter">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="projectFilter">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li class="dropdown-item">Show all</li>
+                    <li class="dropdown-item">Today</li>
+                    <li class="dropdown-item">This Month</li>
+                    <li class="dropdown-item">This Year</li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Projects | <span id="filterOption">Recent</span> <span id="projectClearFilter" class="mx-5 clear-filter-btn">Clear Filter</span></h5>
+
+                  <table class="table datatable" id="projectTable">
+                    <thead>
+                      <tr id="projectTableHeading">
+
+                        <th scope="col">No.</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Assignee</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboardProjects">
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+            
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" id="taskFilter">
                     <li class="dropdown-header text-start">
                       <h6>Filter</h6>
@@ -743,4 +786,5 @@
   <script src="{% static 'assets/js/dashboard-filter.js' %}"></script>
   <script src="{% static 'assets/js/news-dashboard.js' %}"></script>
   <script src="{% static 'assets/js/dashboard-task-view.js' %}"></script>
+  <script src="{% static 'assets/js/dashboard-project-view.js' %}"></script>
 {% endblock content %}

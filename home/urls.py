@@ -9,6 +9,7 @@ urlpatterns = [
     path('pending-notifications/',views.PendingTasksNotificationView.as_view(),name='pending-notifications'),
     path('clear-notifications/',views.ClearAllNotifications.as_view(),name='clear-notifications'),
     path('dashboard-task/',views.DashboardTaskView.as_view(),name='dashboard-task'),
+    path('dashboard-project/',views.DashboardProjectView.as_view(),name='dashboard-project'),
     path('filter-total-projects/',views.TotalProjectFilterView.as_view(),name='filter-total-project'),
     path('filter-completed-projects/',views.CompletedProjectFilterView.as_view(),name='filter-completed-project'),
     path('filter-pending-projects/',views.PendingProjectFilterView.as_view(),name='filter-pending-project'),
