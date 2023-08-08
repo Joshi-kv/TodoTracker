@@ -44,7 +44,7 @@ $(document).ready(() =>{
                         </div>
                         <div class="mx-3">
                         <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
-                        <button class="btn btn-danger btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                        <button class="btn btn-warning btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
                         </div>
                     </div>
                     `
@@ -98,43 +98,63 @@ $(document).ready(() =>{
                     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
                 }
             })            
+            $('input[name="start_date"]').on('change',function(){
+                let start_date = $(this).val()
+                let convertedDate = moment(start_date).format('DD/MM/YYYY')
+                table.column(3).search(convertedDate).draw()
+                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                if(start_date == ''){
+                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                }
+            })            
+            $('input[name="end_date"]').on('change',function(){
+                let end_date = $(this).val()
+                let convertedDate = moment(end_date).format('DD/MM/YYYY')
+                table.column(4).search(convertedDate).draw()
+                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                if(end_date == ''){
+                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                }
+            })            
 
 
-        //     // //filter date range
-        //     // $('#dateSearch').off().on('click',function(){
-        //     //     $.ajax({
-        //     //         url:'/date-range-filter',
-        //     //         type:'get',
-        //     //         dataType:'json',
-        //     //         data:{
-        //     //             start_date:$('#startDate').val(),
-        //     //             end_date:$('#endDate').val(),
-        //     //         },
-        //     //         success:function(response){
-        //     //             if(response.tasks.length > 0){
-        //     //                 let date = []
-        //     //                 response.tasks.forEach((task) => {
-        //     //                     table = $('#taskTable').DataTable()                        
-        //     //                     let convertedDueDate = moment(task.task_duedate).format('DD/MM/YYYY')
-        //     //                     date.push('(?=.*' + convertedDueDate + ')');
-        //     //                 })
-        //     //                 table.column(2).search(date.join('|'),true,false,true).draw()
-        //     //                 if(date){
-        //     //                     hidePagination(table,table.rows({search:'applied'}).count())
-        //     //                 }else{
-        //     //                     hidePagination(table,table.rows({search:'applied'}).count())
-        //     //                 }
-        //     //                 $('#no-data').hide()
-        //     //                 $('tbody').show()
-        //     //             }else{
-        //     //                 $('#no-data').show()
-        //     //                 $('tbody').hide()
-        //     //                 table = $('#taskTable').DataTable()  
-        //     //                 table.column(2).search('').draw()
-        //     //             }
-        //     //         }
-        //     //     })
-        //     // })
+            // //filter date range
+            // $('#dateSearchProject').off().on('click',function(){
+            //     $.ajax({
+            //         url:'/project-date-range-filter',
+            //         type:'get',
+            //         dataType:'json',
+            //         data:{
+            //             start_date:$('#start_date').val(),
+            //             end_date:$('#end_date').val(),
+            //         },
+            //         success:function(response){
+            //             if(response.projects.length > 0){
+            //                 let date = []
+            //                 response.projects.forEach((project) => {
+            //                     table = $('#projectTable').DataTable()                        
+            //                     let convertedStartDate = moment(project.project_start_date).format('DD/MM/YYYY')
+            //                     let convertedEndDate = moment(project.project_enddate).format('DD/MM/YYYY')
+            //                     date.push('(?=.*' + convertedStartDate + convertedEndDate + ')');
+            //                 })
+            //                 table.column(3).search(date.join('|'),true,false,true).draw()
+            //                 table.column().search(date.join('|'),true,false,true).draw()
+            //             //     if(date){
+            //             //         hidePagination(table,table.rows({search:'applied'}).count())
+            //             //     }else{
+            //             //         hidePagination(table,table.rows({search:'applied'}).count())
+            //             //     }
+            //             //     $('#no-data').hide()
+            //             //     $('tbody').show()
+            //             // }else{
+            //             //     $('#no-data').show()
+            //             //     $('tbody').hide()
+            //             //     table = $('#projectTable').DataTable()  
+            //             //     table.column(2).search('').draw()
+            //             }
+            //         }
+            //     })
+            // })
 
         })
     
@@ -173,8 +193,10 @@ function hideProjectTablePagination(table,tasks){
 //function to clear filter
 function clearFilters() {
     table.column(8).search('').draw() // Clear status filter
-    table.column(7).search('').draw() // Clear priority filter
-    table.column(2).search('').draw() // Clear date filter
+    table.column(7).search('').draw() // Clear type filter
+    table.column(2).search('').draw() // Clear assignee filter
+    table.column(3).search('').draw() // Clear start date filter
+    table.column(4).search('').draw() // Clear end date filter
     table.draw() 
   }
 
@@ -182,8 +204,9 @@ function clearFilters() {
 $('#clearFilterBtn').on('click',function(){
     $('#filterProjectStatus').val('')
     $('#filterProjectType').val('')
-    $('#startDate').val('')
-    $('#endDate').val('')
+    $('#filterAssignee').val('')
+    $('#project_start_date').val('')
+    $('#project_end_date').val('')
     $('#no-data').hide()
     $('tbody').show()
     if(table.rows().count() > 10 ){

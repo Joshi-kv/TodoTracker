@@ -124,29 +124,24 @@
               <div class="row">
                 <div class="col-md-2">
                   <label for="">Start Date : </label>
-                  <input class="form-control " id="startDate" type="date" name="startDate" >
+                  <input class="form-control " id="project_start_date" type="date" name="start_date" >
                 </div>
                 <div class="col-md-2">
                   <label for="">End Date : </label>
-                  <input class="form-control " id="endDate" type="date" name="endDate" >
+                  <input class="form-control " id="project_end_date" type="date" name="end_date" >
                 </div>
-                <divj class="col-md-2">
-                  <button class="btn btn-sm btn-primary mt-4 me-5 search-btn " id="dateSearch">Search</button>
-                  {% comment %} <span><button class="btn btn-sm btn-info mx-5 my-0 refresh-btn text-white text-bold " id="refresh"><i class="fa-sharp fa-solid fa-rotate-right"></i></button></span> {% endcomment %}
-
-                </divj>
+                {% if request.user.is_staff %}
                 <div class="col-md-2">
-                  {% if request.user.is_staff %}
-                  <div >
-                    <label for="">Assignee : </label>
-                    <select class="form-select dataTables_filter me-5" id="filterAssignee" name="filterAssignee" aria-label="Default select example" >
-                        <option value=''>Show all</option>
-                        {% for assignee in assignees  %}
-                        <option value={{assignee}}>{{assignee}}</option>
-                        {% endfor %}
-                      </select>
-                  </div><br>
-                  {% endif %}
+                  <label for="">Assignee : </label>
+                  <select class="form-select dataTables_filter me-5" id="filterAssignee" name="filterAssignee" aria-label="Default select example" >
+                      <option value=''>Show all</option>
+                      {% for assignee in assignees  %}
+                      <option value={{assignee}}>{{assignee}}</option>
+                      {% endfor %}
+                    </select>
+                </div><br>
+                {% endif %}
+                <div class="col-md-2">
                   <label for="">Status : </label>
                   <select class="form-select dataTables_filter me-5" id="filterProjectStatus" name="filterProjectStatus" aria-label="Default select example" >
                       <option value=''>Show all</option>

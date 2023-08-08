@@ -732,6 +732,27 @@ class UpdateProjectPageView(View) :
         return JsonResponse({'project':context})    
     
 
+# #view to filter projects based on date range
+# class ProjectDateRangeFilter(View) : 
+#     def get(self,request) : 
+#         start_date = request.GET.get('start_date')
+#         end_date = request.GET.get('end_date')
+        
+#         #filtering tasks using date range by range orm method
+#         projects = Project.objects.filter(task_duedate__range=(start_date,end_date))
+#         context = []
+#         for task in tasks : 
+#             context.append({
+#                 'task_id':task.id,
+#                 'task_title':task.task_title,
+#                 'task_descritpion':task.task_description,
+#                 'task_duedate':task.task_duedate,
+#                 'task_priority':task.task_priority,
+#                 'task_status':task.task_status,
+#             })
+        
+#         return JsonResponse({'status':'success','tasks':context})
+
       
 #view to update or edit project
 class UpdateProjectView(View) : 

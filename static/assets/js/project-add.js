@@ -146,7 +146,7 @@ $(document).ready(() => {
                             </div>
                             <div class="mx-3">
                             <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
-                            <button class="btn btn-danger btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                            <button class="btn btn-warning btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
                             </div>
                         </div>
                         `
