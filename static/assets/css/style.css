@@ -1375,19 +1375,21 @@ h6 {
   text-align: center  ;
 }
 
-.pending{
+.pending,.canceled{
   background: #DC3545;
   color: #fff;
   border-radius: 7px;
   width: 10px;
 }
-.upcoming{
+
+
+.upcoming,.pending-project{
   background: #FFC107;
   color: #fff;
   border-radius: 7px;
   
 }
-.in-progress{
+.in-progress,.onhold{
   background: #007BFF;
   color: #fff;
   border-radius: 7px;

@@ -707,6 +707,127 @@ class FilterRecentActivityView(View) :
                     })
                 return JsonResponse({'status':'success','filtered_recent_logs':context})
     
+#view to filter projects listed in dashboard
+class FilterDashboardProjectView(View) : 
+    def get(self,request) : 
+        
+        current_date = date.today()
+        current_day = current_date.day
+        current_month = current_date.month
+        current_year = current_date.year
+        
+        user = request.user
+        filter_option = request.GET.get('option')
+        
+        if user.is_staff == True : 
+        
+            #conditions to filter tasks based on day,month and year 
+            if filter_option == 'Today' : 
+                projects =Project.objects.filter(created_at__day=current_day,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            
+            elif filter_option == 'This Month' : 
+                projects = Project.objects.filter(created_at__month=current_month,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            
+            
+            elif filter_option == 'This Year' : 
+                projects =Project.objects.filter(created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            else : 
+                projects = Project.objects.filter(created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                for project in projects : 
+                    context = []
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})           
+        else : 
+                
+            #conditions to filter projects based on day,month and year 
+            if filter_option == 'Today' : 
+                projects = Project.objects.filter(user=user,created_at__day=current_day,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            
+            elif filter_option == 'This Month' : 
+                projects = Project.objects.filter(user=user,created_at__month=current_month,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            
+            
+            elif filter_option == 'This Year' : 
+                projects = Project.objects.filter(user=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+            else : 
+                projects = Project.objects.filter(user=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                context = []
+                for project in projects : 
+                    context.append({
+                        'project_title':project.project_title,
+                        'project_description':project.project_description,
+                        'project_assignee':project.assignee.username,
+                        'project_duration':project.duration,
+                        'project_status':project.project_status
+                    })
+                return JsonResponse({'status':'success','projects':context})
+    
 #view to filter tasks listed in dashboard
 class FilterDashboardTaskView(View) : 
     def get(self,request) : 

@@ -22,6 +22,7 @@ urlpatterns = [
     path('filter-upcoming-tasks/',views.FilterUpcomingTaskView.as_view(),name='filter-upcoming-tasks'),
     path('activity-logs/',views.ActivityLogView.as_view(),name='activity-logs'),
     path('recent-logs-filter',views.FilterRecentActivityView.as_view(),name='recent-log-filter'),
+    path('filter-dashboard-project/',views.FilterDashboardProjectView.as_view(),name='filter-dashboard-project'),
     path('filter-dashboard-task/',views.FilterDashboardTaskView.as_view(),name='filter-dashboard-task'),
     path('news-dashboard-view/',views.NewsDashboardView.as_view(),name='news-dashboard'),
     path('filter-news/',views.FilterNewsView.as_view(),name='filter-news-view'),

@@ -11,7 +11,7 @@ $(document).ready(() => {
         data.projects.forEach((project,index) => {
             let projectDiv = $('#dashboardProjects')
             let status;
-                switch(project.status){
+                switch(project.project_status){
                     case 'Pending' : 
                         status = 'pending-project'
                         break;
@@ -19,8 +19,8 @@ $(document).ready(() => {
                     case 'On Hold':
                         status = 'onhold'
                         break;
-                    case 'Upcoming' :
-                        status = 'upcoming-project'
+                    case 'Canceled' :
+                        status = 'canceled'
                         break;
                     case 'Completed' :
                         status = 'completed'
@@ -66,9 +66,9 @@ $(document).ready(() => {
         return e.target || e.srcElement; 
     }
     
-    //ajax request for filter tasks
-    var taskFilter = document.getElementById('taskFilter')
-    taskFilter.onclick = function(e){
+    //ajax request for filter projects
+    var projectFilter = document.getElementById('projectFilter')
+    projectFilter.onclick = function(e){
         var target = getEventTarget(e)
         $.ajax({
             type:'get',
@@ -84,7 +84,7 @@ $(document).ready(() => {
                     response.projects.forEach((project,index) => {
                         let projectDiv = $('#dashboardProjects')
                         let status;
-                        switch(project.status){
+                        switch(project.project_status){
                             case 'Pending' : 
                                 status = 'pending-project'
                                 break;
@@ -92,8 +92,8 @@ $(document).ready(() => {
                             case 'On Hold':
                                 status = 'onhold'
                                 break;
-                            case 'Upcoming' :
-                                status = 'upcoming-project'
+                            case 'Canceled' :
+                                status = 'canceled'
                                 break;
                             case 'Completed' :
                                 status = 'completed'
@@ -138,8 +138,8 @@ $(document).ready(() => {
     }
 
     //function to clear filters
-    $('#taskClearFilter').on('click',function(){
-        $('#dashboardTasks').empty()
+    $('#projectClearFilter').on('click',function(){
+        $('#dashboardProjects').empty()
         $('#filterOption').html('Recent')
         const url = 'http://127.0.0.1:8000/dashboard-project/'
         fetch(url)
@@ -149,7 +149,7 @@ $(document).ready(() => {
                 data.projects.forEach((project,index) => {
                     let projectDiv = $('#dashboardProjects')
                     let status;
-                    switch(project.status){
+                    switch(project.project_status){
                         case 'Pending' : 
                             status = 'pending-project'
                             break;
@@ -157,8 +157,8 @@ $(document).ready(() => {
                         case 'On Hold':
                             status = 'onhold'
                             break;
-                        case 'Upcoming' :
-                            status = 'upcoming-project'
+                        case 'Canceled' :
+                            status = 'canceled'
                             break;
                         case 'Completed' :
                             status = 'completed'
