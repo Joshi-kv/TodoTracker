@@ -58,7 +58,7 @@
                     <div class="modal-body">
                       <div class="card-body">
                         <h5 class="card-title">Create Sub Task</h5>
-                        <form class="row g-3" method="post" id="projectForm">
+                        <form class="row g-3" method="post" id="subTaskForm">
                           {% csrf_token %}
                           <div class="col-12">
                             <label for="subTaskTitle" class="form-label"> Title</label>
@@ -124,7 +124,11 @@
                     <th scope="col">Title</th>
                     <th scope="col">Priority</th>
                     <th scope="col">Status</th>
+                    {% if request.user.is_staff == False %}
                     <th scope="col">Actions</th>
+                    {% else %}
+
+                    {% endif %}
                   </tr>
                   {% comment %} <tr>
                     <td colspan='6' class="text-center" id="no-data" style='display:none'>No data available</td>
@@ -148,7 +152,7 @@
                     <div class="modal-body">
                       <div class="card-body">
                         <h5 class="card-title">Edit Sub Task</h5>
-                        <form class="row g-3" method="post" id="updateProjectForm">
+                        <form class="row g-3" method="post" id="updateSubTaskForm">
                           {% csrf_token %}
                           <div class="col-12">
                             <label for="" class="form-label">Title</label>
@@ -192,7 +196,7 @@
     </section>
 
     <!--Delete modal-->
-    <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteSubTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -217,6 +221,9 @@
 
   {% include 'footer.html' %}
 
+  <script src="{% static 'assets/js/subtask-list.js' %}"></script>
+  <script src="{% static 'assets/js/subtask-add.js' %}"></script>
+  <script src="{% static 'assets/js/subtask-action.js' %}"></script>
 
 {% endblock content %}
 

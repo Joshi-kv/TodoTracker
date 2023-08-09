@@ -35,6 +35,19 @@ class Todo(models.Model) :
     def __str__(self) : 
         return f'{self.task_title}'
     
+#model for sub tasks    
+class SubTask(models.Model): 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    task = models.ForeignKey(Todo, on_delete=models.CASCADE)
+    sub_task_title = models.CharField(max_length=256)
+    sub_task_priority = models.CharField(max_length=150)
+    sub_task_status = models.CharField(max_length=150)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.task} - {self.sub_task_title}'
+    
 class TaskAttachment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task = models.ForeignKey(Todo, on_delete=models.CASCADE)

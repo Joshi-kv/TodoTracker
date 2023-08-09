@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -1293,7 +1293,6 @@ class TaskDetailPageView(View) :
 #view to list tasks in datatable
 class TaskListView(View) : 
     def get(self,request,project_id) : 
-        print(project_id)
         user_obj = request.user
         if user_obj.is_staff == True : 
             tasks = Todo.objects.filter(project=project_id).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
@@ -1505,6 +1504,95 @@ class SubTaskPageView(View) :
             'task' : task
         }
         return render(request,'sub-task.html',context)
+    
+#view for sub tasks listing 
+class SubTaskListView(View) : 
+    def get(self,request,task_id) : 
+
+        sub_tasks = SubTask.objects.filter(task=task_id).exclude(sub_task_status='Deactivated')
+        
+        context = []
+        for sub_task in sub_tasks :
+            context.append({
+                'sub_task_id': sub_task.id,
+                'sub_task_title':sub_task.sub_task_title,
+                'sub_task_priority':sub_task.sub_task_priority,
+                'sub_task_status':sub_task.sub_task_status,
+                'is_staff':request.user.is_staff,
+            })
+            
+        return JsonResponse({'status':'success','sub_tasks':context})
+    
+#view to update subtask 
+class UpdateSubTaskPageView(View) :
+    def get(self,request,task_id) : 
+        sub_task_id = request.GET.get('sub_task_id')
+        sub_task = SubTask.objects.get(id=sub_task_id)
+        context = {
+            'sub_task_id': sub_task.id,
+            'sub_task_title': sub_task.sub_task_title,
+            'sub_task_status': sub_task.sub_task_status,
+            'sub_task_priority': sub_task.sub_task_priority,
+        }
+        return JsonResponse({'status':'success','sub_task':context})
+         
+#view to update subtask 
+class UpdateSubTaskView(View) : 
+    def post(self, request,task_id) : 
+        sub_task_id = request.POST.get('sub_task_id')
+        sub_task = SubTask.objects.get(id=sub_task_id)
+        
+        sub_task_title = request.POST.get('sub_task_title')
+        sub_task_priority = request.POST.get('sub_task_priority')
+        sub_task_status = request.POST.get('sub_task_status')
+    
+        sub_task.sub_task_title = sub_task_title
+        sub_task.sub_task_priority = sub_task_priority
+        sub_task.sub_task_status = sub_task_status
+        sub_task.save()
+        
+        context = {
+            'sub_task_id':sub_task.id,
+            'sub_task_title':sub_task.sub_task_title,
+            'sub_task_priority':sub_task.sub_task_priority,
+            'sub_task_status':sub_task.sub_task_status,
+        }
+        
+        return JsonResponse({'status':'success','sub_task':context})
+    
+#view to delete sub tasks
+class SubTaskDeleteView(View) : 
+    def post(self,request,task_id) : 
+        sub_task_id = request.POST.get('sub_task_id')
+        sub_task = SubTask.objects.get(id=sub_task_id,task=task_id)
+        sub_task.sub_task_status = 'Deactivated'
+        sub_task.save()
+        return JsonResponse({'status':'success'})
+    
+#view to create sub tasks 
+class SubTaskCreateView(View) : 
+    def post(self,request,task_id) : 
+        task = Todo.objects.get(id=task_id,user=request.user)
+        sub_task_title = request.POST.get('sub_task_title')
+        sub_task_priority = request.POST.get('sub_task_priority')
+        sub_task_status = request.POST.get('sub_task_status')
+        
+        new_sub_task = SubTask.objects.create(
+            user = request.user,
+            task = task,
+            sub_task_title = sub_task_title,
+            sub_task_priority = sub_task_priority,
+            sub_task_status = sub_task_status
+        )
+        new_sub_task.save()
+        context = {
+            'sub_task_id': new_sub_task.id,
+            'sub_task_title': new_sub_task.sub_task_title,
+            'sub_task_priority':new_sub_task.sub_task_priority,
+            'sub_task_status': new_sub_task.sub_task_status,
+        }
+        
+        return JsonResponse({'status':'success','sub_task':context})
     
 #view to render faq page
 class FaqPageView(View) : 
