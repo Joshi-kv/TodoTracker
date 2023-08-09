@@ -43,7 +43,7 @@ $(document).ready(() =>{
                         <i class="fas fa-trash"></i></button>
                         </div>
                         <div class="mx-3">
-                        <button class="btn btn-info btn-sm"><a href="/todo/${projectId}"><i class="fas fa-list"></i></a></button>
+                        <button class="btn btn-info btn-sm"><a href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
                         <button class="btn btn-warning btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ $(document).ready(() =>{
                     `${project.project_type}`,
                     `${project.project_status}`,
                     `
-                    <button class="btn btn-info btn-sm"><a href="/todo/${projectId}"><i class="fas fa-list"></i></a></button>
+                    <button class="btn btn-info btn-sm"><a href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
                     <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
                     `
                 ]).node()

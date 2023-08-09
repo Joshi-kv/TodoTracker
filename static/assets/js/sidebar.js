@@ -14,7 +14,7 @@ $(document).ready(() => {
             navLink.classList.add('active-menu')
         }
 
-        if(windowPathname.includes('todo')){
+        if(windowPathname.includes('project') || windowPathname.includes('projects') || windowPathname.includes('tasks') || windowPathname.includes('task')) {
             document.getElementById('projectMenu').classList.add('active-menu')
         }
     })
