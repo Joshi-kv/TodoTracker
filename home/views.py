@@ -1491,6 +1491,20 @@ class TaskDeleteView(View) :
             activity_log.save()
             total_tasks = Todo.objects.filter(user=task.user).exclude(task_status='Deactivated').count()
             return JsonResponse({'status':'success','total_tasks':total_tasks})   
+        
+#view to render sub task page 
+class SubTaskPageView(View) : 
+    def get(self,request,task_id) : 
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project_id = Todo.objects.get(id=task_id).project.id 
+        task = Todo.objects.get(id=task_id)
+        context = {
+            'current_user' : current_user,
+            'project_id' : project_id,
+            'task' : task
+        }
+        return render(request,'sub-task.html',context)
     
 #view to render faq page
 class FaqPageView(View) : 

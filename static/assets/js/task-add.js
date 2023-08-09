@@ -104,7 +104,8 @@ $(document).ready(() => {
                             </div>
                             <div class="mx-3">
                                 <button class="btn btn-success btn-sm" >
-                                <i class="fas fa-list"></i></button>
+                                <a href="/task/sub-task/${taskId}/" class="text-white"><i class="fas fa-list"></i></a>
+                                </button>
                                 <button class="btn btn-primary btn-sm mt-2">
                                 <a class="text-white" href="/project/task-detail/${taskId}/"><i class="fas fa-eye"></i></a>
                                 </button>

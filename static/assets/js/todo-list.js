@@ -34,7 +34,9 @@ $(document).ready(() =>{
                     `${task.task_priority}`,
                     `${task.task_status}`,
                     `
-                    <button class="btn btn-success btn-sm"><i class="fas fa-list"></i></button>
+                    <button class="btn btn-success btn-sm">
+                    <a href="/task/sub-task/${taskId}/" class="text-white"><i class="fas fa-list"></i></a>
+                    </button>
                     <button class="btn btn-primary btn-sm" my-1 text-white">
                     <a class="text-white" href="/project/task-detail/${taskId}"><i class="fas fa-eye"></i></a>
                     </button>
@@ -61,7 +63,8 @@ $(document).ready(() =>{
                         </div>
                         <div class="mx-3">
                             <button class="btn btn-success btn-sm">
-                            <i class="fas fa-list"></i></button>
+                            <a href="/task/sub-task/${taskId}/" class="text-white"><i class="fas fa-list"></i></a>
+                            </button>
                             <button class="btn btn-primary btn-sm mt-2 text-white">
                             <a class="text-white" href="/project/task-detail/${taskId}/"><i class="fas fa-eye"></i></a>
                             </button>
