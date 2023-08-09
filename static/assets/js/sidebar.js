@@ -13,6 +13,10 @@ $(document).ready(() => {
         if(navLink.getAttribute('href') == windowPathname ){
             navLink.classList.add('active-menu')
         }
+
+        if(windowPathname.includes('todo')){
+            document.getElementById('projectMenu').classList.add('active-menu')
+        }
     })
 
 });

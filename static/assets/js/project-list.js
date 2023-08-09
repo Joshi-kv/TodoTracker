@@ -63,7 +63,7 @@ $(document).ready(() =>{
                     `${project.project_type}`,
                     `${project.project_status}`,
                     `
-                    <button class="btn btn-info btn-sm"><a href="/todo/"><i class="fas fa-list"></i></a></button>
+                    <button class="btn btn-info btn-sm"><a href="/todo/${projectId}"><i class="fas fa-list"></i></a></button>
                     <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
                     `
                 ]).node()
@@ -98,7 +98,7 @@ $(document).ready(() =>{
                     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
                 }
             })            
-            $('input[name="start_date"]').on('change',function(){
+            $('input[name="project_start_date"]').on('change',function(){
                 let start_date = $(this).val()
                 let convertedDate = moment(start_date).format('DD/MM/YYYY')
                 table.column(3).search(convertedDate).draw()
@@ -107,7 +107,7 @@ $(document).ready(() =>{
                     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
                 }
             })            
-            $('input[name="end_date"]').on('change',function(){
+            $('input[name="project_end_date"]').on('change',function(){
                 let end_date = $(this).val()
                 let convertedDate = moment(end_date).format('DD/MM/YYYY')
                 table.column(4).search(convertedDate).draw()

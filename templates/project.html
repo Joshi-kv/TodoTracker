@@ -105,8 +105,8 @@
                                   <option value=''>select status of the project</option>
                                   <option value="On Hold" >On Hold</option>
                                   <option value="Pending">Pending</option>
-                                  <option value="Completed">Completed</option>
-                                  <option value="Canceled">Canceled</option>
+                                  {% comment %} <option value="Completed">Completed</option>
+                                  <option value="Canceled">Canceled</option> {% endcomment %}
                                 </select>
                           </div>
                           <div class="modal-footer">
@@ -124,11 +124,11 @@
               <div class="row">
                 <div class="col-md-2">
                   <label for="">Start Date : </label>
-                  <input class="form-control " id="project_start_date" type="date" name="start_date" >
+                  <input class="form-control " id="project_start_date" type="date" name="project_start_date" >
                 </div>
                 <div class="col-md-2">
                   <label for="">End Date : </label>
-                  <input class="form-control " id="project_end_date" type="date" name="end_date" >
+                  <input class="form-control " id="project_end_date" type="date" name="project_end_date" >
                 </div>
                 {% if request.user.is_staff %}
                 <div class="col-md-2">

@@ -15,12 +15,12 @@
 
     <div class="pagetitle">
       <h1>Dashboard</h1>
-      <nav>
+      {% comment %} <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
-      </nav>
+      </nav> {% endcomment %}
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
@@ -447,7 +447,8 @@
             </div><!-- End Recent Sales -->
             
 
-            <!-- Recent Sales -->
+            {% if request.user.is_staff == False %}
+                          <!-- Recent Sales -->
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
 
@@ -487,6 +488,7 @@
 
               </div>
             </div><!-- End Recent Sales -->
+            {% endif %}
 
             <!-- Top Selling -->
             <div class="col-12">

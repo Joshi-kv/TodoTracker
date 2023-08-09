@@ -5,6 +5,7 @@ $(document).ready(() => {
     fetch(url)
     .then(response => response.json())
     .then((data) => {
+        console.log(data)
         $('#totalTask').html(data.total_tasks)
         $('#completedTask').html(data.completed_tasks)
         $('#pendingTask').html(data.pending_tasks)

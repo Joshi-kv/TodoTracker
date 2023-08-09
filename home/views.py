@@ -53,11 +53,11 @@ class DashBoardCountView(View) :
             return JsonResponse(context,safe=False)
         else : 
             user = request.user
-            total_projects = Project.objects.filter(user=user).exclude(project_status='Deactivated').count()
-            completed_projects = Project.objects.filter(user=user,project_status='Completed').count()
-            on_hold_projects = Project.objects.filter(user=user,project_status='On Hold').count()
-            pending_projects = Project.objects.filter(user=user,project_status='Pending').count()
-            canceled_projects = Project.objects.filter(user=user,project_status='Canceled').count()
+            total_projects = Project.objects.filter(assignee=user).exclude(project_status='Deactivated').count()
+            completed_projects = Project.objects.filter(assignee=user,project_status='Completed').count()
+            on_hold_projects = Project.objects.filter(assignee=user,project_status='On Hold').count()
+            pending_projects = Project.objects.filter(assignee=user,project_status='Pending').count()
+            canceled_projects = Project.objects.filter(assignee=user,project_status='Canceled').count()
             
             total_tasks = Todo.objects.filter(user=user).exclude(task_status='Deactivated').count()
             completed_tasks = Todo.objects.filter(user=user,task_status='Completed').count() 
@@ -157,7 +157,7 @@ class DashboardProjectView(View) :
             return JsonResponse({'status':'success','projects':context})
         else : 
             user = request.user
-            projects = Project.objects.filter(user=user).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')[:5]
+            projects = Project.objects.filter(assignee=user).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')[:5]
             
             context = []
             
@@ -777,7 +777,7 @@ class FilterDashboardProjectView(View) :
                 
             #conditions to filter projects based on day,month and year 
             if filter_option == 'Today' : 
-                projects = Project.objects.filter(user=user,created_at__day=current_day,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                projects = Project.objects.filter(assignee=user,created_at__day=current_day,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
                 context = []
                 for project in projects : 
                     context.append({
@@ -790,7 +790,7 @@ class FilterDashboardProjectView(View) :
                 return JsonResponse({'status':'success','projects':context})
             
             elif filter_option == 'This Month' : 
-                projects = Project.objects.filter(user=user,created_at__month=current_month,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                projects = Project.objects.filter(assignee=user,created_at__month=current_month,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
                 context = []
                 for project in projects : 
                     context.append({
@@ -804,7 +804,7 @@ class FilterDashboardProjectView(View) :
             
             
             elif filter_option == 'This Year' : 
-                projects = Project.objects.filter(user=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                projects = Project.objects.filter(assignee=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
                 context = []
                 for project in projects : 
                     context.append({
@@ -816,7 +816,7 @@ class FilterDashboardProjectView(View) :
                     })
                 return JsonResponse({'status':'success','projects':context})
             else : 
-                projects = Project.objects.filter(user=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
+                projects = Project.objects.filter(assignee=user,created_at__year=current_year).exclude(project_status='Deactivated').order_by('-created_at','-updated_at')
                 context = []
                 for project in projects : 
                     context.append({
@@ -1289,7 +1289,8 @@ class TaskListView(View) :
                     'task_description':task.task_description,
                     'task_duedate':task.task_duedate,
                     'task_priority':task.task_priority,
-                    'task_status':task.task_status
+                    'task_status':task.task_status,
+                    'is_staff':user_obj.is_staff,
                 })
             return JsonResponse({'tasks':context},safe=False)
         else : 
@@ -1302,14 +1303,16 @@ class TaskListView(View) :
                     'task_description':task.task_description,
                     'task_duedate':task.task_duedate,
                     'task_priority':task.task_priority,
-                    'task_status':task.task_status
+                    'task_status':task.task_status,
+                    'is_staff':user_obj.is_staff,
                 })
             return JsonResponse({'tasks':context},safe=False)
     
 #view to create todo 
 class TodoCreateView(View) : 
-    def post(self,request) : 
+    def post(self,request,project_id) : 
         user = request.user
+        project = project_id
         task_title = request.POST.get('task_title')
         task_description = request.POST.get('task_description')
         task_duedate = request.POST.get('task_duedate')
@@ -1319,6 +1322,7 @@ class TodoCreateView(View) :
         #creating new task
         new_task = Todo.objects.create(
             user=user,
+            project=Project.objects.get(id=project),
             task_title=task_title,
             task_description=task_description,
             task_duedate=task_duedate,
@@ -1332,7 +1336,8 @@ class TodoCreateView(View) :
             'task_description':new_task.task_description,
             'task_duedate':new_task.task_duedate,
             'task_status':new_task.task_status,
-            'task_priority':new_task.task_priority
+            'task_priority':new_task.task_priority,
+            'is_staff':user.is_staff,
         }
         
         activity_log = ActivityLog.objects.create(
@@ -1366,6 +1371,7 @@ class DateRangeFilter(View) :
                     'task_duedate':task.task_duedate,
                     'task_priority':task.task_priority,
                     'task_status':task.task_status,
+                    'is_staff':user.is_staff,
                 })
             
             return JsonResponse({'status':'success','tasks':context})
@@ -1382,6 +1388,7 @@ class DateRangeFilter(View) :
                     'task_duedate':task.task_duedate,
                     'task_priority':task.task_priority,
                     'task_status':task.task_status,
+                    'is_staff':user.is_staff,
                 })
             
             return JsonResponse({'status':'success','tasks':context}) 

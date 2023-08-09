@@ -3,7 +3,7 @@ let taskLength;
 $(document).ready(() =>{
     let pathname = window.location.href.replace(/\/+$/, '');
     let project_id = pathname.substring(pathname.lastIndexOf('/') +1 )
-    console.log(project_id)
+
 
     // fetching tasks on page load
     const url = `http://127.0.0.1:8000/tasks/${project_id}`
@@ -25,23 +25,52 @@ $(document).ready(() =>{
         hidePagination(table,table.rows().count())
         data.tasks.forEach((task) =>{
             let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/YYYY')
-            let taskId = task.task_id
-            let taskRow = table.row.add([
-                `${task.task_title}`,
-                `${task.task_description}`,
-                `${convertedTaskDuedate}`,
-                `${task.task_priority}`,
-                `${task.task_status}`,
-                `
-                <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
-                `
-            ]).node()
-            $(taskRow).attr('data-task-id',taskId)
-            table = $('#taskTable').DataTable();
-            table.draw()
-            taskLength = data.tasks.length
-            hidePagination(table,taskLength)
+            if(task.is_staff === true){
+                let taskId = task.task_id
+                let taskRow = table.row.add([
+                    `${task.task_title}`,
+                    `${task.task_description}`,
+                    `${convertedTaskDuedate}`,
+                    `${task.task_priority}`,
+                    `${task.task_status}`,
+                    `
+                    <button class="btn btn-info btn-sm"><i class="fas fa-list"></i></button>
+                    <button class="btn btn-success btn-sm" my-1"><i class="fas fa-eye"></i></button>
+                    `
+                ]).node()
+                $(taskRow).attr('data-task-id',taskId)
+                table = $('#taskTable').DataTable();
+                table.draw()
+                taskLength = data.tasks.length
+                hidePagination(table,taskLength)
+            }else{
+                let taskId = task.task_id
+                let taskRow = table.row.add([
+                    `${task.task_title}`,
+                    `${task.task_description}`,
+                    `${convertedTaskDuedate}`,
+                    `${task.task_priority}`,
+                    `${task.task_status}`,
+                    `
+                    <div class="d-flex">
+                        <div class="mx-3">
+                            <button class="btn btn-danger btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-primary btn-sm mt-2" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="mx-3">
+                            <button class="btn btn-info btn-sm">
+                            <i class="fas fa-list"></i></button>
+                            <button class="btn btn-success btn-sm mt-2"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    `
+                ]).node()
+                $(taskRow).attr('data-task-id',taskId)
+                table = $('#taskTable').DataTable();
+                table.draw()
+                taskLength = data.tasks.length
+                hidePagination(table,taskLength)
+            }
 
             //custom filtering
             $('select[name="filterStatus"]').on('change',function(){
