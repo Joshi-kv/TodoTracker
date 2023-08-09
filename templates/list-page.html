@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+{% include 'sidebar.html' %}
+
+<!--todo page-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Lists</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
+          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>          
+          <li class="breadcrumb-item"><a class="active" href="{% url 'home:list-page' project.id %}">Lists</a></li>          
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section project-table" >
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Lists</h5>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus aliquam voluptates ipsum magnam, officiis sint maiores nesciunt quos eos, earum facilis? Voluptatem eveniet sed temporibus molestias, minus unde consequuntur quae?</p>
+
+
+
+
+          
+            <div class="card-body">
+
+            
+              {% if request.user.is_staff %}
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+                Create List
+              </button>
+              {% endif %}
+              <div class="modal" id="basicModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Create List</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card-body">
+                        <h5 class="card-title">Create List</h5>
+                        <form class="row g-3" method="post" id="listForm">
+                          {% csrf_token %}
+                          <div class="col-12">
+                            <label for="projectTitle" class="form-label">List Name</label>
+                            <input type="text" name="list_name" class="form-control" id="listName">
+                          </div>
+                          <div class="col-12">
+                            <label for="projectDescription" class="form-label">List Description</label>
+                            <textarea class="form-control" name="list_description" placeholder="Description" id="listDescription" style="height: 100px;"></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                    
+              <!-- Table with stripped rows -->
+              <table class="table datatable" id="projectTable">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                  <tr>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    {% if request.user.is_staff %}
+                    <td>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-primary mx-2"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger mx-2"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-info mx-2"><a href="{% url 'home:issue-page' project.id %}" class="text-white"><i class="fas fa-list"></i></a></button>
+                        </div>
+                    </td>
+                    {% else %}
+                    <td>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-info mx-2"><a href="{% url 'home:issue-page' project.id %}" class="text-white"><i class="fas fa-list"></i></a></button>
+                        </div>
+                    </td>
+                    {% endif %}
+                  </tr>
+                  {% comment %} <tr>
+                    <td colspan='6' class="text-center" id="no-data" style='display:none'>No data available</td>
+                  </tr> {% endcomment %}
+                </thead>
+              </table>
+              <!-- End Table with stripped rows -->
+
+    
+
+            </div>
+            <!--update modal -->
+            <div class="card-body">
+              <div class="modal fade" id="listUpdateModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit List</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card-body">
+                        <h5 class="card-title">Edit List</h5>
+                        <form class="row g-3" method="post" id="updateListForm">
+                          {% csrf_token %}
+                          <div class="col-12">
+                            <label for="" class="form-label">List Name</label>
+                            <input type="text" name="listUpdateName" class="form-control" id="listUpdateName">
+                          </div>
+                          <div class="col-12">
+                            <label for="projectDescription" class="form-label">List Description</label>
+                            <textarea class="form-control" name="listUpdateDescription" placeholder="Description" id="listUpdateDescription" style="height: 100px;"></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!--Delete modal-->
+    <div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="" method="post" id='listDeleteForm'>
+              {% csrf_token %}
+              Are you sure do you want to deactivate this list ?
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger">Deactivate</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- End #main -->
+
+  {% include 'footer.html' %}
+
+{% endblock content %}
+

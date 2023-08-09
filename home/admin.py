@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 
 
 # Register your models here.
@@ -65,3 +65,14 @@ class SubTaskAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 admin.site.register(SubTask, SubTaskAdmin)
+
+class ListAdmin(admin.ModelAdmin) : 
+    list_display = ['user','project','list_name','list_description','created_at','updated_at']
+    list_per_page = 20
+admin.site.register(List,ListAdmin)
+
+class IssueAdmin(admin.ModelAdmin):
+    list_display = ['assignee','project','list','issue_title','issue_description','issue_priority','issue_status']
+    list_per_page = 20
+    
+admin.site.register(Issue,IssueAdmin)

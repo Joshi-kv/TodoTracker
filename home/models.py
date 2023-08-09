@@ -48,6 +48,31 @@ class SubTask(models.Model):
     def __str__(self) : 
         return f'{self.user} - {self.task} - {self.sub_task_title}'
     
+class List(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    list_name = models.CharField(max_length=256)
+    list_description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) : 
+        return f'{self.project} - {self.list_name}'
+    
+class Issue(models.Model):
+    assignee = models.ForeignKey(User,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+    issue_title = models.CharField(max_length=256)
+    issue_description = models.TextField()
+    issue_priority = models.CharField(max_length=150)
+    issue_status = models.CharField(max_length=150)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) : 
+        return f'{self.list} - {self.issue_title}'
+    
 class TaskAttachment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task = models.ForeignKey(Todo, on_delete=models.CASCADE)

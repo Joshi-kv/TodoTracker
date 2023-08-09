@@ -43,8 +43,8 @@ $(document).ready(() =>{
                         <i class="fas fa-trash"></i></button>
                         </div>
                         <div class="mx-3">
-                        <button class="btn btn-info btn-sm"><a href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
-                        <button class="btn btn-warning btn-sm mt-2"><i class="fas fa-circle-xmark"></i></button>
+                        <button class="btn btn-info btn-sm"><a class="text-white" href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
+                        <button class="btn btn-warning btn-sm mt-2"><a class="text-white" href="/project/lists/${projectId}"><i class="fas fa-circle-xmark"></i></a></button>
                         </div>
                     </div>
                     `
@@ -63,8 +63,10 @@ $(document).ready(() =>{
                     `${project.project_type}`,
                     `${project.project_status}`,
                     `
-                    <button class="btn btn-info btn-sm"><a href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
-                    <button class="btn btn-danger btn-sm"><i class="fas fa-circle-xmark"></i></button>
+                    <div class="d-flex">
+                    <button class="btn btn-info btn-sm mx-2"><a class="text-white" href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
+                    <button class="btn btn-danger btn-sm"><a class="text-white" href="/project/lists/${projectId}"><i class="fas fa-circle-xmark"></i></a></button>
+                    </div>
                     `
                 ]).node()
                 $(projectRow).attr('data-project-id',projectId)

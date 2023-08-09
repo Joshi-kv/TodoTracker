@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -840,7 +840,7 @@ class FilterDashboardTaskView(View) :
         user = request.user
         filter_option = request.GET.get('option')
         
-        if user.is_staff == True : 
+        if request.user.is_staff == True : 
         
             #conditions to filter tasks based on day,month and year 
             if filter_option == 'Today' : 
@@ -1266,6 +1266,48 @@ class ProjectDeleteView(View) :
         total_projects = Project.objects.all().exclude(project_status='Deactivated').count()
         return JsonResponse({'status':'success','total':total_projects})       
 
+#view to render list view 
+class ListPageView(View) : 
+    def get(self,request,project_id) :
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project = Project.objects.get(id=project_id)
+        context = {
+            'current_user' : current_user,
+            'project' : project,
+        }
+        return render(request,'list-page.html', context)     
+
+#view to render issue view 
+class IssuePageView(View) : 
+    def get(self,request,project_id) :
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project = Project.objects.get(id=project_id)
+        context = {
+            'current_user' : current_user,
+            'project' : project,
+        }
+        return render(request,'issue-page.html', context) 
+    
+#view to render issue detail page    
+class IssueDetailPage(View) : 
+    def get(self,request,project_id) :
+        print(project_id)
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project = Project.objects.get(id=project_id)
+        list = List.objects.get(project=project)
+        issue = Issue.objects.get(list=list.id)
+        
+        context = {
+            'current_user': current_user,
+            'project': project,
+            'list': list,
+            'issue': issue,
+        }
+        return render(request,'issue-detail.html',context)
+    
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
     login_url = 'users:login'
