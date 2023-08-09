@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment
 
 
 # Register your models here.
@@ -55,3 +55,7 @@ class NotificationAdmin(admin.ModelAdmin) :
     list_display = ['user','task_title','task_description','task_duedate']
     
 admin.site.register(Notification,NotificationAdmin)
+
+class TaskAttachmentAdmin(admin.ModelAdmin):
+    list_display = ['user','task','attachment']
+admin.site.register(TaskAttachment,TaskAttachmentAdmin)

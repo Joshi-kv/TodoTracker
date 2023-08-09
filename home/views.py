@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project
+from . models import Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -1273,6 +1273,22 @@ class TodoPageView(LoginRequiredMixin,View) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
         return render(request, 'todo.html',{'current_user':current_user,'project':project_id})
+    
+#task detail page view 
+class TaskDetailPageView(View) : 
+    def get(self,request,task_id) : 
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project_id = Todo.objects.get(id=task_id).project.id 
+        task = Todo.objects.get(id=task_id)
+        attachments = TaskAttachment.objects.filter(user=user_model, task=task)
+        context = {
+            'current_user' : current_user,
+            'project_id' : project_id,
+            'task' : task,
+            'attachments' : attachments
+        }
+        return render(request,'task-detail.html',context)
     
 #view to list tasks in datatable
 class TaskListView(View) : 

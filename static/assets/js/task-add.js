@@ -103,9 +103,11 @@ $(document).ready(() => {
                                 <button class="btn btn-primary btn-sm mt-2" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                             </div>
                             <div class="mx-3">
-                                <button class="btn btn-info btn-sm" >
+                                <button class="btn btn-success btn-sm" >
                                 <i class="fas fa-list"></i></button>
-                                <button class="btn btn-success btn-sm mt-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm mt-2">
+                                <a class="text-white" href="/project/task-detail/${taskId}/"><i class="fas fa-eye"></i></a>
+                                </button>
                             </div>
                         </div>
                         `

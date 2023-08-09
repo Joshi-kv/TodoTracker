@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+{% include 'sidebar.html' %}
+
+<!--todo page-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Task</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
+          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>     
+          <li class="breadcrumb-item"><a href="{% url 'home:todo-page' project_id %}">Tasks</a></li>    
+          <li class="breadcrumb-item active"><a class="active" href="{% url 'home:task-detail' task.id %}">Task</a></li> 
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section project-table" >
+      <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{task.task_title}}</h5>  
+                    <div class="card-body mt-5">
+                        <h4>Description : </h4><br>
+                        <p class="ms-5">{{task.task_description}}</p><br>
+                        <b>Task Priority : </b>
+                        <p class="ms-5">{{task.task_priority}}</p><br>
+                        <b>Current Status : </b>
+                        <p class="ms-5">{{task.task_status}}</p><br>
+                        <b>Due Date : </b>
+                        <p class="ms-5">{{task.task_duedate}}</p><br>
+                        <b>Created At : </b>
+                        <p class="ms-5">{{task.created_date}}</p><br>
+                        <p class="text-center">Attachments</p>
+                        <hr>
+                        {% if request.user == task.user %}
+                        Add attachments here
+                        <button class="ms-5 btn btn-primary btn-sm "><i class="fa-solid fa-link"></i></button>
+                        {% endif %}
+
+                        {% for attachment in attachments  %}
+                        {{attachment.url}}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+  {% include 'footer.html' %}
+
+{% endblock content %}
+

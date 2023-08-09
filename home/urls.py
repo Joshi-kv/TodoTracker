@@ -33,6 +33,7 @@ urlpatterns = [
     path('update-project/',views.UpdateProjectView.as_view(),name='update-project'),
     path('delete-project/',views.ProjectDeleteView.as_view(),name='delete-project'),
     path('project/tasks/<int:project_id>/',views.TodoPageView.as_view(),name='todo-page'),
+    path('project/task-detail/<int:task_id>/',views.TaskDetailPageView.as_view(),name='task-detail'),
     path('tasks/<int:project_id>/',views.TaskListView.as_view(),name='task-list'),
     path('create-task/<int:project_id>/',views.TodoCreateView.as_view(),name='create-task'),
     path('date-range-filter/',views.DateRangeFilter.as_view(),name='date-range-filter'),

@@ -35,6 +35,14 @@ class Todo(models.Model) :
     def __str__(self) : 
         return f'{self.task_title}'
     
+class TaskAttachment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    task = models.ForeignKey(Todo, on_delete=models.CASCADE)
+    attachment = models.FileField(upload_to='task-attachments/',blank=True,null=True)
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.task}'
+    
 #model for faq
 class FAQ(models.Model) : 
     question = models.TextField()
