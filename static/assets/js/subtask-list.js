@@ -54,17 +54,17 @@ $(document).ready(() =>{
             }
 
             //custom filtering
-            $('select[name="filterStatus"]').on('change',function(){
+            $('select[name="filterSubTaskStatus"]').on('change',function(){
                 let status = $(this).val()
-                table.column(4).search(status).draw()
+                table.column(2).search(status).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(status == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
                 }
             })
-            $('select[name="filterPriority"]').on('change',function(){
+            $('select[name="filterSubTaskPriority"]').on('change',function(){
                 let priority = $(this).val()
-                table.column(3).search(priority).draw()
+                table.column(1).search(priority).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(priority == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
@@ -105,29 +105,24 @@ function hidePagination(table,tasks){
     
 }
 
-// //function to clear filter
-// function clearFilters() {
-//     table.column(4).search('').draw() // Clear status filter
-//     table.column(3).search('').draw() // Clear priority filter
-//     table.column(2).search('').draw() // Clear date filter
-//     table.draw() 
-//   }
+//function to clear filter
+function clearFilters() {
+    table.column(2).search('').draw() // Clear status filter
+    table.column(1).search('').draw() // Clear priority filter
+    table.draw() 
+  }
 
-// //function to clear filter
-// $('#clearFilterBtn').on('click',function(){
-//     $('#filterStatus').val('')
-//     $('#filterPriority').val('')
-//     $('#startDate').val('')
-//     $('#endDate').val('')
-//     $('#no-data').hide()
-//     $('tbody').show()
-//     if(table.rows().count() > 10 ){
-//         $('#taskTable_length').show()
-//         $('.pagination').show()
-//     }else{
-//         $('#taskTable_length').hide()
-//         $('.pagination').hide()
-//     }
-//    clearFilters()
-// })
+//function to clear filter
+$('#clearFilterBtn').on('click',function(){
+    $('#filterSubTaskStatus').val('')
+    $('#filterSubTaskPriority').val('')
+    if(table.rows().count() > 10 ){
+        $('#subTaskTable_length').show()
+        $('.pagination').show()
+    }else{
+        $('#subTaskTable_length').hide()
+        $('.pagination').hide()
+    }
+   clearFilters()
+})
 

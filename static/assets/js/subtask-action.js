@@ -136,16 +136,16 @@ function changePagination(table,total){
 
         
     if(total > 10 ){
-        $('#taskTable_length').show()
+        $('#subTaskTable_length').show()
         $('.pagination').show()
     }else{
-        $('#taskTable_length').hide()
+        $('#subTaskTable_length').hide()
         $('.pagination').hide()
     }
 
-    $('select[name="taskTable_length"]').on('change',() =>{
-        console.log($('select[name="taskTable_length').val())
-        if(total > $('select[name="taskTable_length"]').val() ){
+    $('select[name="subTaskTable_length"]').on('change',() =>{
+        console.log($('select[name="subTaskTable_length').val())
+        if(total > $('select[name="subTaskTable_length"]').val() ){
             $('.pagination').show()
         }else{
             $('.pagination').hide()

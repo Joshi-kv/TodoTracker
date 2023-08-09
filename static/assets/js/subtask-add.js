@@ -100,27 +100,6 @@ $(document).ready(() => {
                     table.draw()
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New task added successfully');
-    
-                    // // Call changePagination with the updated total number of tasks
-                    // pagination(table,total)
-                    // //custom filtering
-                    // $('select[name="filterStatus"]').on('change',function(){
-                    //     let status = $(this).val()
-                    //     table.column(4).search(status).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
-                    // $('select[name="filterPriority"]').on('change',function(){
-                    //     let priority = $(this).val()
-                    //     table.column(3).search(priority).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
-            
-                    // $('input[name="filterDate"]').on('change',function(){
-                    //     let date = $(this).val()
-                    //     convertedDate = moment(date).format('DD/MM/YYYY')
-                    //     table.column(2).search(convertedDate).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
                 },
     
             });
@@ -137,31 +116,31 @@ $(document).ready(() => {
 });
 
 
-// function pagination(table,tasks){
-//     if (tasks > 10) {
-//         $('#taskTable_length').show();
-//         $('.pagination').show();
-//     } else {
-//         $('#taskTable_length').hide();
-//         $('.pagination').hide();
-//     }
-// }
+function pagination(table,tasks){
+    if (tasks > 10) {
+        $('#subTaskTable_length').show();
+        $('.pagination').show();
+    } else {
+        $('#subTaskTable_length').hide();
+        $('.pagination').hide();
+    }
+}
 
-// // function to hide pagination dynamically 
-// function showPagination(table,tasks) {
-//     if (tasks.length > 10) {
-//         $('#taskTable_length').show();
-//         $('.pagination').show();
-//     } else {
-//         $('#taskTable_length').hide();
-//         $('.pagination').hide();
-//     }
+// function to hide pagination dynamically 
+function showPagination(table,tasks) {
+    if (tasks.length > 10) {
+        $('#subTaskTable_length').show();
+        $('.pagination').show();
+    } else {
+        $('#subTaskTable_length').hide();
+        $('.pagination').hide();
+    }
 
-//     $('select[name="taskTable_length"]').on('change', () => {
-//         if (tasks > $('select[name="taskTable_length"]').val()) {
-//             $('.pagination').show();
-//         } else {
-//             $('.pagination').hide();
-//         }
-//     });
-// }
+    $('select[name="subTaskTable_length"]').on('change', () => {
+        if (tasks > $('select[name="subTaskTable_length"]').val()) {
+            $('.pagination').show();
+        } else {
+            $('.pagination').hide();
+        }
+    });
+}
