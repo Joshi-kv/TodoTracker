@@ -37,6 +37,7 @@ urlpatterns = [
     path('project/lists/issue-detail/<int:project_id>/',views.IssueDetailPage.as_view(),name='issue-detail'),
     path('project/tasks/<int:project_id>/',views.TodoPageView.as_view(),name='todo-page'),
     path('project/task-detail/<int:task_id>/',views.TaskDetailPageView.as_view(),name='task-detail'),
+    path('attach-task-file/<int:task_id>/',views.TaskFileAttachmentView.as_view(),name='task-file'),
     path('tasks/<int:project_id>/',views.TaskListView.as_view(),name='task-list'),
     path('create-task/<int:project_id>/',views.TodoCreateView.as_view(),name='create-task'),
     path('date-range-filter/',views.DateRangeFilter.as_view(),name='date-range-filter'),

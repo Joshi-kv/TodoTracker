@@ -1323,14 +1323,47 @@ class TaskDetailPageView(View) :
         current_user = UserProfile.objects.get(user=user_model)
         project_id = Todo.objects.get(id=task_id).project.id 
         task = Todo.objects.get(id=task_id)
-        attachments = TaskAttachment.objects.filter(user=user_model, task=task)
+        attachments = TaskAttachment.objects.filter(task=task)
         context = {
             'current_user' : current_user,
             'project_id' : project_id,
             'task' : task,
-            'attachments' : attachments
         }
+        print(attachments)
         return render(request,'task-detail.html',context)
+
+#task file attachment view
+class TaskFileAttachmentView(View) : 
+    def get(self,request,task_id) : 
+        task = Todo.objects.get(id=task_id,)
+        attachments = TaskAttachment.objects.filter(task=task)
+        context = []
+        for attachment in attachments : 
+            context.append({
+                'attachment':attachment.attachment.url,
+                'attachment_title':attachment.attachment_title
+            })
+        return JsonResponse({'status':'success','attachments':context})
+    
+    def post(self,request,task_id):     
+        task = Todo.objects.get(id=task_id)
+        attachment_file = request.FILES.get('attachment_file')
+        attachment_title = request.POST.get('attachment_title')
+        TaskAttachment.objects.create(
+            user=request.user,
+            task=task, 
+            attachment=attachment_file, 
+            attachment_title=attachment_title
+        )
+        attachments = TaskAttachment.objects.filter(task=task,user=request.user)
+        context = []
+        for attchment in attachments :
+            context.append({
+                'attachment_title': attchment.attachment_title,
+                'attachment' : attchment.attachment.url
+            })
+        return JsonResponse({'status':'success','attachments':context})
+        
     
 #view to list tasks in datatable
 class TaskListView(View) : 

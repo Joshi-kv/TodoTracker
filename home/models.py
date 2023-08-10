@@ -77,9 +77,10 @@ class TaskAttachment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task = models.ForeignKey(Todo, on_delete=models.CASCADE)
     attachment = models.FileField(upload_to='task-attachments/',blank=True,null=True)
+    attachment_title = models.CharField(max_length=256)
     
     def __str__(self) : 
-        return f'{self.user} - {self.task}'
+        return f'{self.user} - {self.task} - {self.attachment_title}'
     
 #model for faq
 class FAQ(models.Model) : 

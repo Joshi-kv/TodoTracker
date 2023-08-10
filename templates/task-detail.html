@@ -47,21 +47,51 @@
                         <hr>
                         {% if request.user == task.user %}
                         Add attachments here
-                        <button class="ms-5 btn btn-primary btn-sm "><i class="fa-solid fa-link"></i></button>
+                        <button class="ms-5 btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#attachmentModal"><i class="fa-solid fa-link"></i></button>
                         {% endif %}
-
-                        {% for attachment in attachments  %}
-                        {{attachment.url}}
-                        {% endfor %}
+                        <br>
+                        Attachments :
+                        <div id="taskAttachments"> 
+                          
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
       </div>
     </section>
+
+    <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Attach your files here</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="taskAttachmentForm" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment Title</label>
+                <input type="text" name="attachment_title" class="form-control" id="attachmentTitle">
+              </div>
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment</label>
+                <input type="file" name="attachment_file" class="form-control" id="attachmentFile">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </main><!-- End #main -->
 
   {% include 'footer.html' %}
+  <script src="{% static 'assets/js/task-attachment.js' %}"></script>
 
 {% endblock content %}
 
