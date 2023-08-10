@@ -1276,8 +1276,91 @@ class ListPageView(View) :
             'current_user' : current_user,
             'project' : project,
         }
-        return render(request,'list-page.html', context)     
+        return render(request,'list-page.html', context) 
+    
+#view to list all lists
+class ListsDisplayView(View) : 
+    def get(self,request,project_id) : 
+        project = Project.objects.get(id=project_id)
+        lists = List.objects.filter(project=project).order_by('-created_at','-updated_at')
+        context = []
+        for list in lists : 
+            context.append({
+                'list_id':list.id,
+                'list_name': list.list_name,
+                'list_description': list.list_description,
+                'is_staff':request.user.is_staff,
+            })    
+        print(context)
+        return JsonResponse({'status': 'success','lists':context})
+    
+#list update page view
+class UpdateListPageView(View) : 
+    def get(self,request) : 
+        list_id = request.GET.get('list_id')
+        
+        list = List.objects.get(id=list_id)
+        context = []
+        context.append({
+            'list_name':list.list_name,
+            'list_description':list.list_description,
+        })
+        return JsonResponse({'list':context})    
+    
+#list update page view
+class UpdateListView(View) : 
+    def post(self,request) : 
+        list_id = request.POST.get('list_id')
+        list_name = request.POST.get('list_name')
+        list_description = request.POST.get('list_description')
+        list = List.objects.get(id=list_id)
+        
+        list.list_name = list_name
+        list.list_description = list_description
+        list.save()
+        context={
+            'list_name':list.list_name,
+            'list_description':list.list_description,
+        }
+        return JsonResponse({'status':'success','list':context}) 
+    
+#list delete view
+class DeleteListView(View) : 
+    def post(self,request,project_id) : 
+        list_id = request.POST.get('list_id')
+        print(list_id)
+        list = List.objects.get(id=list_id)
+        list.delete()
+        
+        total = List.objects.filter(project=project_id).count()
+        return JsonResponse({'status':'success','total':total})  
+    
 
+#view to create list 
+class CreateListView(View) : 
+    def post(self,request,project_id) : 
+        project = Project.objects.get(id=project_id)
+        user = request.user
+        list_name = request.POST.get('list_name')
+        list_description = request.POST.get('list_description')
+        
+        new_list = List.objects.create(
+            user=user,
+            project=project,
+            list_name=list_name,
+            list_description=list_description
+        )
+        new_list.save()
+        
+        context = {
+            'list_id':new_list.id,
+            'list_name':new_list.list_name,
+            'list_description':new_list.list_description,
+            'is_staff':request.user.is_staff
+        }
+        
+        return JsonResponse({'status':'success','list':context})
+    
 #view to render issue view 
 class IssuePageView(View) : 
     def get(self,request,project_id) :
