@@ -1294,6 +1294,32 @@ class ListsDisplayView(View) :
         print(context)
         return JsonResponse({'status': 'success','lists':context})
     
+
+#view to create list 
+class CreateListView(View) : 
+    def post(self,request,project_id) : 
+        project = Project.objects.get(id=project_id)
+        user = request.user
+        list_name = request.POST.get('list_name')
+        list_description = request.POST.get('list_description')
+        
+        new_list = List.objects.create(
+            user=user,
+            project=project,
+            list_name=list_name,
+            list_description=list_description
+        )
+        new_list.save()
+        
+        context = {
+            'list_id':new_list.id,
+            'list_name':new_list.list_name,
+            'list_description':new_list.list_description,
+            'is_staff':request.user.is_staff
+        }
+        
+        return JsonResponse({'status':'success','list':context})
+    
 #list update page view
 class UpdateListPageView(View) : 
     def get(self,request) : 
@@ -1306,6 +1332,9 @@ class UpdateListPageView(View) :
             'list_description':list.list_description,
         })
         return JsonResponse({'list':context})    
+    
+
+
     
 #list update page view
 class UpdateListView(View) : 
@@ -1335,31 +1364,6 @@ class DeleteListView(View) :
         total = List.objects.filter(project=project_id).count()
         return JsonResponse({'status':'success','total':total})  
     
-
-#view to create list 
-class CreateListView(View) : 
-    def post(self,request,project_id) : 
-        project = Project.objects.get(id=project_id)
-        user = request.user
-        list_name = request.POST.get('list_name')
-        list_description = request.POST.get('list_description')
-        
-        new_list = List.objects.create(
-            user=user,
-            project=project,
-            list_name=list_name,
-            list_description=list_description
-        )
-        new_list.save()
-        
-        context = {
-            'list_id':new_list.id,
-            'list_name':new_list.list_name,
-            'list_description':new_list.list_description,
-            'is_staff':request.user.is_staff
-        }
-        
-        return JsonResponse({'status':'success','list':context})
     
 #view to render issue view 
 class IssuePageView(View) : 
@@ -1367,11 +1371,81 @@ class IssuePageView(View) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
         project = Project.objects.get(id=project_id)
+        assignees = User.objects.all().exclude(is_staff=True)
         context = {
             'current_user' : current_user,
             'project' : project,
+            'assignees': assignees
         }
         return render(request,'issue-page.html', context) 
+    
+#view to list issues
+class IssueListView(View) : 
+    def get(self,request,project_id) :
+        list = List.objects.get(project=project_id)
+        if request.user.is_staff : 
+            issues = Issue.objects.filter(project=project_id,list=list).order_by('-created_at','-updated_at')
+            context = []
+            for issue in issues : 
+                context.append({
+                    'issue_id': issue.id,
+                    'issue_title': issue.issue_title,
+                    'issue_description': issue.issue_description,
+                    'issue_assignee':issue.assignee.username,
+                    'issue_status': issue.issue_status,
+                    'issue_priority': issue.issue_priority,
+                    'is_staff':request.user.is_staff,
+                })
+            return JsonResponse({'status':'success','issues':context})
+        else : 
+            issues = Issue.objects.filter(assignee=request.user,project=project_id,list=list).order_by('-created_at','-updated_at')
+            context = []
+            for issue in issues : 
+                context.append({
+                    'issue_id': issue.id,
+                    'issue_title': issue.issue_title,
+                    'issue_description': issue.issue_description,
+                    'issue_assignee':issue.assignee.username,
+                    'issue_status': issue.issue_status,
+                    'issue_priority': issue.issue_priority,
+                    'is_staff':request.user.is_staff,
+                })
+            return JsonResponse({'status':'success','issues':context})
+        
+#view to create issues 
+class IssueCreateView(View) : 
+    def post(self,request,project_id) : 
+        project = Project.objects.get(id=project_id)
+        list = List.objects.get(project=project)
+        
+        issue_title = request.POST.get('issue_title')
+        issue_description = request.POST.get('issue_description')
+        issue_assignee = request.POST.get('issue_assignee')
+        issue_status = request.POST.get('issue_status')
+        issue_priority = request.POST.get('issue_priority')
+        
+        new_issue = Issue.objects.create(
+            list = list,
+            project = project,
+            assignee = User.objects.get(id=issue_assignee),
+            issue_title = issue_title,
+            issue_description = issue_description,
+            issue_priority = issue_priority,
+            issue_status = issue_status
+        )
+        
+        new_issue.save()
+        
+        context = {
+            'issue_id':new_issue.id,
+            'issue_title':new_issue.issue_title,
+            'issue_description':new_issue.issue_description,
+            'issue_assignee':new_issue.assignee.username,
+            'issue_priority':new_issue.issue_priority,
+            'issue_status':new_issue.issue_status
+        }
+        total = Issue.objects.filter(project=project,list=list).count()
+        return JsonResponse({'status':'success','issue':context,'total':total})
     
 #view to render issue detail page    
 class IssueDetailPage(View) : 
@@ -1390,6 +1464,61 @@ class IssueDetailPage(View) :
             'issue': issue,
         }
         return render(request,'issue-detail.html',context)
+    
+    
+#issue update page view
+class UpdateIssuePageView(View) : 
+    def get(self,request) : 
+        issue_id = request.GET.get('issue_id')
+        issue = Issue.objects.get(id=issue_id)
+    
+        
+        context={
+            'issue_title':issue.issue_title,
+            'issue_description':issue.issue_description,
+            'issue_assignee':issue.assignee.id,
+            'issue_status':issue.issue_status,
+            'issue_priority':issue.issue_priority
+        }
+        return JsonResponse({'status':'success','issue':context}) 
+    
+#issue update page view
+class UpdateIssueView(View) : 
+    def post(self,request) : 
+        issue_id = request.POST.get('issue_id')
+        issue_title = request.POST.get('issue_title')
+        issue_description = request.POST.get('issue_description')
+        issue_assignee = request.POST.get('issue_assignee')
+        issue_status = request.POST.get('issue_status')
+        issue_priority = request.POST.get('issue_priority')
+        issue = Issue.objects.get(id=issue_id)
+    
+        issue.issue_title = issue_title
+        issue.issue_description = issue_description
+        issue.assignee = User.objects.get(id=issue_assignee)
+        issue.issue_status = issue_status
+        issue.issue_priority = issue_priority
+        issue.save()
+        
+        context={
+            'issue_id': issue_id,
+            'issue_title':issue.issue_title,
+            'issue_description':issue.issue_description,
+            'issue_assignee':issue.assignee.username,
+            'issue_status':issue.issue_status,
+            'issue_priority':issue.issue_priority
+        }
+        return JsonResponse({'status':'success','issue':context}) 
+    
+#issue delete view
+class DeleteIssueView(View) : 
+    def post(self,request,project_id) : 
+        issue_id = request.POST.get('issue_id')
+        issue = Issue.objects.get(id=issue_id)
+        issue.delete()
+        
+        total = Issue.objects.filter(project=project_id).count()
+        return JsonResponse({'status':'success','total':total})  
     
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
