@@ -1108,7 +1108,7 @@ class ProjectCreateView(View) :
             'project_type':new_project.project_type,
             'duration':new_project.duration,
             'assignee':new_project.assignee.username,
-            'estimatedHours':new_project.estimated_hours,
+            'estimated_hours':new_project.estimated_hours,
         }
         
         #sending email to assignee
@@ -1166,26 +1166,29 @@ class UpdateProjectPageView(View) :
         return JsonResponse({'project':context})    
     
 
-# #view to filter projects based on date range
-# class ProjectDateRangeFilter(View) : 
-#     def get(self,request) : 
-#         start_date = request.GET.get('start_date')
-#         end_date = request.GET.get('end_date')
+#view to filter projects based on date range
+class ProjectDateRangeFilter(View) : 
+    def get(self,request) : 
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
         
-#         #filtering tasks using date range by range orm method
-#         projects = Project.objects.filter(task_duedate__range=(start_date,end_date))
-#         context = []
-#         for task in tasks : 
-#             context.append({
-#                 'task_id':task.id,
-#                 'task_title':task.task_title,
-#                 'task_descritpion':task.task_description,
-#                 'task_duedate':task.task_duedate,
-#                 'task_priority':task.task_priority,
-#                 'task_status':task.task_status,
-#             })
+        #filtering tasks using date range by range orm method
+        projects = Project.objects.filter(start_date__range=(start_date,end_date))
+        context = []
+        for project in projects : 
+            context.append({
+                'project_id':project.id,
+                'project_title':project.project_title,
+                'project_descritpion':project.project_description,
+                'project_start_date':project.start_date,
+                'project_end_date':project.end_date,
+                'duration' : project.duration,
+                'estimated_hours':project.estimated_hours,
+                'project_type':project.project_type,
+                'project_status':project.project_status,
+            })
         
-#         return JsonResponse({'status':'success','tasks':context})
+        return JsonResponse({'status':'success','projects':context})
 
       
 #view to update or edit project

@@ -29,6 +29,7 @@ urlpatterns = [
     path('projects/',views.ProjectPageView.as_view(),name='project-page'),
     path('project-list/',views.ProjectListView.as_view(),name='project-list'),
     path('create-project/',views.ProjectCreateView.as_view(),name='create-project'),
+    path('project-date-range-filter/',views.ProjectDateRangeFilter.as_view(),name='project-date-range-filter'),
     path('update-project-view/',views.UpdateProjectPageView.as_view(),name='update-project-view'),
     path('update-project/',views.UpdateProjectView.as_view(),name='update-project'),
     path('delete-project/',views.ProjectDeleteView.as_view(),name='delete-project'),

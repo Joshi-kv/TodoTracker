@@ -100,63 +100,64 @@ $(document).ready(() =>{
                     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
                 }
             })            
-            $('input[name="project_start_date"]').on('change',function(){
-                let start_date = $(this).val()
-                let convertedDate = moment(start_date).format('DD/MM/YYYY')
-                table.column(3).search(convertedDate).draw()
-                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
-                if(start_date == ''){
-                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
-                }
-            })            
-            $('input[name="project_end_date"]').on('change',function(){
-                let end_date = $(this).val()
-                let convertedDate = moment(end_date).format('DD/MM/YYYY')
-                table.column(4).search(convertedDate).draw()
-                hideProjectTablePagination(table,table.rows({search:'applied'}).count())
-                if(end_date == ''){
-                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
-                }
-            })            
+            // $('input[name="project_start_date"]').on('change',function(){
+            //     let start_date = $(this).val()
+            //     let convertedDate = moment(start_date).format('DD/MM/YYYY')
+            //     table.column(3).search(convertedDate).draw()
+            //     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+            //     if(start_date == ''){
+            //         hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+            //     }
+            // })            
+            // $('input[name="project_end_date"]').on('change',function(){
+            //     let end_date = $(this).val()
+            //     let convertedDate = moment(end_date).format('DD/MM/YYYY')
+            //     table.column(4).search(convertedDate).draw()
+            //     hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+            //     if(end_date == ''){
+            //         hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+            //     }
+            // })            
 
 
-            // //filter date range
-            // $('#dateSearchProject').off().on('click',function(){
-            //     $.ajax({
-            //         url:'/project-date-range-filter',
-            //         type:'get',
-            //         dataType:'json',
-            //         data:{
-            //             start_date:$('#start_date').val(),
-            //             end_date:$('#end_date').val(),
-            //         },
-            //         success:function(response){
-            //             if(response.projects.length > 0){
-            //                 let date = []
-            //                 response.projects.forEach((project) => {
-            //                     table = $('#projectTable').DataTable()                        
-            //                     let convertedStartDate = moment(project.project_start_date).format('DD/MM/YYYY')
-            //                     let convertedEndDate = moment(project.project_enddate).format('DD/MM/YYYY')
-            //                     date.push('(?=.*' + convertedStartDate + convertedEndDate + ')');
-            //                 })
-            //                 table.column(3).search(date.join('|'),true,false,true).draw()
-            //                 table.column().search(date.join('|'),true,false,true).draw()
-            //             //     if(date){
-            //             //         hidePagination(table,table.rows({search:'applied'}).count())
-            //             //     }else{
-            //             //         hidePagination(table,table.rows({search:'applied'}).count())
-            //             //     }
-            //             //     $('#no-data').hide()
-            //             //     $('tbody').show()
-            //             // }else{
-            //             //     $('#no-data').show()
-            //             //     $('tbody').hide()
-            //             //     table = $('#projectTable').DataTable()  
-            //             //     table.column(2).search('').draw()
-            //             }
-            //         }
-            //     })
-            // })
+            //filter date range
+            $('#dateSearchProject').off().on('click',function(){
+                $.ajax({
+                    url:'/project-date-range-filter',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        start_date:$('#project_start_date').val(),
+                        end_date:$('#project_end_date').val(),
+                    },
+                    success:function(response){
+                        if(response.projects.length > 0){
+                            let date = []
+                            response.projects.forEach((project) => {
+                                table = $('#projectTable').DataTable()                        
+                                let convertedStartDate = moment(project.project_start_date).format('DD/MM/YYYY')
+                                let convertedEndDate = moment(project.project_end_date).format('DD/MM/YYYY')
+                                date.push('(?=.*' + convertedStartDate + ')');
+                            })
+                            console.log(date)
+                            table.column(3).search(date.join('|'),true,false,true).draw()
+                            // table.column(4).search(date.join('|'),true,false,true).draw()
+                                if(date){
+                                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                                }else{
+                                    hideProjectTablePagination(table,table.rows({search:'applied'}).count())
+                                }
+                                $('#no-data').hide()
+                                $('tbody').show()
+                            }else{
+                                $('#no-data').show()
+                                $('tbody').hide()
+                                table = $('#projectTable').DataTable()  
+                                table.column(2).search('').draw()
+                        }
+                    }
+                })
+            })
 
         })
     

@@ -130,6 +130,10 @@
                   <label for="">End Date : </label>
                   <input class="form-control " id="project_end_date" type="date" name="project_end_date" >
                 </div>
+                <div class="col-md-1">
+                  <button class="btn btn-sm btn-primary mt-4 me-5 search-btn " id="dateSearchProject">Search</button>
+                  {% comment %} <span><button class="btn btn-sm btn-info mx-5 my-0 refresh-btn text-white text-bold " id="refresh"><i class="fa-sharp fa-solid fa-rotate-right"></i></button></span> {% endcomment %}
+                </div>
                 {% if request.user.is_staff %}
                 <div class="col-md-2">
                   <label for="">Assignee : </label>
