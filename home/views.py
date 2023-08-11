@@ -200,16 +200,16 @@ class TotalProjectFilterView(View) :
             
             #conditions for filtering total tasks
             if filter_option == 'Today' : 
-                filtered_total_projects = Project.objects.filter(user=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_total_projects = Project.objects.filter(assignee=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_total_project':filtered_total_projects})
             elif filter_option == 'This Month' : 
-                filtered_total_projects = Project.objects.filter(user=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_total_projects = Project.objects.filter(assignee=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_total_project':filtered_total_projects})
             elif filter_option == 'This Year' : 
-                filtered_total_projects = Project.objects.filter(user=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_total_projects = Project.objects.filter(assignee=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_total_project':filtered_total_projects})
             else :
-                filtered_total_projects = Project.objects.filter(user=user).exclude(project_status='Deactivated').count()
+                filtered_total_projects = Project.objects.filter(assignee=user).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_total_project':filtered_total_projects}) 
             
 #view to filter completed projects
@@ -238,19 +238,19 @@ class CompletedProjectFilterView(View) :
             filter_option = request.GET.get('option')
             
             current_date = date.today()
-            
+
             #conditions for filtering completed tasks
             if filter_option == 'Today' : 
-                filtered_completed_projects = Project.objects.filter(project_status='Completed',user=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_completed_projects = Project.objects.filter(project_status='Completed',assignee=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_completed_project':filtered_completed_projects})
             elif filter_option == 'This Month' : 
-                filtered_completed_projects = Project.objects.filter(project_status='Completed',user=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_completed_projects = Project.objects.filter(project_status='Completed',assignee=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_completed_project':filtered_completed_projects})
             elif filter_option == 'This Year' : 
-                filtered_completed_projects = Project.objects.filter(project_status='Completed',user=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_completed_projects = Project.objects.filter(project_status='Completed',assignee=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_completed_project':filtered_completed_projects})
             else :
-                filtered_completed_projects = Project.objects.filter(project_status='Completed',user=user).exclude(project_status='Deactivated').count()
+                filtered_completed_projects = Project.objects.filter(project_status='Completed',assignee=user).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_completed_project':filtered_completed_projects}) 
             
             
@@ -281,18 +281,18 @@ class PendingProjectFilterView(View) :
             
             current_date = date.today()
             
-            #conditions for filtering pending tasks
+            #conditions for filtering pending assignee
             if filter_option == 'Today' : 
-                filtered_pending_projects = Project.objects.filter(project_status='Pending',user=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_pending_projects = Project.objects.filter(project_status='Pending',assignee=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_pending_project':filtered_pending_projects})
             elif filter_option == 'This Month' : 
-                filtered_pending_projects = Project.objects.filter(project_status='Pending',user=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_pending_projects = Project.objects.filter(project_status='Pending',assignee=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_pending_project':filtered_pending_projects})
             elif filter_option == 'This Year' : 
-                filtered_pending_projects = Project.objects.filter(project_status='Pending',user=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_pending_projects = Project.objects.filter(project_status='Pending',assignee=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_pending_project':filtered_pending_projects})
             else :
-                filtered_pending_projects = Project.objects.filter(project_status='ending',user=user).exclude(project_status='Deactivated').count()
+                filtered_pending_projects = Project.objects.filter(project_status='ending',assignee=user).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_pending_project':filtered_pending_projects}) 
             
 #view to filter on hold projects
@@ -324,16 +324,16 @@ class OnHoldProjectFilterView(View) :
             
             #conditions for filtering on_hold tasks
             if filter_option == 'Today' : 
-                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',user=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',assignee=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_on_hold_project':filtered_on_hold_projects})
             elif filter_option == 'This Month' : 
-                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',user=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',assignee=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_on_hold_project':filtered_on_hold_projects})
             elif filter_option == 'This Year' : 
-                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',user=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',assignee=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_on_hold_project':filtered_on_hold_projects})
             else :
-                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',user=user).exclude(project_status='Deactivated').count()
+                filtered_on_hold_projects = Project.objects.filter(project_status='On Hold',assignee=user).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_on_hold_project':filtered_on_hold_projects}) 
             
 #view to filter canceled projects
@@ -365,16 +365,16 @@ class CanceledProjectFilterView(View) :
             
             #conditions for filtering canceled tasks
             if filter_option == 'Today' : 
-                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',user=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',assignee=user,created_at__day=current_date.day,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_canceled_project':filtered_canceled_projects})
             elif filter_option == 'This Month' : 
-                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',user=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',assignee=user,created_at__month=current_date.month,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_canceled_project':filtered_canceled_projects})
             elif filter_option == 'This Year' : 
-                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',user=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
+                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',assignee=user,created_at__year=current_date.year).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_canceled_project':filtered_canceled_projects})
             else :
-                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',user=user).exclude(project_status='Deactivated').count()
+                filtered_canceled_projects = Project.objects.filter(project_status='Canceled',assignee=user).exclude(project_status='Deactivated').count()
                 return JsonResponse({'status':'success','filtered_canceled_project':filtered_canceled_projects}) 
 
 #view to filter total tasks
@@ -1136,11 +1136,11 @@ class ProjectCreateView(View) :
         email.content_subtype = 'html'
         email.send()
         
-        # activity_log = ActivityLog.objects.create(
-        #     user = user,
-        #     activity=f'"{task_title}" task added'
-        # )
-        # activity_log.save()
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity=f'"{project_title}" project added'
+        )
+        activity_log.save()
         
         total_projects = Project.objects.all().count()
         return JsonResponse({'status':'success','project':context,'total':total_projects})
@@ -1219,20 +1219,20 @@ class UpdateProjectView(View) :
         project_update.project_type = project_type
         project_update.save()
         
-        # if task_status == 'Completed' : 
-        #     activity_log = ActivityLog.objects.create(
-        #     user = request.user,
-        #     activity = f' "{task_title}" task completed'
-        #     )
+        if project_status == 'Completed' : 
+            activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{project_title}"project completed'
+            )
         
-        #     activity_log.save()
-        # else : 
-        #     activity_log = ActivityLog.objects.create(
-        #         user = request.user,
-        #         activity = f' "{task_title}" task updated'
-        #     )
+            activity_log.save()
+        else : 
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{project_title}" project updated'
+            )
             
-        #     activity_log.save()
+            activity_log.save()
         
         context = {
             'project_id': project_update.id,
@@ -1258,11 +1258,11 @@ class ProjectDeleteView(View) :
         project.project_status = 'Deactivated'
         project.save()
         
-        # activity_log = ActivityLog.objects.create(
-        #     user = request.user,
-        #     activity = f' "{task.task_title}" task deactivated'
-        # )
-        # activity_log.save()
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{project.project_title}" project deactivated'
+        )
+        activity_log.save()
         total_projects = Project.objects.all().exclude(project_status='Deactivated').count()
         return JsonResponse({'status':'success','total':total_projects})       
 
@@ -1317,7 +1317,11 @@ class CreateListView(View) :
             'list_description':new_list.list_description,
             'is_staff':request.user.is_staff
         }
-        
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{list_name}" list created'
+        )
+        activity_log.save()
         return JsonResponse({'status':'success','list':context})
     
 #list update page view
@@ -1351,6 +1355,12 @@ class UpdateListView(View) :
             'list_name':list.list_name,
             'list_description':list.list_description,
         }
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{list_name}" list edited'
+        )
+            
+        activity_log.save()
         return JsonResponse({'status':'success','list':context}) 
     
 #list delete view
@@ -1360,7 +1370,11 @@ class DeleteListView(View) :
         print(list_id)
         list = List.objects.get(id=list_id)
         list.delete()
-        
+        activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{list.list_name}" list deleted'
+        )
+        activity_log.save()
         total = List.objects.filter(project=project_id).count()
         return JsonResponse({'status':'success','total':total})  
     
@@ -1435,7 +1449,12 @@ class IssueCreateView(View) :
         )
         
         new_issue.save()
-        
+        activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{issue_title}" issue created'
+        )
+            
+        activity_log.save()
         context = {
             'issue_id':new_issue.id,
             'issue_title':new_issue.issue_title,
@@ -1499,6 +1518,20 @@ class UpdateIssueView(View) :
         issue.issue_priority = issue_priority
         issue.save()
         
+        if issue_status == 'Resolved' : 
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{issue_title}" issue resolved'
+            )
+            
+            activity_log.save()
+        else : 
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{issue_title}" issue edited'
+            )
+            
+            activity_log.save()        
         context={
             'issue_id': issue_id,
             'issue_title':issue.issue_title,
@@ -1558,7 +1591,12 @@ class DeleteIssueView(View) :
         issue_id = request.POST.get('issue_id')
         issue = Issue.objects.get(id=issue_id)
         issue.delete()
-        
+        activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{issue.issue_title}" issue removed'
+            )
+            
+        activity_log.save()
         total = Issue.objects.filter(project=project_id).count()
         return JsonResponse({'status':'success','total':total})  
     
@@ -1865,6 +1903,7 @@ class UpdateSubTaskPageView(View) :
             'sub_task_status': sub_task.sub_task_status,
             'sub_task_priority': sub_task.sub_task_priority,
         }
+        
         return JsonResponse({'status':'success','sub_task':context})
          
 #view to update subtask 
@@ -1882,13 +1921,27 @@ class UpdateSubTaskView(View) :
         sub_task.sub_task_status = sub_task_status
         sub_task.save()
         
+        if sub_task_status == 'Completed' : 
+            activity_log = ActivityLog.objects.create(
+            user = request.user,
+            activity = f' "{sub_task_title}" sub task completed'
+            )
+        
+            activity_log.save()
+        else : 
+            activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{sub_task_title}" sub task updated'
+            )
+            
+            activity_log.save()
+        
         context = {
             'sub_task_id':sub_task.id,
             'sub_task_title':sub_task.sub_task_title,
             'sub_task_priority':sub_task.sub_task_priority,
             'sub_task_status':sub_task.sub_task_status,
         }
-        
         return JsonResponse({'status':'success','sub_task':context})
     
 #view to delete sub tasks
@@ -1898,6 +1951,12 @@ class SubTaskDeleteView(View) :
         sub_task = SubTask.objects.get(id=sub_task_id,task=task_id)
         sub_task.sub_task_status = 'Deactivated'
         sub_task.save()
+        activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{sub_task.sub_task_title}" sub task deleted'
+            )
+            
+        activity_log.save()
         return JsonResponse({'status':'success'})
     
 #view to create sub tasks 
@@ -1916,6 +1975,12 @@ class SubTaskCreateView(View) :
             sub_task_status = sub_task_status
         )
         new_sub_task.save()
+        activity_log = ActivityLog.objects.create(
+                user = request.user,
+                activity = f' "{sub_task_title}" sub task added'
+            )
+            
+        activity_log.save()
         context = {
             'sub_task_id': new_sub_task.id,
             'sub_task_title': new_sub_task.sub_task_title,
