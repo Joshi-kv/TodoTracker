@@ -44,6 +44,7 @@ urlpatterns = [
     path('update-issue-view/',views.UpdateIssuePageView.as_view(),name='issue-update-view'),
     path('update-issue/',views.UpdateIssueView.as_view(),name='issue-update'),
     path('attach-issue-file/<int:issue_id>/',views.IssueFileAttachmentView.as_view(),name='issue-file'),
+    path('remove-issue-attachment/<int:id>/',views.IssueAttachmentDeleteView.as_view(),name='issue-file-remove'),
     path('delete-issue/<int:project_id>/',views.DeleteIssueView.as_view(),name='delete-issue'),
     path('project/lists/issue-detail/<int:project_id>/',views.IssueDetailPage.as_view(),name='issue-detail'),
     path('project/tasks/<int:project_id>/',views.TodoPageView.as_view(),name='todo-page'),

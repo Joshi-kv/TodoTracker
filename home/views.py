@@ -1517,8 +1517,10 @@ class IssueFileAttachmentView(View) :
         context = []
         for attachment in attachments : 
             context.append({
+                'attachment_id':attachment.id,
                 'attachment':attachment.attachment.url,
-                'attachment_title':attachment.attachment_title
+                'attachment_title':attachment.attachment_title,
+                'is_staff':request.user.is_staff
             })
         return JsonResponse({'status':'success','attachments':context})
     
@@ -1534,12 +1536,21 @@ class IssueFileAttachmentView(View) :
         )
         attachments = IssueAttachment.objects.filter(issue=issue)
         context = []
-        for attchment in attachments :
+        for attachment in attachments :
             context.append({
-                'attachment_title': attchment.attachment_title,
-                'attachment' : attchment.attachment.url
+                'attachment_id':attachment.id,
+                'attachment_title': attachment.attachment_title,
+                'attachment' : attachment.attachment.url,
+                'is_staff':request.user.is_staff
             })
         return JsonResponse({'status':'success','attachments':context})
+    
+#view to delete issue attach
+class IssueAttachmentDeleteView(View) : 
+    def post(self,request,id) : 
+        attachment = IssueAttachment.objects.get(id=id)
+        attachment.delete()
+        return JsonResponse({'status': 'success'})
     
 #issue delete view
 class DeleteIssueView(View) : 
@@ -1583,6 +1594,7 @@ class TaskFileAttachmentView(View) :
         context = []
         for attachment in attachments : 
             context.append({
+                'attachment_id': attachment.id,
                 'attachment':attachment.attachment.url,
                 'attachment_title':attachment.attachment_title
             })
@@ -1600,10 +1612,11 @@ class TaskFileAttachmentView(View) :
         )
         attachments = TaskAttachment.objects.filter(task=task,user=request.user)
         context = []
-        for attchment in attachments :
+        for attachment in attachments :
             context.append({
-                'attachment_title': attchment.attachment_title,
-                'attachment' : attchment.attachment.url
+                'attachment_id': attachment.id,
+                'attachment_title': attachment.attachment_title,
+                'attachment' : attachment.attachment.url
             })
         return JsonResponse({'status':'success','attachments':context})
         

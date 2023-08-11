@@ -3,25 +3,44 @@ let issue_id = document.getElementById('issue').innerHTML
 console.log(issue_id)
 $(document).ready(() => {
 
+    function issueAttachment (){
     const url = `http://127.0.0.1:8000/attach-issue-file/${issue_id}/`
     fetch(url)
     .then(response => response.json())
     .then((data) =>{
         if(data.status === 'success'){
-            // $('#taskAttachments').empty()
             data.attachments.forEach((attachment) => {
                 console.log(attachment.attachment_title)
-                let attachmentContent = 
-                `
-                <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
-                    ${attachment.attachment_title}
-                </a><br>
-                        
-                `
+                let attachmentContent 
+                if(attachment.is_staff){
+                    attachmentContent = 
+                    `
+                    <div id="issue-${attachment.attachment_id}">
+                    <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
+                        ${attachment.attachment_title} 
+                    </a><span class="text-danger ms-5" data=${attachment.attachment_id} id="removeAttachmentBtn"><i class="fas fa-circle-xmark" title="remove" ></i></span><br>
+                    </div>
+                            
+                    `
+                }else{
+                    attachmentContent = 
+                    `
+                    <div id="issue-${attachment.attachment_id}">
+                    <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
+                        ${attachment.attachment_title} 
+                    </a><br>
+                    </div>
+                            
+                    `
+                }
+                
                 $('#issueAttachments').prepend(attachmentContent)
             })
         }
     })
+    }
+
+    issueAttachment()
 
     $('#issueAttachmentForm').validate({
         rules:{
@@ -90,13 +109,28 @@ $(document).ready(() => {
                    if(response.status === 'success'){
                     $('#issueAttachments').empty()
                     response.attachments.forEach((attachment) => {
-                        let attachmentContent = 
-                        `
-                        <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
-                            ${attachment.attachment_title}
-                        </a><br>
-                        
-                        `
+                        let attachmentContent 
+                        if(attachment.is_staff){
+                            attachmentContent = 
+                            `
+                            <div id="issue-${attachment.attachment_id}">
+                            <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
+                                ${attachment.attachment_title} 
+                            </a><span class="text-danger ms-5" data=${attachment.attachment_id} id="removeAttachmentBtn"><i class="fas fa-circle-xmark" title="remove" ></i></span><br>
+                            </div>
+                                    
+                            `
+                        }else{
+                            attachmentContent = 
+                            `
+                            <div id="issue-${attachment.attachment_id}">
+                            <a href="${attachment.attachment}" target="_blank" title="${attachment.attachment_title}">
+                                ${attachment.attachment_title} 
+                            </a><br>
+                            </div>
+                                    
+                            `
+                        }
                         $('#issueAttachments').prepend(attachmentContent)
                         
                     })
@@ -109,5 +143,24 @@ $(document).ready(() => {
         $('#issueAttachmentForm')[0].reset()
         }
 
+    })
+
+    $(document).on('click','#removeAttachmentBtn',function(e) {
+        let id = $(this).attr('data')
+
+        $.ajax({
+            type:'POST',
+            url:`/remove-issue-attachment/${id}/`,
+            dataType:'json',
+            data:{csrfmiddlewaretoken:csrftoken},
+            success:function(data) {
+                if(data.status == 'success'){
+                    $('#issueAttachments').empty()
+                    issueAttachment()
+                    alertify.set('notifier','position','top-right')
+                    alertify.error('Attachment removed')
+                }
+            }
+        })
     })
 })
