@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Issue, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, IssueAttachment, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -1450,12 +1450,11 @@ class IssueCreateView(View) :
 #view to render issue detail page    
 class IssueDetailPage(View) : 
     def get(self,request,project_id) :
-        print(project_id)
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
         project = Project.objects.get(id=project_id)
         list = List.objects.get(project=project)
-        issue = Issue.objects.get(list=list.id)
+        issue = Issue.objects.get(list=list)
         
         context = {
             'current_user': current_user,
@@ -1509,6 +1508,38 @@ class UpdateIssueView(View) :
             'issue_priority':issue.issue_priority
         }
         return JsonResponse({'status':'success','issue':context}) 
+    
+#view to attach files for issue
+class IssueFileAttachmentView(View) : 
+    def get(self,request,issue_id) : 
+        issue = Issue.objects.get(id=issue_id,)
+        attachments = IssueAttachment.objects.filter(issue=issue)
+        context = []
+        for attachment in attachments : 
+            context.append({
+                'attachment':attachment.attachment.url,
+                'attachment_title':attachment.attachment_title
+            })
+        return JsonResponse({'status':'success','attachments':context})
+    
+    def post(self,request,issue_id):     
+        issue = Issue.objects.get(id=issue_id)
+        attachment_file = request.FILES.get('attachment_file')
+        attachment_title = request.POST.get('attachment_title')
+        IssueAttachment.objects.create(
+            user=request.user,
+            issue=issue, 
+            attachment=attachment_file, 
+            attachment_title=attachment_title
+        )
+        attachments = IssueAttachment.objects.filter(issue=issue)
+        context = []
+        for attchment in attachments :
+            context.append({
+                'attachment_title': attchment.attachment_title,
+                'attachment' : attchment.attachment.url
+            })
+        return JsonResponse({'status':'success','attachments':context})
     
 #issue delete view
 class DeleteIssueView(View) : 

@@ -102,7 +102,7 @@ $(document).ready(() => {
                             <i class="fas fa-trash"></i>
                             </button>
                             <button class="btn btn-sm btn-success mx-2">
-                            <a href="" class="text-white"><i class="fas fa-eye"></i></a>
+                            <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
                             </button>
                         </div>
                         `

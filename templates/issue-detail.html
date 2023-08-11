@@ -31,32 +31,68 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Sample Issue</h5>  
+                    <h5 class="card-title">{{issue.issue_title}}</h5>  
                     <div class="card-body mt-5">
                         <h4>Description : </h4><br>
-                        <p class="ms-5">sample description</p><br>
+                        <p class="ms-5">{{issue.issue_description}}</p><br>
                         <b>Issue Priority : </b>
-                        <p class="ms-5">Highn</p><br>
+                        <p class="ms-5">{{issue.issue_priority}}</p><br>
                         <b>Current Status : </b>
-                        <p class="ms-5">Open</p><br>
+                        <p class="ms-5">{{issue.issue_status}}</p><br>
                         <b>Created At : </b>
-                        <p class="ms-5">01.01.1999</p><br>
+                        <p class="ms-5">{{issue.created_at}}</p><br>
                         <p class="text-center">Attachments</p>
                         <hr>
                         {% if request.user.is_staff %}
                         Add attachments here
-                        <button class="ms-5 btn btn-primary btn-sm "><i class="fa-solid fa-link"></i></button>
+                        <button class="ms-5 btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#issueAttachmentModal"><i class="fa-solid fa-link"></i></button>
                         {% endif %}
-
+                        <br>
+                        Attachments :
+                        <div id="issueAttachments"> 
+                          
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
       </div>
     </section>
+    <div class="modal fade" id="issueAttachmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Attach your files here</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="issueAttachmentForm" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment Title</label>
+                <input type="text" name="attachment_title" class="form-control" id="attachmentTitle">
+              </div>
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment</label>
+                <input type="file" name="attachment_file" class="form-control" id="attachmentFile">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main><!-- End #main -->
 
+
   {% include 'footer.html' %}
+
+  {{issue.id|json_script:"issue"}}
+  <script src="{% static 'assets/js/issue-attachment.js' %}"></script>
 
 {% endblock content %}
 

@@ -33,7 +33,7 @@ $(document).ready(() =>{
                             <i class="fas fa-trash"></i>
                             </button>
                             <button class="btn btn-sm btn-success mx-2">
-                            <a href="" class="text-white"><i class="fas fa-eye"></i></a>
+                            <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
                             </button>
                         </div>
                     `
@@ -54,7 +54,7 @@ $(document).ready(() =>{
                     `
                     <div class="d-flex">
                         <button class="btn btn-sm btn-success mx-2">
-                        <a href="" class="text-white"><i class="fas fa-eye"></i></a>
+                        <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
                         </button>
                     </div>
                     `
@@ -63,7 +63,7 @@ $(document).ready(() =>{
                 table = $('#issueTable').DataTable();
                 table.draw()
                 issueLength = data.issues.length
-                hidePagination(table,issuesLength)
+                hidePagination(table,issueLength)
             }  
             
             //custom filtering
@@ -76,6 +76,7 @@ $(document).ready(() =>{
                 }
             })
             $('select[name="filterIssuePriority"]').on('change',function(){
+                console.log('priority')
                 let type = $(this).val()
                 table.column(3).search(type).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())

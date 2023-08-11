@@ -1,8 +1,9 @@
-let pathname = window.location.href.replace(/\/+$/, '');
-let task_id = pathname.substring(pathname.lastIndexOf('/') +1 )
+
+let issue_id = document.getElementById('issue').innerHTML
+console.log(issue_id)
 $(document).ready(() => {
 
-    const url = `http://127.0.0.1:8000/attach-task-file/${task_id}/`
+    const url = `http://127.0.0.1:8000/attach-issue-file/${issue_id}/`
     fetch(url)
     .then(response => response.json())
     .then((data) =>{
@@ -17,12 +18,12 @@ $(document).ready(() => {
                 </a><br>
                         
                 `
-                $('#taskAttachments').prepend(attachmentContent)
+                $('#issueAttachments').prepend(attachmentContent)
             })
         }
     })
 
-    $('#taskAttachmentForm').validate({
+    $('#issueAttachmentForm').validate({
         rules:{
             attachment_title:{
                 required:true,
@@ -64,7 +65,7 @@ $(document).ready(() => {
 
     const csrftoken = getCookie('csrftoken')
 
-    $('#taskAttachmentForm').on('submit', function(e){
+    $('#issueAttachmentForm').on('submit', function(e){
         e.preventDefault()
         let file = $('#attachmentFile')[0].files[0]
         let attachment_title = $('#attachmentTitle').val()
@@ -75,7 +76,7 @@ $(document).ready(() => {
         if(file && attachment_title){
             $.ajax({
                 type: 'POST',
-                url: `/attach-task-file/${task_id}/`,
+                url: `/attach-issue-file/${issue_id}/`,
                 dataType: 'json',
                 mimeType:'multipart/form-data',
                 contentType:false,
@@ -87,7 +88,7 @@ $(document).ready(() => {
                 success:function(response){
                     console.log(response)
                    if(response.status === 'success'){
-                    $('#taskAttachments').empty()
+                    $('#issueAttachments').empty()
                     response.attachments.forEach((attachment) => {
                         let attachmentContent = 
                         `
@@ -96,7 +97,7 @@ $(document).ready(() => {
                         </a><br>
                         
                         `
-                        $('#taskAttachments').prepend(attachmentContent)
+                        $('#issueAttachments').prepend(attachmentContent)
                         
                     })
                 }
@@ -104,8 +105,8 @@ $(document).ready(() => {
         })
         alertify.set('notifier','position','top-right')
         alertify.success('Attachment added successfully')
-        $('#attachmentModal').modal('toggle')
-        $('#taskAttachmentForm')[0].reset()
+        $('#issueAttachmentModal').modal('toggle')
+        $('#issueAttachmentForm')[0].reset()
         }
 
     })

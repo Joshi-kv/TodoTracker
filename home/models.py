@@ -81,6 +81,14 @@ class TaskAttachment(models.Model):
     
     def __str__(self) : 
         return f'{self.user} - {self.task} - {self.attachment_title}'
+class IssueAttachment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    attachment = models.FileField(upload_to='issue-attachments/',blank=True,null=True)
+    attachment_title = models.CharField(max_length=256)
+    
+    def __str__(self) : 
+        return f'{self.user} - {self.issue} - {self.attachment_title}'
     
 #model for faq
 class FAQ(models.Model) : 
