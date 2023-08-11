@@ -77,7 +77,7 @@ $(document).ready(() => {
                 success: function(response) {
                     console.log(response);
                     let sub_task = response.sub_task;
-                    let sub_total = response.total
+                    let total = response.total
                     let table = $('#subTaskTable').DataTable()
                     let subTaskId = sub_task.sub_task_id
                     let newRow = table.row.add([
@@ -97,7 +97,8 @@ $(document).ready(() => {
                         `
                     ]).node();
                     $(newRow).attr('data-sub-task-id',subTaskId)
-                    table.draw()
+                    $('#subTaskTable').prepend(newRow)
+                    pagination(table,total)
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New task added successfully');
                 },
@@ -117,6 +118,7 @@ $(document).ready(() => {
 
 
 function pagination(table,tasks){
+    console.log(tasks)
     if (tasks > 10) {
         $('#subTaskTable_length').show();
         $('.pagination').show();
@@ -126,21 +128,21 @@ function pagination(table,tasks){
     }
 }
 
-// function to hide pagination dynamically 
-function showPagination(table,tasks) {
-    if (tasks.length > 10) {
-        $('#subTaskTable_length').show();
-        $('.pagination').show();
-    } else {
-        $('#subTaskTable_length').hide();
-        $('.pagination').hide();
-    }
+// // function to hide pagination dynamically 
+// function showPagination(table,tasks) {
+//     if (tasks > 10) {
+//         $('#subTaskTable_length').show();
+//         $('.pagination').show();
+//     } else {
+//         $('#subTaskTable_length').hide();
+//         $('.pagination').hide();
+//     }
 
-    $('select[name="subTaskTable_length"]').on('change', () => {
-        if (tasks > $('select[name="subTaskTable_length"]').val()) {
-            $('.pagination').show();
-        } else {
-            $('.pagination').hide();
-        }
-    });
-}
+//     $('select[name="subTaskTable_length"]').on('change', () => {
+//         if (tasks > $('select[name="subTaskTable_length"]').val()) {
+//             $('.pagination').show();
+//         } else {
+//             $('.pagination').hide();
+//         }
+//     });
+// }

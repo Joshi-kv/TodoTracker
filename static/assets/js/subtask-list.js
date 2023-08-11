@@ -12,13 +12,12 @@ $(document).ready(() =>{
     .then((data) => {
         $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#subTaskTable').DataTable({
-            "ordering":false
+            "ordering":false,
+            'info':false,
         })
         hidePagination(table,table.rows().count())
         data.sub_tasks.forEach((sub_task) =>{
-            console.log(sub_task)
             if(sub_task.is_staff === true){
-                console.log('sub task')
                 let subTaskId = sub_task.task_id
                 let subTaskRow = table.row.add([
                     `${sub_task.sub_task_title}`,

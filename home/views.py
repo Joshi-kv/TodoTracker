@@ -1840,7 +1840,7 @@ class SubTaskPageView(View) :
 class SubTaskListView(View) : 
     def get(self,request,task_id) : 
 
-        sub_tasks = SubTask.objects.filter(task=task_id).exclude(sub_task_status='Deactivated')
+        sub_tasks = SubTask.objects.filter(task=task_id).exclude(sub_task_status='Deactivated').order_by('-created_at')
         
         context = []
         for sub_task in sub_tasks :
@@ -1922,8 +1922,8 @@ class SubTaskCreateView(View) :
             'sub_task_priority':new_sub_task.sub_task_priority,
             'sub_task_status': new_sub_task.sub_task_status,
         }
-        
-        return JsonResponse({'status':'success','sub_task':context})
+        total = SubTask.objects.filter(task=task).exclude(sub_task_status='Deactivated').count()
+        return JsonResponse({'status':'success','sub_task':context,'total':total})
     
 #view to render faq page
 class FaqPageView(View) : 

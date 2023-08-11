@@ -118,7 +118,7 @@ $(document).ready(() =>{
                     let table = $('#subTaskTable').DataTable()
                     let deletedRow = table.row(`tr[data-sub-task-id=${subTaskId}]`).index()
                     table.row(deletedRow).remove().draw(false)
-                    changePagination(table,total)
+                    changePagination(table,table.rows({search:'applied'}).count())
                     
                 }
                 alertify.set('notifier','position','top-right')

@@ -79,7 +79,7 @@ $(document).ready(() => {
             },
             success:function(response){
                 $('#dashboardProjects').empty()
-                $('#filterOption').html(target.innerHTML)
+                $('#filterOptionProject').html(target.innerHTML)
                 if(response.projects.length > 0){
                     response.projects.forEach((project,index) => {
                         let projectDiv = $('#dashboardProjects')
