@@ -1,9 +1,10 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Issue, IssueAttachment, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, IssueAttachment, List, ProjectTeam, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -1038,7 +1039,7 @@ class ProjectListView(View) :
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    'project_assignee': project.assignee.username,
+                    # 'project_assignee': project.assignee.username,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1047,6 +1048,7 @@ class ProjectListView(View) :
                     'project_status': project.project_status,
                     'is_staff': True,
                 })
+                print(project.assignee)
             return JsonResponse({'projects':context},safe=False)   
         else : 
             projects = Project.objects.filter(assignee=request.user).exclude(project_status='Deactivated')   
@@ -1056,7 +1058,7 @@ class ProjectListView(View) :
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    'project_assignee': project.assignee.username,
+                    # 'project_assignee': project.assignee.username,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1074,7 +1076,7 @@ class ProjectCreateView(View) :
         
         project_title = request.POST.get('project_title')
         project_description = request.POST.get('project_description')
-        project_assignee = request.POST.get('project_assignee')
+        project_assignee = request.POST.getlis('project_assignee')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         duration = request.POST.get('duration')
@@ -1082,10 +1084,15 @@ class ProjectCreateView(View) :
         project_status = request.POST.get('project_status')
         project_type = request.POST.get('project_type')
         
-        #creating new project
+        assignees = User.objects.filter(id__in=(project_assignee))
+    
+        
+
+        
+        
+        # #creating new project
         
         new_project = Project.objects.create(
-            assignee=User.objects.get(id=project_assignee),
             project_title=project_title,
             project_description=project_description,
             start_date=start_date,
@@ -1098,52 +1105,56 @@ class ProjectCreateView(View) :
         
         new_project.save()
         
-        context = {
-            'project_id':new_project.id,
-            'project_title':new_project.project_title,
-            'project_description':new_project.project_description,
-            'project_startdate':new_project.start_date,
-            'project_enddate':new_project.end_date,
-            'project_status':new_project.project_status,
-            'project_type':new_project.project_type,
-            'duration':new_project.duration,
-            'assignee':new_project.assignee.username,
-            'estimated_hours':new_project.estimated_hours,
-        }
         
-        #sending email to assignee
-        email_context = {
-            'project_title':project_title,
-            'project_assignee':User.objects.get(id=project_assignee).username,
-            'duration':duration,
+        
+        
+        
+        # context = {
+        #     'project_id':new_project.id,
+        #     'project_title':new_project.project_title,
+        #     'project_description':new_project.project_description,
+        #     'project_startdate':new_project.start_date,
+        #     'project_enddate':new_project.end_date,
+        #     'project_status':new_project.project_status,
+        #     'project_type':new_project.project_type,
+        #     'duration':new_project.duration,
+        #     'assignee':new_project.assignee.username,
+        #     'estimated_hours':new_project.estimated_hours,
+        # }
+        
+        # #sending email to assignee
+        # email_context = {
+        #     'project_title':project_title,
+        #     'project_assignee':User.objects.get(id=project_assignee).username,
+        #     'duration':duration,
             
-        }
+        # }
         
-        super_user = User.objects.get(id=request.user.id)
-        assignee = User.objects.get(id=project_assignee)
-        subject = f'Regarding {project_title} project assinment'
-        message = get_template('project-email.html').render(email_context)
-        from_mail = super_user.email
-        to_mail = assignee.email
+        # super_user = User.objects.get(id=request.user.id)
+        # assignee = User.objects.get(id=project_assignee)
+        # subject = f'Regarding {project_title} project assinment'
+        # message = get_template('project-email.html').render(email_context)
+        # from_mail = super_user.email
+        # to_mail = assignee.email
         
-        email = EmailMessage(
-            subject,
-            message,
-            from_email=from_mail,
-            to=[to_mail],
-            reply_to=[from_mail]
-        )
-        email.content_subtype = 'html'
-        email.send()
+        # email = EmailMessage(
+        #     subject,
+        #     message,
+        #     from_email=from_mail,
+        #     to=[to_mail],
+        #     reply_to=[from_mail]
+        # )
+        # email.content_subtype = 'html'
+        # # email.send()
         
-        activity_log = ActivityLog.objects.create(
-            user = request.user,
-            activity=f'"{project_title}" project added'
-        )
-        activity_log.save()
+        # activity_log = ActivityLog.objects.create(
+        #     user = request.user,
+        #     activity=f'"{project_title}" project added'
+        # )
+        # activity_log.save()
         
-        total_projects = Project.objects.all().count()
-        return JsonResponse({'status':'success','project':context,'total':total_projects})
+        # total_projects = Project.objects.all().count()
+        return JsonResponse({'status':'success',})
     
 #view to render Project edit page
 class UpdateProjectPageView(View) : 

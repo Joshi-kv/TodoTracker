@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 # Create your models here.
 
+
 #model for project 
 class Project(models.Model):
-    assignee = models.ForeignKey(User, on_delete=models.CASCADE)
+    assignee = models.ManyToManyField(User,through='ProjectTeam')
     project_title = models.CharField(max_length=500)
     project_description = models.TextField()
     project_type = models.CharField(max_length=500)
@@ -19,6 +20,14 @@ class Project(models.Model):
     
     def __str__(self) : 
         return f'{self.project_title}'
+
+
+class ProjectTeam(models.Model):
+    assignee = models.ForeignKey(User,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    
+    def __str__(self) : 
+        return f'{self.project} - {self.assignee}'
 
 #model for todo
 class Todo(models.Model) : 

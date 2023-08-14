@@ -66,7 +66,7 @@
                           </div>
                           <div class='col-12'>
                               <label for="inputAddress" class="form-label">Assignee</label><br>
-                              <select class="form-select select" style="width:100%" name="projectAssignee[]" multiple="multiple" id="projectAssignee">
+                              <select class="form-select select" style="width:100%" name="projectAssignee" multiple="multiple" id="projectAssignee">
                                 {% for assignee in assignees  %}
                                 <option value={{assignee.id}}>{{assignee}}</option>
                                 {% endfor %}

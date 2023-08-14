@@ -107,6 +107,7 @@ $(document).ready(() => {
         let project_type = $('select[name="project_type"]').val()
         let project_status = $('select[name="project_status"]').val()
 
+        
         if(project_title && project_description && project_status && project_type && project_assignee && start_date && end_date && duration && estimated_hours){
             $.ajax({
                 type: 'post',
@@ -186,7 +187,8 @@ $(document).ready(() => {
 
     $('#close').on('click',function(e){
         e.preventDefault()
-        $('#taskForm')[0].reset()
+        $('#projectForm')[0].reset()
+        console.log($('#projectAssignee').val())
     })
 
 });

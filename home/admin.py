@@ -1,14 +1,14 @@
 from django.contrib import admin
-from . models import Issue, IssueAttachment, List, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, IssueAttachment, List, ProjectTeam, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 
 
 # Register your models here.
 
-class ProjectAdmin(admin.ModelAdmin) : 
-    list_display = ['project_title','project_description','assignee','start_date','end_date','project_type','project_status','duration','estimated_hours','created_at','updated_at']
-    list_per_page = 20
+# class ProjectAdmin(admin.ModelAdmin) : 
+#     list_display = ['project_title','project_description','assignees','start_date','end_date','project_type','project_status','duration','estimated_hours','created_at','updated_at']
+#     list_per_page = 20
     
-admin.site.register(Project,ProjectAdmin)
+admin.site.register(Project)
 
 class TaskAdmin(admin.ModelAdmin) : 
     list_display = ['user','task_title','task_description','task_duedate','task_priority','task_status','created_date','updated_date']
@@ -80,3 +80,9 @@ class IssueAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 admin.site.register(Issue,IssueAdmin)
+
+class ProjectTeamAdmin(admin.ModelAdmin) : 
+    list_display = ['assignee','project']
+    list_per_page = 20
+    
+admin.site.register(ProjectTeam,ProjectTeamAdmin)
