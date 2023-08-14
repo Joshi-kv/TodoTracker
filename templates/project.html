@@ -65,9 +65,8 @@
                             <textarea class="form-control" name="project_description" placeholder="Description" id="projectDescription" style="height: 100px;"></textarea>
                           </div>
                           <div class='col-12'>
-                              <label for="inputAddress" class="form-label">Assignee</label>
-                              <select class="form-select" name="projectAssignee" aria-label="Default select example" id="projectAssignee">
-                                <option value="" >select assignee</option>
+                              <label for="inputAddress" class="form-label">Assignee</label><br>
+                              <select class="form-select select" style="width:100%" name="projectAssignee[]" multiple="multiple" id="projectAssignee">
                                 {% for assignee in assignees  %}
                                 <option value={{assignee.id}}>{{assignee}}</option>
                                 {% endfor %}
@@ -218,7 +217,7 @@
                           </div>
                           <div class='col-12'>
                               <label for="inputAddress" class="form-label">Assignee</label>
-                              <select class="form-select" name="projectUpdateAssignee" aria-label="Default select example" id="projectUpdateAssignee">
+                              <select class="form-select" multiple name="projectUpdateAssignee" aria-label="Default select example" id="projectUpdateAssignee">
                                 <option value="" >select assignee</option>
                                 {% for assignee in assignees  %}
                                 <option value={{assignee.id}}>{{assignee}}</option>
@@ -307,6 +306,14 @@
   <script src="{% static 'assets/js/project-add.js' %}"></script>
   <script src="{% static 'assets/js/project-list.js' %}"></script>
   <script src="{% static 'assets/js/project-action.js' %}"></script> 
+
+  <script>
+    $(document).ready(function() {
+      $('.select').select2({
+        dropdownParent : $('#basicModal')
+      })
+    })
+  </script>
 
 {% endblock content %}
 
