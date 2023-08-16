@@ -1,6 +1,9 @@
 let table;
 let length;
+const urlParams = new URLSearchParams(window.location.search);
+const filterOption = urlParams.get('filter');
 $(document).ready(function() {
+    console.log(filterOption);
       // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/project-list/'
     fetch(url)
@@ -64,7 +67,22 @@ $(document).ready(function() {
                 }
                 
             })
-            //custom filtering
+            if(filterOption){
+               
+               if(filterOption == 'totalprojects'){
+                $('select[name="filterProjectStatus"]').val('').change()
+                    table.column(6).search('').draw()
+                    hidePagination(table,table.rows({search:'applied'}).count())
+               }else{
+                $('select[name="filterProjectStatus"]').val(filterOption).change()
+                table.column(6).search(filterOption).draw()
+                hidePagination(table,table.rows({search:'applied'}).count()) 
+               }
+            }else{
+                $('select[name="filterProjectStatus"]').val('Pending').change()
+                table.column(6).search('Pending').draw()
+                hidePagination(table,table.rows({search:'applied'}).count())
+            }
             $('select[name="filterProjectStatus"]').on('change',function(){
                 let status = $(this).val()
                 table.column(6).search(status).draw()

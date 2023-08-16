@@ -50,19 +50,21 @@
                     </ul>
                   </div>
   
-                  <div class="card-body">
-                    <h5 class="card-title">Total <br> Projects </span></h5>
-  
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-rectangle-list"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6 id='totalProjects'>0</h6>
-  
+                  <a href="{% url 'home:project-page' %}?filter=totalprojects">
+                    <div class="card-body">
+                      <h5 class="card-title">Total <br> Projects </span></h5>
+    
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-rectangle-list"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6 id='totalProjects'>0</h6>
+    
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
   
                 </div>
               </div><!-- End Sales Card -->
@@ -85,18 +87,20 @@
                     </ul>
                   </div>
   
-                  <div class="card-body">
-                    <h5 class="card-title">Completed <br> Projects</h5>
-  
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-circle-check"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6 id="completedProjects">0</h6>
+                  <a href="{% url 'home:project-page' %}?filter=Completed">
+                    <div class="card-body">
+                      <h5 class="card-title">Completed <br> Projects</h5>
+    
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6 id="completedProjects">0</h6>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
   
                 </div>
               </div><!-- End Revenue Card -->
@@ -123,16 +127,18 @@
                   <div class="card-body">
                     <h5 class="card-title">Pending <br> Projects</h5>
   
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-clock-rotate-left fa-flip-horizontal"></i>
+                    <a href="{% url 'home:project-page' %}?filter=Pending">
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-clock-rotate-left fa-flip-horizontal"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6 id="pendingProjects">0</h6>
+                          {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+    
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6 id="pendingProjects">0</h6>
-                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-  
-                      </div>
-                    </div>
+                    </a>
   
                   </div>
                 </div>
@@ -161,16 +167,18 @@
                   <div class="card-body">
                     <h5 class="card-title">On Hold <br> Projects</h5>
   
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-bars-progress"></i>
+                    <a href="{% url 'home:project-page' %}?filter=On Hold">
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-bars-progress"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6 id="onHoldProjects">0</h6>
+                          {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+    
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6 id="onHoldProjects">0</h6>
-                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-  
-                      </div>
-                    </div>
+                    </a>
   
                   </div>
                 </div>
@@ -199,16 +207,18 @@
                   <div class="card-body">
                     <h5 class="card-title">Canceled <br> Projects</h5>
   
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-circle-xmark"></i>
+                    <a href="{% url 'home:project-page' %}?filter=Canceled">
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6 id="canceledProjects">0</h6>
+                          {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+    
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6 id="canceledProjects">0</h6>
-                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-  
-                      </div>
-                    </div>
+                    </a>
   
                   </div>
                 </div>

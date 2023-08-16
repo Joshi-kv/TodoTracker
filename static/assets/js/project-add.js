@@ -149,26 +149,11 @@ $(document).ready(() => {
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New project added successfully');
     
-                    // // Call changePagination with the updated total number of tasks
+                    // Call changePagination with the updated total number of tasks
                     projectTablePagination(table,total)
-                    // //custom filtering
-                    // $('select[name="filterStatus"]').on('change',function(){
-                    //     let status = $(this).val()
-                    //     table.column(4).search(status).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
-                    // $('select[name="filterPriority"]').on('change',function(){
-                    //     let priority = $(this).val()
-                    //     table.column(3).search(priority).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
-            
-                    // $('input[name="filterDate"]').on('change',function(){
-                    //     let date = $(this).val()
-                    //     convertedDate = moment(date).format('DD/MM/YYYY')
-                    //     table.column(2).search(convertedDate).draw()
-                    //     showPagination(table,table.data().count())
-                    // })
+                    $('select[name="filterProjectStatus"]').val('')
+                    table.column(6).search('').draw()
+                    showProjectTablePagination(table,table.rows)
                 },
     
             });
