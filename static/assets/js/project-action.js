@@ -1,34 +1,6 @@
 $(document).ready(() =>{
         
     //task updation functions start
-    //function to load selected project details
-    
-    $(document).on('click','#projectEditBtn',function(){
-        let projectId = $(this).attr('data-project-edit')
-        let modalId = $('#updateProjectModal').attr('data-project-edit',`${projectId}`)
-        $.ajax({
-            type:'get',
-            url:'/update-project-view/',
-            dataType:'json',
-            data:{'project_id':projectId},
-            success:function(response){
-                console.log(response)
-                let data = response.project[0]
-                console.log(data.project_type)
-                $('#projectUpdateTitle').val(data.project_title)
-                $('#projectUpdateDescription').val(data.project_description)
-                $('#projectUpdateAssignee').val(data.project_assignee)
-                $('#projectUpdateStartDate').val(data.project_start_date)
-                $('#projectUpdateEndDate').val(data.project_end_date)
-                $('#projectUpdateDuration').val(data.project_duration)
-                $('#projectUpdateEstimatedHours').val(data.project_estimated_hours)
-                $('#updateProjectType').val(data.project_type)
-                $('#updateProjectStatus').val(data.project_status)
-            }
-
-        })
-    })
-
 
     // fetching csrf token
     function getCookie(name) {

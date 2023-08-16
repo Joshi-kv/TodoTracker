@@ -29,24 +29,24 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{project.project_title}}</h5>  
+                    <h5 class="card-title" id="project_title">{{project.project_title}}</h5>  
                     <div class="card-body mt-5">
                         <h4>Description : </h4><br>
-                        <p class="ms-5">{{project.project_description}}</p><br>
+                        <p class="ms-5" id="project_description">{{project.project_description}}</p><br>
                         <b>Project Type : </b>
-                        <p class="ms-5">{{project.project_type}}</p><br>
+                        <p class="ms-5" id="project_type">{{project.project_type}}</p><br>
                         <b>Current Status : </b>
-                        <p class="ms-5">{{project.project_status}}</p><br>
+                        <p class="ms-5" id="project_status">{{project.project_status}}</p><br>
                         <b>Created At : </b>
-                        <p class="ms-5">{{project.created_at}}</p><br>
+                        <p class="ms-5" id="created_at">{{project.created_at}}</p><br>
                         <b>Start Date : </b>
-                        <p class="ms-5">{{projct.start_date}}</p><br>
+                        <p class="ms-5" id="project_start_date">{{project.start_date}}</p><br>
                         <b>End Date : </b>
-                        <p class="ms-5">{{project.end_date}}</p><br>
+                        <p class="ms-5" id="project_end_date">{{project.end_date}}</p><br>
                         <b>Duration : </b>
-                        <p class="ms-5">{{project.duration}}</p><br>
+                        <p class="ms-5" id="project_duration">{{project.duration}}</p><br>
                         <b>Estimated Hours : </b>
-                        <p class="ms-5">{{project.estimated_hours}}</p><br>
+                        <p class="ms-5" id="project_estimated_hours">{{project.estimated_hours}}</p><br>
                         <h3 class="card-title ms-1">Project Assignees</h3>
                         <div class="project-assignees" id="assignees">
                           {% for assignee in assignees  %}
@@ -58,7 +58,7 @@
                         {% if request.user.is_staff %}
                         <div class="d-flex mt-3 justify-content-center  mx-5">
                             <button class="btn btn-primary m-1 "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
-                            <button class="btn btn-success m-1" >Edit Project</button>
+                            <button class="btn btn-success m-1" data-bs-target="#editProjectModal" data-bs-toggle="modal">Edit Project</button>
                             <button class="btn btn-warning text-white m-1" data-bs-target="#addAssigneeModal" data-bs-toggle="modal">Add Assignees</button>
                             <button class="btn btn-info m-1">View Tasks</button>
                         </div>
@@ -101,10 +101,176 @@
         </div>
       </div>
     </div>
+
+    <div class="card-body">
+      <div class="modal fade" id="editProjectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Project</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                <h5 class="card-title">Edit Project</h5>
+                <form class="row g-3" method="post" id="updateProjectForm">
+                  {% csrf_token %}
+                  <div class="col-12">
+                    <label for="" class="form-label">Project Title</label>
+                    <input type="text" name="projectUpdateTitle" value="{{project.project_title}}" class="form-control" id="projectUpdateTitle">
+                  </div>
+                  <div class="col-12">
+                    <label for="projectDescription" class="form-label">Project Description</label>
+                    <textarea class="form-control" name="projectUpdateDescription" placeholder="Description" id="projectUpdateDescription" style="height: 100px;">
+                      {{project.project_description}}
+                    </textarea>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <label for="inputPassword4" class="form-label">Start Date</label>
+                    <input type="date" name="projectUpdateStartDate"  class="form-control" id="projectUpdateStartDate">
+                  </div>
+                  <div class="col-12 mt-2">
+                    <label for="inputPassword4" class="form-label">End Date</label>
+                    <input type="date" name="projectUpdateEndDate" class="form-control" id="projectUpdateEndDate">
+                  </div>
+                  <div class="col-12 mt-2">
+                    <label for="inputPassword4" class="form-label">Project Duration (in days)</label>
+                    <input type="text" disabled name="projectUpdateDuration" value="{{project.duration}}" id="projectUpdateDuration" class="form-control">
+                  </div> 
+                  <div class="col-12 mt-2">
+                    <label for="inputPassword4" class="form-label">Estimated Hours</label>
+                    <input type="text" disabled name="projectUpdateEstimatedHours" value="{{project.estimated_hours}}" id="projectUpdateEstimatedHours" class="form-control">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </main><!-- End #main -->
   {{project.id|json_script:"project-id"}}
+  {{project.start_date|json_script:"start_date"}}
+  {{project.end_date|json_script:"end_date"}}
+
   {% include 'footer.html' %}
   <script src="{% static 'assets/js/project-detail-action.js' %}"></script>
+  <script>
+    {% comment %} let projectId = document.getElementById('project-id').innerText {% endcomment %}
+    $(document).ready(function(){
+      var start_date = document.getElementById('start_date').innerText
+      var end_date = document.getElementById('end_date').innerText
+      start_date = new Date(start_date)
+      convertedStartDate = moment(start_date).format('yyyy-MM-DD')
+      end_date = new Date(end_date)
+      convertedEndDate = moment(end_date).format('yyyy-MM-DD')
+      $('#projectUpdateStartDate').val(convertedStartDate)
+      $('#projectUpdateEndDate').val(convertedEndDate)   
+    })
+
+    $('#projectUpdateStartDate, #projectUpdateEndDate').on('change', function(){
+      let start_date = $('#projectUpdateStartDate').val();
+      let end_date = $('#projectUpdateEndDate').val();
+
+      let startDate = new Date(start_date)
+      let endDate = new Date(end_date)
+
+      let timeDifference = endDate.getTime() - startDate.getTime();
+
+      let duration = timeDifference / (1000 * 60 * 60 * 24)
+      let estimatedHours  = duration * 24
+      if(duration > 0){
+          if(duration == 1){
+              $('#projectUpdateDuration').val(`${duration} day`)
+          }else{
+              $('#projectUpdateDuration').val(`${duration} days`)
+          } 
+          $('#projectUpdateEstimatedHours').val(`${estimatedHours} hours`)           
+      }
+  })
+
+  // fetching csrf token
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+
+  const csrftoken = getCookie('csrftoken')
+
+  //update form submission
+    $('#updateProjectForm').on('submit',(e)=>{
+      e.preventDefault()
+      let project_title = $('#projectUpdateTitle').val()
+      let project_description = $('#projectUpdateDescription').val()
+      let project_assignee = $('#projectUpdateAssignee').val()
+      let project_start_date = $('#projectUpdateStartDate').val()
+      let project_end_date = $('#projectUpdateEndDate').val()
+      let project_duration = $('#projectUpdateDuration').val()
+      let project_estimated_hours = $('#projectUpdateEstimatedHours').val()
+          $.ajax({
+              type:'post',
+              url:'/update-project/',
+              dataType:'json',
+              data:{
+                  'csrfmiddlewaretoken':csrftoken,
+                  'project_id':projectId,
+                  'project_title':project_title,
+                  'project_description':project_description,
+                  'project_start_date':project_start_date,
+                  'project_end_date':project_end_date,
+                  'project_duration':project_duration,
+                  'project_estimated_hours':project_estimated_hours,
+              },
+              success:function(response){
+                console.log(response)
+                  if(response.status === 'updated'){
+                    console.log(response.project.project_title)
+                    $('#project_title').html(response.project.project_title)
+                    $('#project_description').html(response.project.project_description)
+                    $('#project_start_date').html(response.project.project_start_date)
+                    $('#project_end_date').html(response.project.project_end_date)
+                    $('#project_duration').html(response.project.project_duration)
+                    $('#project_estimated_hours').html(response.project.project_estimated_hours)
+
+                    $('#projectUpdateTitle').val(response.project.project_title)
+                    $('#projectUpdateDescription').val(response.project.project_description)
+                    var start_date = response.project.project_start_date
+                    var end_date = response.project.project_end_date
+                    start_date = new Date(start_date)
+                    convertedStartDate = moment(start_date).format('yyyy-MM-DD')
+                    end_date = new Date(end_date)
+                    convertedEndDate = moment(end_date).format('yyyy-MM-DD')
+                    $('#projectUpdateStartDate').val(convertedStartDate)
+                    $('#projectUpdateEndDate').val(convertedEndDate) 
+                    $('#projectUpdateDuration').val(response.project.project_duration)
+                    $('#projectUpdateEstimatedHours').val(response.project.project_estimated_hours)
+                    $('#editProjectModal').modal('toggle')
+                    alertify.set('notifier','position','top-right')
+                    alertify.success('Project details edited successfully')
+                  }
+              },
+              
+        })
+        
+  })
+
+  </script>
 
 {% endblock content %}
 
