@@ -1464,6 +1464,6 @@ collapsed
   width: 1200px!important;
 }
 
-#projectAssignee_chosen{
+#projectAssignee_chosen,#projectNewAssignee_chosen{
   width: 100%!important;
 }

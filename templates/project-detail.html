@@ -48,21 +48,23 @@
                         <b>Estimated Hours : </b>
                         <p class="ms-5">{{project.estimated_hours}}</p><br>
                         <h3 class="card-title ms-1">Project Assignees</h3>
-                        {% for assignee in assignees  %}
-                        <p class="ms-5">{{assignee}}</p>
-                        {% endfor %}
+                        <div class="project-assignees" id="assignees">
+                          {% for assignee in assignees  %}
+                          <p class="ms-5" id="assignee-list">{{assignee}}</p>
+                          {% endfor %}
+                        </div>
                         <h6 class="text-center">Actions</h6>
                         <hr>
                         {% if request.user.is_staff %}
                         <div class="d-flex mt-3 justify-content-center  mx-5">
                             <button class="btn btn-primary m-1 "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
-                            <button class="btn btn-success m-1">Edit Project</button>
-                            <button class="btn btn-warning text-white m-1">Add Assignees</button>
+                            <button class="btn btn-success m-1" >Edit Project</button>
+                            <button class="btn btn-warning text-white m-1" data-bs-target="#addAssigneeModal" data-bs-toggle="modal">Add Assignees</button>
                             <button class="btn btn-info m-1">View Tasks</button>
                         </div>
                         {% else %}
                         <div class="d-flex mt-3">
-                            <button class="btn btn-primary "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
+                            <button class="btn btn-primary justify-content-center "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
                         </div>
                         {% endif %}
                     </div>
@@ -72,27 +74,27 @@
       </div>
     </section>
 
-    <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Attach your files here</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Add assignees</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="taskAttachmentForm" method="post" enctype="multipart/form-data">
+            <form id="assigneeAddForm" method="post" >
               {% csrf_token %}
               <div class="col-12">
-                <label for="projectTitle" class="form-label">Attachment Title</label>
-                <input type="text" name="attachment_title" class="form-control" id="attachmentTitle">
-              </div>
-              <div class="col-12">
-                <label for="projectTitle" class="form-label">Attachment</label>
-                <input type="file" name="attachment_file" class="form-control" id="attachmentFile">
+                <label for="projectTitle" class="form-label">Select New Assignees</label>
+                <select class="form-select select" style="width:100%" name="projectNewAssignee" multiple="multiple" required='required' id="projectNewAssignee">
+                  {% for assignee in new_assignees  %}
+                  <option value={{assignee.id}}>{{assignee}}</option>
+                  {% endfor %}
+               </select>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save </button>
+                <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
               </div>
             </form>
           </div>
@@ -100,9 +102,9 @@
       </div>
     </div>
   </main><!-- End #main -->
-
+  {{project.id|json_script:"project-id"}}
   {% include 'footer.html' %}
-  
+  <script src="{% static 'assets/js/project-detail-action.js' %}"></script>
 
 {% endblock content %}
 

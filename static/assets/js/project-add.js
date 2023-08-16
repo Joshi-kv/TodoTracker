@@ -181,7 +181,6 @@ $(document).ready(() => {
     $('#close').on('click',function(e){
         e.preventDefault()
         $('#projectForm')[0].reset()
-        console.log($('#projectAssignee').val())
     })
 
 });

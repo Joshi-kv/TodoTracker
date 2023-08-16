@@ -1,7 +1,6 @@
 let table;
 let length;
 $(document).ready(function() {
-    $('.select').chosen()
       // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/project-list/'
     fetch(url)

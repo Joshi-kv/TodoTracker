@@ -30,6 +30,7 @@ urlpatterns = [
     path('project-list/',views.ProjectListView.as_view(),name='project-list'),
     path('project-detail/<int:project_id>/',views.ProjectDetailView.as_view(),name='project-detail'),
     path('create-project/',views.ProjectCreateView.as_view(),name='create-project'),
+    path('add-assignee/<int:project_id>/',views.AddAssigneeView.as_view(),name='add-assignee'),
     path('project-date-range-filter/',views.ProjectDateRangeFilter.as_view(),name='project-date-range-filter'),
     path('update-project-view/',views.UpdateProjectPageView.as_view(),name='update-project-view'),
     path('update-project/',views.UpdateProjectView.as_view(),name='update-project'),

@@ -10,6 +10,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from datetime import date
 from django.utils.text import slugify
+from django.db.models import Q
 
 
 #view to render home page
@@ -1064,11 +1065,12 @@ class ProjectDetailView(View) :
         current_user = UserProfile.objects.get(user=user_model)
         project = Project.objects.get(id=project_id)
         assignees = [assignee.username for assignee in project.assignee.all()]
-        print(assignees)
+        new_assignees = User.objects.all().exclude(Q(username__in=assignees) | Q(is_staff=True))
         context = {
             'current_user': current_user,
             'project':project,
-            'assignees': assignees
+            'assignees': assignees,
+            'new_assignees':new_assignees
         }
         return render(request,'project-detail.html',context)
         
@@ -1157,6 +1159,19 @@ class ProjectCreateView(View) :
         
         # total_projects = Project.objects.all().count()
         return JsonResponse({'status':'success','project':context})
+    
+#view to add assignees to project
+class AddAssigneeView(View) : 
+    def post(self,request,project_id) :
+        project_assignee = request.POST.get('project_assignee') 
+        assignee_ids = project_assignee.split(',')
+        assignees = User.objects.filter(id__in=assignee_ids)
+        project = Project.objects.get(id=project_id)
+        project.assignee.add(*assignees)
+        project.save()
+        new_assignees=[assignee.username for assignee in project.assignee.all()]
+    
+        return JsonResponse({'status':'success','new_assignees':new_assignees})
     
 #view to render Project edit page
 class UpdateProjectPageView(View) : 

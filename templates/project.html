@@ -144,7 +144,7 @@
                       {% for assignee in assignees  %}
                       <option value={{assignee}}>{{assignee}}</option>
                       {% endfor %}
-                    </select>
+                  </select>
                 </div><br>
                 {% endif %}
                 <div class="col-md-2 mt-4">
@@ -222,7 +222,7 @@
                                 {% for assignee in assignees  %}
                                 <option value={{assignee.id}}>{{assignee}}</option>
                                 {% endfor %}
-                            </select>
+                              </select>
                           </div>
                           <div class="col-12 mt-2">
                             <label for="inputPassword4" class="form-label">Start Date</label>
@@ -306,6 +306,11 @@
   <script src="{% static 'assets/js/project-add.js' %}"></script>
   <script src="{% static 'assets/js/project-list.js' %}"></script>
   <script src="{% static 'assets/js/project-action.js' %}"></script> 
+  <script>
+    $(document).ready(function() {
+      $('.select').chosen()
+    })
+  </script>
 
 {% endblock content %}
 
