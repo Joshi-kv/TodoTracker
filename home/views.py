@@ -1025,12 +1025,10 @@ class ProjectListView(View) :
             projects = Project.objects.all().exclude(project_status='Deactivated').order_by('-created_at')   
             context = []
             for project in projects : 
-                assignee_names = [assignee.username for assignee in project.assignee.all()]
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    'project_assignee': assignee_names,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1048,7 +1046,6 @@ class ProjectListView(View) :
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    'project_assignee': project.assignee.username,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1059,6 +1056,21 @@ class ProjectListView(View) :
                 })
             return JsonResponse({'projects':context},safe=False)   
     
+    
+#view for project detailed view 
+class ProjectDetailView(View) : 
+    def get(self,request,project_id) : 
+        user_model = request.user
+        current_user = UserProfile.objects.get(user=user_model)
+        project = Project.objects.get(id=project_id)
+        assignees = [assignee.username for assignee in project.assignee.all()]
+        print(assignees)
+        context = {
+            'current_user': current_user,
+            'project':project,
+            'assignees': assignees
+        }
+        return render(request,'project-detail.html',context)
         
 #view to create project 
 class ProjectCreateView(View) : 

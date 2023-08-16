@@ -138,7 +138,7 @@ $(document).ready(() => {
                         `
                         <button class="btn btn-danger btn-sm " id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
                             <i class="fas fa-trash"></i></button>
-                            <button class="btn btn-primary btn-sm "><a class="text-white" href="">
+                            <button class="btn btn-primary btn-sm "><a class="text-white" href="/project-detail/${project.project_id}">
                             <i class="fas fa-eye"></i></a>
                         </button>
                         `

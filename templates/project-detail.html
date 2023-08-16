@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Project Report{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+
+{% include 'sidebar.html' %}
+
+<!--todo page-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Project</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item "><a href="{% url 'home:index' %}">Home</a></li>          
+          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>    
+          <li class="breadcrumb-item"><a class="active" href="{% url 'home:project-detail' project.id %}">Project Detail</a></li>    
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section project-table" >
+      <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{project.project_title}}</h5>  
+                    <div class="card-body mt-5">
+                        <h4>Description : </h4><br>
+                        <p class="ms-5">{{project.project_description}}</p><br>
+                        <b>Project Type : </b>
+                        <p class="ms-5">{{project.project_type}}</p><br>
+                        <b>Current Status : </b>
+                        <p class="ms-5">{{project.project_status}}</p><br>
+                        <b>Created At : </b>
+                        <p class="ms-5">{{project.created_at}}</p><br>
+                        <b>Start Date : </b>
+                        <p class="ms-5">{{projct.start_date}}</p><br>
+                        <b>End Date : </b>
+                        <p class="ms-5">{{project.end_date}}</p><br>
+                        <b>Duration : </b>
+                        <p class="ms-5">{{project.duration}}</p><br>
+                        <b>Estimated Hours : </b>
+                        <p class="ms-5">{{project.estimated_hours}}</p><br>
+                        <h3 class="card-title ms-1">Project Assignees</h3>
+                        {% for assignee in assignees  %}
+                        <p class="ms-5">{{assignee}}</p>
+                        {% endfor %}
+                        <h6 class="text-center">Actions</h6>
+                        <hr>
+                        {% if request.user.is_staff %}
+                        <div class="d-flex mt-3 justify-content-center  mx-5">
+                            <button class="btn btn-primary m-1 "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
+                            <button class="btn btn-success m-1">Edit Project</button>
+                            <button class="btn btn-warning text-white m-1">Add Assignees</button>
+                            <button class="btn btn-info m-1">View Tasks</button>
+                        </div>
+                        {% else %}
+                        <div class="d-flex mt-3">
+                            <button class="btn btn-primary "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Attach your files here</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="taskAttachmentForm" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment Title</label>
+                <input type="text" name="attachment_title" class="form-control" id="attachmentTitle">
+              </div>
+              <div class="col-12">
+                <label for="projectTitle" class="form-label">Attachment</label>
+                <input type="file" name="attachment_file" class="form-control" id="attachmentFile">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main><!-- End #main -->
+
+  {% include 'footer.html' %}
+  
+
+{% endblock content %}
+
