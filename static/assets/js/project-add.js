@@ -145,6 +145,7 @@ $(document).ready(() => {
                     ]).node()
                     $(projectRow).attr('id',`project-row-${projectId}`)
                     $("#projectTable").prepend(projectRow)
+                    $('.dataTables_empty').hide()
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New project added successfully');
     
@@ -173,6 +174,7 @@ $(document).ready(() => {
             });
             $('#basicModal').modal('toggle');
             $('#projectForm')[0].reset();
+            $('select[name="projectAssignee"]').val('').trigger('chosen:updated');
         }
     });
 

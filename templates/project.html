@@ -40,8 +40,11 @@
 
             
               {% if request.user.is_staff %}
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+              <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#basicModal">
                 Create Project
+              </button>
+              <button type="button" class="btn btn-success mb-5" >
+                Upload Project Excel File
               </button>
               {% endif %}
               <div class="modal" id="basicModal" tabindex="-1">
@@ -144,25 +147,6 @@
                     </select>
                 </div><br>
                 {% endif %}
-                <div class="col-md-2">
-                  <label for="">Status : </label>
-                    <select class="form-select dataTables_filter me-5" id="filterProjectStatus" name="filterProjectStatus" aria-label="Default select example" >
-                      <option value=''>Show all</option>
-                      <option value="On Hold" >On Hold</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Canceled">Canceled</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                  <label for="">Project Type : </label>
-                    <select class="form-select dataTables_filter me-5" id="filterProjectType" name="filterProjectType" aria-label="Default select example" >
-                      <option value=''>Show all</option>
-                      <option value="Type 1" >Type 1</option>
-                      <option value="Type 2" >Type 2</option>
-                      <option value="Type 3" >Type 3</option>
-                    </select>
-                </div>
                 <div class="col-md-2 mt-4">
                   <button class="btn btn-primary btn-sm" id="clearFilterBtn">Clear Filter</button>
                 </div>
@@ -322,12 +306,6 @@
   <script src="{% static 'assets/js/project-add.js' %}"></script>
   <script src="{% static 'assets/js/project-list.js' %}"></script>
   <script src="{% static 'assets/js/project-action.js' %}"></script> 
-
-  <script>
-    $(document).ready(function() {
-      $('.select').chosen()
-    })
-  </script>
 
 {% endblock content %}
 

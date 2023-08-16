@@ -40,12 +40,9 @@
           
             <div class="card-body">
 
-            
-              {% if request.user.is_staff %}
               <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#listModal">
                 Create List
               </button>
-              {% endif %}
               <div class="modal fade" id="listModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                   <div class="modal-content">
