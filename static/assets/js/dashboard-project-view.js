@@ -37,8 +37,6 @@ $(document).ready(() => {
                 <tr>
                     <td>${index+1}</td>
                     <td>${project.project_title}</td>
-                    <td>${project.project_description}</td>
-                    <td>${project.project_assignee}</td>
                     <td>${project.project_duration}</td>
                     <td><p class="visual-indicator ${status}">${project.project_status}</p></td>
                 </tr>
@@ -110,8 +108,6 @@ $(document).ready(() => {
                         <tr>
                             <td>${index+1}</td>
                             <td>${project.project_title}</td>
-                            <td>${project.project_description}</td>
-                            <td>${project.project_assignee}</td>
                             <td>${project.project_duration}</td>
                             <td><p class="visual-indicator ${status}">${project.project_status}</p></td>
                         </tr>
@@ -175,8 +171,6 @@ $(document).ready(() => {
                     <tr>
                         <td>${index+1}</td>
                         <td>${project.project_title}</td>
-                        <td>${project.project_description}</td>
-                        <td>${project.project_assignee}</td>
                         <td>${project.project_duration}</td>
                         <td><p class="visual-indicator ${status}">${project.project_status}</p></td>
                     </tr>

@@ -129,8 +129,6 @@ $(document).ready(() => {
                     let projectId = project.project_id
                     let projectRow = table.row.add([
                         `${project.project_title}`,
-                        `${project.project_description}`,
-                        `${project.assignee}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -138,22 +136,15 @@ $(document).ready(() => {
                         `${project.project_type}`,
                         `${project.project_status}`,
                         `
-                        <div class="d-flex">
-                            <div class="mx-3 ">
-                            <button class="btn btn-primary btn-sm" id="projectEditBtn" data-bs-toggle="modal" data-bs-target="#updateProjectModal" data-project-edit=${project.project_id}>
-                            <i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
+                        <button class="btn btn-danger btn-sm " id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
                             <i class="fas fa-trash"></i></button>
-                            </div>
-                            <div class="mx-3">
-                            <button class="btn btn-info btn-sm"><a class="text-white" href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
-                            <button class="btn btn-warning btn-sm mt-2"><a class="text-white" href="/project/lists/${projectId}"><i class="fas fa-circle-xmark"></i></a></button>
-                            </div>
-                        </div>
+                            <button class="btn btn-primary btn-sm "><a class="text-white" href="">
+                            <i class="fas fa-eye"></i></a>
+                        </button>
                         `
                     ]).node()
-                    $(projectRow).attr('data-project-id',projectId)
-                    table.draw()
+                    $(projectRow).attr('id',`project-row-${projectId}`)
+                    $("#projectTable").prepend(projectRow)
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New project added successfully');
     

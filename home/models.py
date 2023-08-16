@@ -6,7 +6,7 @@ from django.urls import reverse
 
 #model for project 
 class Project(models.Model):
-    assignee = models.ManyToManyField(User,through='ProjectTeam')
+    assignee = models.ManyToManyField(User,related_name='assigned_projects')
     project_title = models.CharField(max_length=500)
     project_description = models.TextField()
     project_type = models.CharField(max_length=500)
@@ -20,19 +20,24 @@ class Project(models.Model):
     
     def __str__(self) : 
         return f'{self.project_title}'
-
-
-class ProjectTeam(models.Model):
-    assignee = models.ForeignKey(User,on_delete=models.CASCADE)
-    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    
+    
+class List(models.Model) : 
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    list_name = models.CharField(max_length=256)
+    list_description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self) : 
-        return f'{self.project} - {self.assignee}'
+        return f'{self.project} - {self.list_name}'
 
 #model for todo
 class Todo(models.Model) : 
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    list = models.ForeignKey(List,on_delete=models.CASCADE)
     task_title = models.CharField(max_length=500)
     task_description = models.TextField()
     task_duedate = models.DateField()
@@ -56,17 +61,6 @@ class SubTask(models.Model):
     
     def __str__(self) : 
         return f'{self.user} - {self.task} - {self.sub_task_title}'
-    
-class List(models.Model) : 
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    list_name = models.CharField(max_length=256)
-    list_description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self) : 
-        return f'{self.project} - {self.list_name}'
     
 class Issue(models.Model):
     assignee = models.ForeignKey(User,on_delete=models.CASCADE)

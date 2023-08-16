@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Issue, IssueAttachment, List, ProjectTeam, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, IssueAttachment, List,Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 
 
 # Register your models here.
@@ -80,9 +80,3 @@ class IssueAdmin(admin.ModelAdmin):
     list_per_page = 20
     
 admin.site.register(Issue,IssueAdmin)
-
-class ProjectTeamAdmin(admin.ModelAdmin) : 
-    list_display = ['assignee','project']
-    list_per_page = 20
-    
-admin.site.register(ProjectTeam,ProjectTeamAdmin)

@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from users.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . models import Issue, IssueAttachment, List, ProjectTeam, Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
+from . models import Issue, IssueAttachment, List,Todo,FAQ,Feedback,ActivityLog,News,Updates,Notification,Project,TaskAttachment,SubTask
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -151,7 +151,6 @@ class DashboardProjectView(View) :
                 context.append({
                     'project_title':project.project_title,
                     'project_description':project.project_description,
-                    'project_assignee':project.assignee.username,
                     'project_duration':project.duration,
                     'project_status':project.project_status
                 })
@@ -166,7 +165,6 @@ class DashboardProjectView(View) :
                 context.append({
                     'project_title':project.project_title,
                     'project_description':project.project_description,
-                    'project_assignee':project.assignee.username,
                     'project_duration':project.duration,
                     'project_status':project.project_status
                 })
@@ -730,7 +728,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -743,7 +740,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -757,7 +753,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -769,7 +764,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -784,7 +778,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -797,7 +790,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -811,7 +803,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -823,7 +814,6 @@ class FilterDashboardProjectView(View) :
                     context.append({
                         'project_title':project.project_title,
                         'project_description':project.project_description,
-                        'project_assignee':project.assignee.username,
                         'project_duration':project.duration,
                         'project_status':project.project_status
                     })
@@ -1032,14 +1022,15 @@ class ProjectPageView(LoginRequiredMixin,View) :
 class ProjectListView(View) : 
     def get(self,request) : 
         if request.user.is_staff == True : 
-            projects = Project.objects.all().exclude(project_status='Deactivated')   
+            projects = Project.objects.all().exclude(project_status='Deactivated').order_by('-created_at')   
             context = []
             for project in projects : 
+                assignee_names = [assignee.username for assignee in project.assignee.all()]
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    # 'project_assignee': project.assignee.username,
+                    'project_assignee': assignee_names,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1048,17 +1039,16 @@ class ProjectListView(View) :
                     'project_status': project.project_status,
                     'is_staff': True,
                 })
-                print(project.assignee)
             return JsonResponse({'projects':context},safe=False)   
         else : 
-            projects = Project.objects.filter(assignee=request.user).exclude(project_status='Deactivated')   
+            projects = Project.objects.filter(assignee=request.user).exclude(project_status='Deactivated').order_by('-created_at')      
             context = []
             for project in projects : 
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'project_description': project.project_description,
-                    # 'project_assignee': project.assignee.username,
+                    'project_assignee': project.assignee.username,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
                     'duration': project.duration,
@@ -1076,21 +1066,20 @@ class ProjectCreateView(View) :
         
         project_title = request.POST.get('project_title')
         project_description = request.POST.get('project_description')
-        project_assignee = request.POST.getlis('project_assignee')
+        project_assignee = request.POST.get('project_assignee')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         duration = request.POST.get('duration')
         estimated_hours = request.POST.get('estimated_hours')
         project_status = request.POST.get('project_status')
-        project_type = request.POST.get('project_type')
+        project_type = request.POST.get('project_type')   
         
-        assignees = User.objects.filter(id__in=(project_assignee))
-    
-        
+        assignee_ids = project_assignee.split(',')
+        assignees = User.objects.filter(id__in=assignee_ids)
 
         
         
-        # #creating new project
+        #creating new project
         
         new_project = Project.objects.create(
             project_title=project_title,
@@ -1103,24 +1092,25 @@ class ProjectCreateView(View) :
             estimated_hours=estimated_hours
         )
         
+        new_project.assignee.set(assignees)
+        
         new_project.save()
         
         
         
         
         
-        # context = {
-        #     'project_id':new_project.id,
-        #     'project_title':new_project.project_title,
-        #     'project_description':new_project.project_description,
-        #     'project_startdate':new_project.start_date,
-        #     'project_enddate':new_project.end_date,
-        #     'project_status':new_project.project_status,
-        #     'project_type':new_project.project_type,
-        #     'duration':new_project.duration,
-        #     'assignee':new_project.assignee.username,
-        #     'estimated_hours':new_project.estimated_hours,
-        # }
+        context = {
+            'project_id':new_project.id,
+            'project_title':new_project.project_title,
+            'project_description':new_project.project_description,
+            'project_startdate':new_project.start_date,
+            'project_enddate':new_project.end_date,
+            'project_status':new_project.project_status,
+            'project_type':new_project.project_type,
+            'duration':new_project.duration,
+            'estimated_hours':new_project.estimated_hours,
+        }
         
         # #sending email to assignee
         # email_context = {
@@ -1154,7 +1144,7 @@ class ProjectCreateView(View) :
         # activity_log.save()
         
         # total_projects = Project.objects.all().count()
-        return JsonResponse({'status':'success',})
+        return JsonResponse({'status':'success','project':context})
     
 #view to render Project edit page
 class UpdateProjectPageView(View) : 

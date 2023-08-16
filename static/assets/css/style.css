@@ -1463,3 +1463,7 @@ collapsed
 .project-table{
   width: 1200px!important;
 }
+
+#projectAssignee_chosen{
+  width: 100%!important;
+}
