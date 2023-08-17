@@ -1,5 +1,26 @@
 let table;
 let length;
+
+
+function format(d) {
+    console.log(d)
+    // `d` is the original data object for the row
+    return (
+        '<dl>' +
+        '<dt>Full name:</dt>' +
+        '<dd>' +
+        d.project_description +
+        '</dd>' +
+        '<dt>Extension number:</dt>' +
+        '<dd>' +
+        d.extn +
+        '</dd>' +
+        '<dt>Extra info:</dt>' +
+        '<dd>And any further details here (images etc)...</dd>' +
+        '</dl>'
+    );
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 const filterOption = urlParams.get('filter');
 $(document).ready(function() {
@@ -11,6 +32,25 @@ $(document).ready(function() {
     .then((data)=> {
         console.log(data)
         table = $('#projectTable').DataTable({
+            columnDefs: [
+                {
+                  targets: 0,
+                  className: 'dt-control',
+            },
+            
+        ],
+        // columns:[
+        //     // {data:null,"defaultContent": ""},
+        //     {data:'Title'},
+        //     {data:'Start Date'},
+        //     {data:'End Date'},
+        //     {data:'Duration'},
+        //     {data:'Estimated Hours'},
+        //     {data:'Type'},
+        //     {data:'Status'},
+        //     {data:'Action'},
+        // ],
+            'responsive': true,
             "ordering":false,
             'info':false,
             'empty':false
@@ -23,6 +63,7 @@ $(document).ready(function() {
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectRow = table.row.add([
+                        // `${null}`,
                         `${project.project_title}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
@@ -31,17 +72,24 @@ $(document).ready(function() {
                         `${project.project_type}`,
                         `${project.project_status}`,
                         `
-                        <button class="btn btn-danger btn-sm " id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
+                        <div class="d-flex justify-content-around">
+                        <button class="btn btn-success btn-sm m-1" id="editProjectBtn" data-bs-toggle="modal" data-bs-target="#editProjectModal" data-edit-project=${project.project_id}>
+                        <i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm m-1" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
                         <i class="fas fa-trash"></i></button>
-                        <button class="btn btn-primary btn-sm "><a class="text-white" href="/project-detail/${project.project_id}">
+                        <button class="btn btn-primary btn-sm m-1"><a class="text-white" href="/project-detail/${project.project_id}">
                         <i class="fas fa-eye"></i></a>
                         </button>
+                        </div>
                         `
         
                     ]).node()
                     $(projectRow).attr('id',`project-row-${project.project_id}`)
                     $('#projectTable tbody').append(projectRow)
                     hidePagination(table,length)
+                    
+                    // Add event listener for opening and closing details
+                
                     
                 }else{
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
@@ -64,9 +112,25 @@ $(document).ready(function() {
                     $(projectRow).attr('id',`project-row-${project.project_id}`)
                     $('#projectTable tbody').append(projectRow)
                     hidePagination(table,length)
+                    
                 }
                 
-            })
+             })
+             
+             table.on('click', 'td.dt-control', function (e) {
+                let tr = e.target.closest('tr');
+                let row = table.row(tr);
+            
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                }
+            });
+
             if(filterOption){
                
                if(filterOption == 'totalprojects'){

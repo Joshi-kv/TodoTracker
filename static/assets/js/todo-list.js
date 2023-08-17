@@ -12,6 +12,7 @@ $(document).ready(() =>{
     .then((data) => {
         $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#taskTable').DataTable({
+           
             "order":[2,'asc'],//sorting data based on ascending order order of date and month
             "columnDefs": [{
                 "targets": [0,1,5], 
@@ -28,6 +29,7 @@ $(document).ready(() =>{
             if(task.is_staff === true){
                 let taskId = task.task_id
                 let taskRow = table.row.add([
+                    '',
                     `${task.task_title}`,
                     `${task.task_description}`,
                     `${convertedTaskDuedate}`,

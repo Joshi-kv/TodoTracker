@@ -1201,9 +1201,21 @@ class ProjectDateRangeFilter(View) :
         return JsonResponse({'status':'success','projects':context})
 
       
+      
 #view to update or edit project
 class UpdateProjectView(View) : 
+    def get(self,request) : 
+        project_id = request.GET.get('project_id')
+        project = Project.objects.get(id=project_id)
+        context = {
+            'project_id':project.id,
+            'project_status':project.project_status,
+            'project_type':project.project_type
+        }
+        return JsonResponse({'status':'success','project':context})
+    
     def post(self,request) : 
+        
         project_id = request.POST.get('project_id')
         project_title = request.POST.get('project_title')
         project_description = request.POST.get('project_description')
@@ -1211,33 +1223,62 @@ class UpdateProjectView(View) :
         project_end_date = request.POST.get('project_end_date')
         project_duration = request.POST.get('project_duration')
         project_estimated_hours = request.POST.get('project_estimated_hours')
+        project_status = request.POST.get('project_status')
+        project_type = request.POST.get('project_type')
         
-
+        print(project_id)
         
         project_update = Project.objects.get(id=project_id)
+        
+        if project_status != None and project_type != None :  
+            print(project_status,project_type)
 
-        #updating project
-        project_update.id = project_id
-        project_update.project_title = project_title
-        project_update.project_description = project_description
-        project_update.start_date = project_start_date
-        project_update.end_date = project_end_date 
-        project_update.duration = project_duration 
-        project_update.estimated_hours = project_estimated_hours 
-        project_update.save()
+            #updating project
+            project_update.id = project_id
+            project_update.project_status = project_status
+            project_update.project_type = project_type
+            project_update.save()
+            
+            
+            context = {
+                'project_id': project_update.id,
+                'project_title': project_update.project_title,
+                'project_description': project_update.project_description,
+                'project_start_date': project_update.start_date,
+                'project_end_date': project_update.end_date,
+                'duration': project_update.duration,
+                'estimated_hours': project_update.estimated_hours,
+                'project_status': project_update.project_status,
+                'project_type': project_update.project_type,
+            }
+            
+            return JsonResponse({'status':'updated','project':context})  
         
-        
-        context = {
-            'project_id': project_update.id,
-            'project_title': project_update.project_title,
-            'project_description': project_update.project_description,
-            'project_start_date': project_update.start_date,
-            'project_end_date': project_update.end_date,
-            'project_duration': project_update.duration,
-            'project_estimated_hours': project_update.estimated_hours,
-        }
-        
-        return JsonResponse({'status':'updated','project':context})  
+        else : 
+            
+
+            #updating project
+            project_update.id = project_id
+            project_update.project_title = project_title
+            project_update.project_description = project_description
+            project_update.start_date = project_start_date
+            project_update.end_date = project_end_date 
+            project_update.duration = project_duration 
+            project_update.estimated_hours = project_estimated_hours 
+            project_update.save()
+            
+            
+            context = {
+                'project_id': project_update.id,
+                'project_title': project_update.project_title,
+                'project_description': project_update.project_description,
+                'project_start_date': project_update.start_date,
+                'project_end_date': project_update.end_date,
+                'project_duration': project_update.duration,
+                'project_estimated_hours': project_update.estimated_hours,
+            }
+            
+            return JsonResponse({'status':'updated','project':context})  
         
 #view to delete project
 class ProjectDeleteView(View) : 

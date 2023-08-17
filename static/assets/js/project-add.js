@@ -136,11 +136,15 @@ $(document).ready(() => {
                         `${project.project_type}`,
                         `${project.project_status}`,
                         `
-                        <button class="btn btn-danger btn-sm " id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${project.project_id}>
+                            <div class="d-flex justify-content-around">
+                            <button class="btn btn-success btn-sm m-1" id="editProjectBtn" data-bs-toggle="modal" data-bs-target="#editProjectModal" data-edit-project=${projectId}>
+                            <i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm m-1" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${projectId}>
                             <i class="fas fa-trash"></i></button>
-                            <button class="btn btn-primary btn-sm "><a class="text-white" href="/project-detail/${project.project_id}">
+                            <button class="btn btn-primary btn-sm m-1"><a class="text-white" href="/project-detail/${projectId}">
                             <i class="fas fa-eye"></i></a>
-                        </button>
+                            </button>
+                            </div>
                         `
                     ]).node()
                     $(projectRow).attr('id',`project-row-${projectId}`)
@@ -151,7 +155,7 @@ $(document).ready(() => {
     
                     // Call changePagination with the updated total number of tasks
                     projectTablePagination(table,total)
-                    $('select[name="filterProjectStatus"]').val('')
+                    $('select[name="filterProjectStatus"]').val('').change()
                     table.column(6).search('').draw()
                     showProjectTablePagination(table,table.rows)
                 },

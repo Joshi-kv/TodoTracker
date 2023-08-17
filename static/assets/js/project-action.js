@@ -19,44 +19,36 @@ $(document).ready(() =>{
         return cookieValue;
     }
 
-    //calculating duration days and estimated hours
-    $('#projectUpdateStartDate, #projectUpdateEndDate').on('change', function(){
-        let start_date = $('#projectUpdateStartDate').val();
-        let end_date = $('#projectUpdateEndDate').val();
-
-        let startDate = new Date(start_date)
-        let endDate = new Date(end_date)
-
-        let timeDifference = endDate.getTime() - startDate.getTime();
-
-        let duration = timeDifference / (1000 * 60 * 60 * 24)
-        let estimatedHours  = duration * 24
-        if(duration > 0){
-            if(duration == 1){
-                $('#projectUpdateDuration').val(`${duration} day`)
-            }else{
-                $('#projectUpdateDuration').val(`${duration} days`)
-            } 
-            $('#projectUpdateEstimatedHours').val(`${estimatedHours} hours`)           
-        }
-    })
-
     const csrftoken = getCookie('csrftoken')
 
+    $(document).on('click','#editProjectBtn',function(){
+        let projectId = $(this).attr('data-edit-project')
+        console.log(projectId)
+        let editModalId = $('#editProjectModal').attr('edit-project',projectId)
+        $.ajax({
+            type:'get',
+            url:'/update-project/',
+            dataType: 'json',
+            data:{
+                project_id:projectId,
+            },
+            success:function(response){
+                if(response.status == 'success'){
+                    let project = response.project;
+                    $('#editProjectStatus').val(project.project_status)
+                    $('#editProjectType').val(project.project_type)
+                }
+            }
+        })
+    })
+
     //update form submission
-    $('#updateProjectForm').on('submit',(e)=>{
+    $('#editProjectForm').on('submit',(e)=>{
         e.preventDefault()
-        let projectId = $('#updateProjectModal').attr('data-project-edit')
-        let project_title = $('#projectUpdateTitle').val()
-        let project_description = $('#projectUpdateDescription').val()
-        let project_assignee = $('#projectUpdateAssignee').val()
-        let project_start_date = $('#projectUpdateStartDate').val()
-        let project_end_date = $('#projectUpdateEndDate').val()
-        let project_duration = $('#projectUpdateDuration').val()
-        let project_estimated_hours = $('#projectUpdateEstimatedHours').val()
-        let project_type = $('#updateProjectType').val()
-        let project_status = $('#updateProjectStatus').val()
-        if (project_title && project_description && project_assignee && project_start_date && project_end_date && project_duration && project_estimated_hours && project_type && project_status){
+        let projectId = $('#editProjectModal').attr('edit-project')
+        let project_type = $('#editProjectType').val()
+        let project_status = $('#editProjectStatus').val()
+        if (project_type && project_status){
             $.ajax({
                 type:'post',
                 url:'/update-project/',
@@ -64,47 +56,36 @@ $(document).ready(() =>{
                 data:{
                     'csrfmiddlewaretoken':csrftoken,
                     'project_id':projectId,
-                    'project_title':project_title,
-                    'project_description':project_description,
-                    'project_assignee':project_assignee,
-                    'project_start_date':project_start_date,
-                    'project_end_date':project_end_date,
-                    'project_duration':project_duration,
-                    'project_estimated_hours':project_estimated_hours,
                     'project_type':project_type,
                     'project_status':project_status,
                 },
                 success:function(response){
                     if(response.status === 'updated'){
-                        let updatedProject = response.project
+                        let editedProject = response.project
                         let table = $('#projectTable').DataTable()
-                        let convertedStartdate = moment(updatedProject.project_start_date).format('DD/MM/YYYY')
-                        let convertedEnddate = moment(updatedProject.project_end_date).format('DD/MM/YYYY')
-                        let projectId = updatedProject.project_id
-                        const rowIndex = table.row(`tr[data-project-id="${projectId}"]`).index();
+                        let projectId = editedProject.project_id
+                        console.log(projectId)
+                        let convertedStartdate = moment(editedProject.project_start_date).format('DD/MM/YYYY')
+                        let convertedEnddate = moment(editedProject.project_end_date).format('DD/MM/YYYY')
+                        const rowIndex = table.row(`tr[id=project-row-${editedProject.project_id}]`).index();
                         table.row(rowIndex).data([
-                            `${updatedProject.project_title}`,
-                            `${updatedProject.project_description}`,
-                            `${updatedProject.project_assignee}`,
+                            `${editedProject.project_title}`,
                             `${convertedStartdate}`,
                             `${convertedEnddate}`,
-                            `${updatedProject.project_duration}`,
-                            `${updatedProject.project_estimated_hours}`,
-                            `${updatedProject.project_type}`,
-                            `${updatedProject.project_status}`,
+                            `${editedProject.duration}`,
+                            `${editedProject.estimated_hours}`,
+                            `${editedProject.project_type}`,
+                            `${editedProject.project_status}`,
                             `
-                            <div class="d-flex">
-                                <div class="mx-3 ">
-                                <button class="btn btn-primary btn-sm" id="projectEditBtn" data-bs-toggle="modal" data-bs-target="#updateProjectModal" data-project-edit=${updatedProject.project_id}>
+                                <div class="d-flex justify-content-around">
+                                <button class="btn btn-success btn-sm m-1" id="editProjectBtn" data-bs-toggle="modal" data-bs-target="#editProjectModal" data-edit-project=${editedProject.project_id}>
                                 <i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm mt-2" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${updatedProject.project_id}>
+                                <button class="btn btn-danger btn-sm m-1" id="deleteProjectBtn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-delete-project=${editedProject.project_id}>
                                 <i class="fas fa-trash"></i></button>
+                                <button class="btn btn-primary btn-sm m-1"><a class="text-white" href="/project-detail/${editedProject.project_id}">
+                                <i class="fas fa-eye"></i></a>
+                                </button>
                                 </div>
-                                <div class="mx-3">
-                                <button class="btn btn-info btn-sm"><a class="text-white" href="/project/tasks/${projectId}"><i class="fas fa-list"></i></a></button>
-                                <button class="btn btn-warning btn-sm mt-2"><a class="text-white" href="/project/lists/${projectId}"><i class="fas fa-circle-xmark"></i></a></button>
-                                </div>
-                            </div>
                             `
                         ]).draw(false)
                     }
@@ -113,7 +94,7 @@ $(document).ready(() =>{
                 },
             })
 
-            $('#updateProjectModal').modal('toggle')
+            $('#editProjectModal').modal('toggle')
         }else{
             alertify.set('notifier','position','top-right')
             alertify.error('Please fill all the fields')

@@ -156,6 +156,7 @@
               <table class="table " id="projectTable">
                 <thead>
                   <tr>
+                    {% comment %} <th></th> {% endcomment %}
                     <th scope="col">Title</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
@@ -200,6 +201,53 @@
         </div>
       </div>
     </section>
+
+
+    <div class="card-body">
+      <div class="modal fade" id="editProjectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Project</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                <h5 class="card-title">Edit Project</h5>
+                <form class="row g-3" method="post" id="editProjectForm">
+                  {% csrf_token %}
+                  <div class="col-12 mt-2">
+                    <label for="inputAddress" class="form-label">Project Type</label>
+                    <select class="form-select" name="edit_project_type" aria-label="Default select example" id="editProjectType">
+                      <option value="" >select type of the project</option>
+                      <option value="Type 1" >Type 1</option>
+                      <option value="Type 2" >Type 2</option>
+                      <option value="Type 3" >Type 3</option>
+                  </select>
+                </div>
+            
+                <div class="col-12 mt-2">
+                    <label for="inputAddress" class="form-label">Status</label>
+                    <select class="form-select" name="edit_project_status" id="editProjectStatus" aria-label="Default select example">
+                        <option value=''>select status of the project</option>
+                        <option value="On Hold" >On Hold</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Canceled">Canceled</option>
+                      </select>
+                </div>
+                  <div class="modal-footer">
+                    <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
     <!--Delete modal-->
     <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

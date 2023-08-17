@@ -240,11 +240,12 @@
               success:function(response){
                 console.log(response)
                   if(response.status === 'updated'){
+
                     console.log(response.project.project_title)
                     $('#project_title').html(response.project.project_title)
                     $('#project_description').html(response.project.project_description)
-                    $('#project_start_date').html(response.project.project_start_date)
-                    $('#project_end_date').html(response.project.project_end_date)
+                    $('#project_start_date').html(moment(response.project.project_start_date).format('MMM. DD,YYYY'))
+                    $('#project_end_date').html(moment(response.project.project_end_date).format('MMM. DD,YYYY'))
                     $('#project_duration').html(response.project.project_duration)
                     $('#project_estimated_hours').html(response.project.project_estimated_hours)
 
