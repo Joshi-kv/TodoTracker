@@ -83,7 +83,7 @@ $(document).ready(function() {
                                 
                                 </button>
                                 <button class="btn btn-sm btn-warning mx-2">
-                                <a href="/project/lists/issues/${project_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
+                                <a href="/project/lists/issues/${list.list_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
 
                                 </button>
                             </div>

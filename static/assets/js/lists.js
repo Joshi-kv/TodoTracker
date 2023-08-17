@@ -15,7 +15,7 @@ $(document).ready(() =>{
         console.log(data)
         hidePagination(table,table.rows().count())
         data.lists.forEach((list) =>{
-            if(list.is_staff == true){
+
                 console.log(list)
                 let listId = list.list_id
                 let listRow = table.row.add([
@@ -34,7 +34,7 @@ $(document).ready(() =>{
                             
                             </button>
                             <button class="btn btn-sm btn-warning mx-2">
-                            <a href="/project/lists/issues/${project_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
+                            <a href="/project/lists/issues/${list.list_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
 
                             </button>
                         </div>
@@ -45,37 +45,7 @@ $(document).ready(() =>{
                 table.draw()
                 taskLength = data.lists.length
                 hidePagination(table,taskLength)
-            }else{
-                console.log(list)
-                let listId = list.list_id
-                let listRow = table.row.add([
-                    `${list.list_name}`,
-                    `${list.list_description}`,
-                    `
-                    <div class="d-flex">
-                        <button class="btn btn-sm btn-primary mx-2" id="listUpdateBtn" data-list-edit="${list.list_id}" data-bs-toggle="modal" data-bs-target="#listUpdateModal" >
-                        <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger mx-2" id="deleteListBtn" data-list-delete="${list.list_id}" data-bs-toggle="modal" data-bs-target="#deleteListModal" >
-                        <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="btn btn-sm btn-info mx-2">
-                        <a href="" class="text-white"><i class="fas fa-list"></i></a>
-                        
-                        </button>
-                        <button class="btn btn-sm btn-warning mx-2">
-                        <a href="/project/lists/issues/${project_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
-
-                        </button>
-                    </div>
-                    `
-                ]).node()
-                $(listRow).attr('data-list-id',listId)
-                table = $('#listTable').DataTable();
-                table.draw()
-                taskLength = data.lists.length
-                hidePagination(table,taskLength)
-            }         
+                   
 
         })
     

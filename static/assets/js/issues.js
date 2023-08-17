@@ -1,11 +1,11 @@
 let pathname = window.location.href.replace(/\/+$/, '');
-let project_id = pathname.substring(pathname.lastIndexOf('/') +1 )
+let list_id = pathname.substring(pathname.lastIndexOf('/') +1 )
 
 $(document).ready(() =>{
 
 
     // fetching tasks on page load
-    const url = `http://127.0.0.1:8000/lists/issues/${project_id}/`
+    const url = `http://127.0.0.1:8000/lists/issues/${list_id}/`
     fetch(url)
     .then(response => response.json())
     .then((data) => {
@@ -33,7 +33,7 @@ $(document).ready(() =>{
                             <i class="fas fa-trash"></i>
                             </button>
                             <button class="btn btn-sm btn-success mx-2">
-                            <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
+                            <a href="/project/lists/issue-detail/${list_id}" class="text-white"><i class="fas fa-eye"></i></a>
                             </button>
                         </div>
                     `

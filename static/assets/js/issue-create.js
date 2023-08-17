@@ -73,7 +73,7 @@ $(document).ready(() => {
         if(issue_title && issue_description && issue_status && issue_priority && issue_assignee ){
             $.ajax({
                 type: 'post',
-                url: `/lists/create-issue/${project_id}/`,
+                url: `/lists/create-issue/${list_id}/`,
                 dataType: 'json',
                 contentType: false,
                 processData: false,
@@ -102,7 +102,7 @@ $(document).ready(() => {
                             <i class="fas fa-trash"></i>
                             </button>
                             <button class="btn btn-sm btn-success mx-2">
-                            <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
+                            <a href="/project/lists/issue-detail/${list_id}" class="text-white"><i class="fas fa-eye"></i></a>
                             </button>
                         </div>
                         `

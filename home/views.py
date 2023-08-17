@@ -1310,6 +1310,7 @@ class ListPageView(View) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
         project = Project.objects.get(id=project_id)
+    
         context = {
             'current_user' : current_user,
             'project' : project,
@@ -1418,24 +1419,26 @@ class DeleteListView(View) :
     
 #view to render issue view 
 class IssuePageView(View) : 
-    def get(self,request,project_id) :
+    def get(self,request,list_id) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
-        project = Project.objects.get(id=project_id)
-        assignees = User.objects.all().exclude(is_staff=True)
+        list = List.objects.get(id=list_id)
+        project = Project.objects.get(list__id=list_id)
+        assignees = project.assignee.all()
         context = {
             'current_user' : current_user,
             'project' : project,
-            'assignees': assignees
+            'assignees': assignees,
+            'list':list
         }
         return render(request,'issue-page.html', context) 
     
 #view to list issues
 class IssueListView(View) : 
-    def get(self,request,project_id) :
-        list = List.objects.get(project=project_id)
+    def get(self,request,list_id) :
+        list = List.objects.get(id=list_id)
         if request.user.is_staff : 
-            issues = Issue.objects.filter(project=project_id,list=list).order_by('-created_at','-updated_at')
+            issues = Issue.objects.filter(list=list).order_by('-created_at','-updated_at')
             context = []
             for issue in issues : 
                 context.append({
@@ -1449,7 +1452,7 @@ class IssueListView(View) :
                 })
             return JsonResponse({'status':'success','issues':context})
         else : 
-            issues = Issue.objects.filter(assignee=request.user,project=project_id,list=list).order_by('-created_at','-updated_at')
+            issues = Issue.objects.filter(assignee=request.user,list=list).order_by('-created_at','-updated_at')
             context = []
             for issue in issues : 
                 context.append({
@@ -1465,9 +1468,9 @@ class IssueListView(View) :
         
 #view to create issues 
 class IssueCreateView(View) : 
-    def post(self,request,project_id) : 
-        project = Project.objects.get(id=project_id)
-        list = List.objects.get(project=project)
+    def post(self,request,list_id) : 
+        list = List.objects.get(id=list_id)
+        project = Project.objects.get(list__id=list_id)
         
         issue_title = request.POST.get('issue_title')
         issue_description = request.POST.get('issue_description')
@@ -1505,11 +1508,11 @@ class IssueCreateView(View) :
     
 #view to render issue detail page    
 class IssueDetailPage(View) : 
-    def get(self,request,project_id) :
+    def get(self,request,list_id) :
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
-        project = Project.objects.get(id=project_id)
-        list = List.objects.get(project=project)
+        list = List.objects.get(id=list_id)
+        project = Project.objects.get(list__id=list_id)
         issue = Issue.objects.get(list=list)
         
         context = {
@@ -1624,7 +1627,7 @@ class IssueAttachmentDeleteView(View) :
     
 #issue delete view
 class DeleteIssueView(View) : 
-    def post(self,request,project_id) : 
+    def post(self,request,list_id) : 
         issue_id = request.POST.get('issue_id')
         issue = Issue.objects.get(id=issue_id)
         issue.delete()
@@ -1634,7 +1637,7 @@ class DeleteIssueView(View) :
             )
             
         activity_log.save()
-        total = Issue.objects.filter(project=project_id).count()
+        total = Issue.objects.filter(list=list_id).count()
         return JsonResponse({'status':'success','total':total})  
     
 #view to render todo page

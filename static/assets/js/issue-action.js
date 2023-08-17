@@ -84,7 +84,7 @@ $(document).ready(() =>{
                                 <i class="fas fa-trash"></i>
                                 </button>
                                 <button class="btn btn-sm btn-success mx-2">
-                                <a href="/project/lists/issue-detail/${project_id}" class="text-white"><i class="fas fa-eye"></i></a>
+                                <a href="/project/lists/issue-detail/${list_id}" class="text-white"><i class="fas fa-eye"></i></a>
                                 </button>
                             </div>
                             `
@@ -114,7 +114,7 @@ $(document).ready(() =>{
         let issueId = $('#deleteIssueModal').attr('delete-issue')
         $.ajax({
             type:'post',
-            url:`/delete-issue/${project_id}/`,
+            url:`/delete-issue/${list_id}/`,
             dataType:'json',
             data:{
                 csrfmiddlewaretoken:csrftoken,

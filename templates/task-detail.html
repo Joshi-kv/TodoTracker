@@ -46,10 +46,8 @@
                         <p class="ms-5">{{task.created_date}}</p><br>
                         <p class="text-center">Attachments</p>
                         <hr>
-                        {% if request.user == task.user %}
                         Add attachments here
                         <button class="ms-5 btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#attachmentModal"><i class="fa-solid fa-link"></i></button>
-                        {% endif %}
                         <br>
                         Attachments :
                         <div id="taskAttachments"> 
