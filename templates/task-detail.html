@@ -18,10 +18,11 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
-          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>     
-          <li class="breadcrumb-item"><a href="{% url 'home:todo-page' project_id %}">Tasks</a></li>    
-          <li class="breadcrumb-item active"><a class="active" href="{% url 'home:task-detail' task.id %}">Task</a></li> 
-          <li class="breadcrumb-item active"><a href="{% url 'home:sub-task' task.id%}">Sub Task</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>  
+          <li class="breadcrumb-item"><a href="{% url 'home:todo-page' %}">Tasks</a></li>   
+          <li class="breadcrumb-item active"><a class="active" href="{% url 'home:task-detail' task.id %}">Task Detail</a></li> 
+          {% comment %}     
+          <li class="breadcrumb-item active"><a href="{% url 'home:sub-task' task.id%}">Sub Task</a></li> {% endcomment %}
         </ol>
       </nav>
     </div><!-- End Page Title -->

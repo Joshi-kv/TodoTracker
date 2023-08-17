@@ -7,16 +7,26 @@ function format(d) {
     // `d` is the original data object for the row
     return (
         '<dl>' +
-        '<dt>Full name:</dt>' +
+        '<dt>Start Date:</dt>' +
         '<dd>' +
-        d.project_description +
+        d[2] +
         '</dd>' +
-        '<dt>Extension number:</dt>' +
+        '<dt>End Date:</dt>' +
         '<dd>' +
-        d.extn +
+        d[3] +
         '</dd>' +
-        '<dt>Extra info:</dt>' +
-        '<dd>And any further details here (images etc)...</dd>' +
+        '<dt>Duration:</dt>' +
+        '<dd>' +
+        d[4] +
+        '</dd>' +
+        '<dt>Estimated Hours:</dt>' +
+        '<dd>' +
+        d[5] +
+        '</dd>' +
+        '<dt>Project Description:</dt>' +
+        '<dd>'+
+        d[1] + 
+        '</dd>' +
         '</dl>'
     );
 }
@@ -36,7 +46,10 @@ $(document).ready(function() {
                 {
                   targets: 0,
                   className: 'dt-control',
-            },
+            },{
+                targets:[1,2,3,4,5],
+                visible:false,
+            }
             
         ],
         // columns:[
@@ -55,6 +68,7 @@ $(document).ready(function() {
             'info':false,
             'empty':false
         })
+        table.column
         if(data.projects.length > 0) {
           length = data.projects.length
             $('.dataTables_empty').hide()
@@ -63,8 +77,8 @@ $(document).ready(function() {
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectRow = table.row.add([
-                        // `${null}`,
                         `${project.project_title}`,
+                        `${project.project_description}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -96,6 +110,7 @@ $(document).ready(function() {
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectRow = table.row.add([
                         `${project.project_title}`,
+                        `${project.project_description}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -139,17 +154,17 @@ $(document).ready(function() {
                     hidePagination(table,table.rows({search:'applied'}).count())
                }else{
                 $('select[name="filterProjectStatus"]').val(filterOption).change()
-                table.column(6).search(filterOption).draw()
+                table.column(7).search(filterOption).draw()
                 hidePagination(table,table.rows({search:'applied'}).count()) 
                }
             }else{
                 $('select[name="filterProjectStatus"]').val('Pending').change()
-                table.column(6).search('Pending').draw()
+                table.column(7).search('Pending').draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
             }
             $('select[name="filterProjectStatus"]').on('change',function(){
                 let status = $(this).val()
-                table.column(6).search(status).draw()
+                table.column(7).search(status).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(status == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
@@ -157,7 +172,7 @@ $(document).ready(function() {
             })
             $('select[name="filterProjectType"]').on('change',function(){
                 let type = $(this).val()
-                table.column(5).search(type).draw()
+                table.column(6).search(type).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(type == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())

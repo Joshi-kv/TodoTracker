@@ -1467,3 +1467,7 @@ collapsed
 #projectAssignee_chosen,#projectNewAssignee_chosen{
   width: 100%!important;
 }
+
+td.dt-control:before {
+  margin-right: 8px;
+  }

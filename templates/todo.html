@@ -19,7 +19,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>          
           <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>
-          <li class="breadcrumb-item active"><a class="active" href="{% url 'home:todo-page' project %}">Tasks</a></li>
+          <li class="breadcrumb-item active"><a class="active" href="{% url 'home:todo-page' %}">Tasks</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -39,12 +39,12 @@
           
             <div class="card-body">
 
-            
-              {% if request.user.is_staff == False %}
+              {% if request.GET.id %}
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
                 Add 
               </button>
               {% endif %}
+
               <div class="modal fade" id="basicModal" tabindex="-1">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -71,6 +71,17 @@
                   <label for="inputPassword4" class="form-label">Due Date</label>
                   <input type="date" name="duedate" class="form-control">
                 </div>
+                {% if request.user.is_staff %}
+                  <div class="col-12">
+                    <label for="inputAddress" class="form-label">Priority</label>
+                    <select class="form-select" name="assignee" aria-label="Default select example" id="taskAssignee">
+                      {% for assignee in assignees  %}
+                      <option value="{{assignee}}" >{{assignee}}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+                {% endif %}
+                
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Priority</label>
                     <select class="form-select" name="priority" aria-label="Default select example" id="taskPriority">

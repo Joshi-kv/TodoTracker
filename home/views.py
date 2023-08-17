@@ -1279,7 +1279,8 @@ class UpdateProjectView(View) :
             }
             
             return JsonResponse({'status':'updated','project':context})  
-        
+ 
+       
 #view to delete project
 class ProjectDeleteView(View) : 
     def post(self,request) : 
@@ -1398,7 +1399,6 @@ class UpdateListView(View) :
 class DeleteListView(View) : 
     def post(self,request,project_id) : 
         list_id = request.POST.get('list_id')
-        print(list_id)
         list = List.objects.get(id=list_id)
         list.delete()
         activity_log = ActivityLog.objects.create(
@@ -1634,10 +1634,17 @@ class DeleteIssueView(View) :
 #view to render todo page
 class TodoPageView(LoginRequiredMixin,View) : 
     login_url = 'users:login'
-    def get(self, request,project_id) : 
+    def get(self, request) : 
         user_model = request.user
         current_user = UserProfile.objects.get(user=user_model)
-        return render(request, 'todo.html',{'current_user':current_user,'project':project_id})
+        if user_model.is_staff :
+            if request.GET.get('id') : 
+                project = Project.objects.get(id=request.GET.get('id'))
+                assignee = project.assignee.filter(assigned_projects=project)
+                print(assignee)
+                return render(request, 'todo.html',{'current_user':current_user,'assignees':assignee,})
+    
+        return render(request, 'todo.html',{'current_user':current_user,})
     
 #task detail page view 
 class TaskDetailPageView(View) : 
@@ -1692,36 +1699,72 @@ class TaskFileAttachmentView(View) :
     
 #view to list tasks in datatable
 class TaskListView(View) : 
-    def get(self,request,project_id) : 
+    def get(self,request) : 
+        project_id = request.GET.get('id')
+        print(project_id)
         user_obj = request.user
-        if user_obj.is_staff == True : 
-            tasks = Todo.objects.filter(project=project_id).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
-            context = []
-            for task in tasks : 
-                context.append({
-                    'task_id':task.id,
-                    'task_title':task.task_title,
-                    'task_description':task.task_description,
-                    'task_duedate':task.task_duedate,
-                    'task_priority':task.task_priority,
-                    'task_status':task.task_status,
-                    'is_staff':user_obj.is_staff,
-                })
-            return JsonResponse({'tasks':context},safe=False)
+        if project_id : 
+            if user_obj.is_staff == True : 
+                tasks = Todo.objects.filter(project=project_id).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'task_id':task.id,
+                        'list':task.list.list_name,
+                        'task_title':task.task_title,
+                        'task_description':task.task_description,
+                        'task_duedate':task.task_duedate,
+                        'task_priority':task.task_priority,
+                        'task_status':task.task_status,
+                        'is_staff':user_obj.is_staff,
+                    })
+                return JsonResponse({'tasks':context},safe=False)
+            else : 
+                tasks = Todo.objects.filter(project=project_id,user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'task_id':task.id,
+                        'list':task.list.list_name,
+                        'task_title':task.task_title,
+                        'task_description':task.task_description,
+                        'task_duedate':task.task_duedate,
+                        'task_priority':task.task_priority,
+                        'task_status':task.task_status,
+                        'is_staff':user_obj.is_staff,
+                    })
+                return JsonResponse({'tasks':context},safe=False)
         else : 
-            tasks = Todo.objects.filter(project=project_id,user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
-            context = []
-            for task in tasks : 
-                context.append({
-                    'task_id':task.id,
-                    'task_title':task.task_title,
-                    'task_description':task.task_description,
-                    'task_duedate':task.task_duedate,
-                    'task_priority':task.task_priority,
-                    'task_status':task.task_status,
-                    'is_staff':user_obj.is_staff,
-                })
-            return JsonResponse({'tasks':context},safe=False)
+            if user_obj.is_staff == True : 
+                tasks = Todo.objects.all().order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'task_id':task.id,
+                        'list':task.list.list_name,
+                        'task_title':task.task_title,
+                        'task_description':task.task_description,
+                        'task_duedate':task.task_duedate,
+                        'task_priority':task.task_priority,
+                        'task_status':task.task_status,
+                        'is_staff':user_obj.is_staff,
+                    })
+                return JsonResponse({'tasks':context},safe=False)
+            else : 
+                tasks = Todo.objects.filter(user=user_obj).order_by('task_duedate__month','task_duedate__day').exclude(task_status='Deactivated')   
+                context = []
+                for task in tasks : 
+                    context.append({
+                        'task_id':task.id,
+                        'list':task.list.list_name,
+                        'task_title':task.task_title,
+                        'task_description':task.task_description,
+                        'task_duedate':task.task_duedate,
+                        'task_priority':task.task_priority,
+                        'task_status':task.task_status,
+                        'is_staff':user_obj.is_staff,
+                    })
+                return JsonResponse({'tasks':context},safe=False)
     
 #view to create todo 
 class TodoCreateView(View) : 

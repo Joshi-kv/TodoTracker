@@ -1,15 +1,21 @@
 let table;
 let taskLength; 
 $(document).ready(() =>{
-    let pathname = window.location.href.replace(/\/+$/, '');
-    let project_id = pathname.substring(pathname.lastIndexOf('/') +1 )
-
+    let pathname = window.location.href
+    let params = new URL(pathname).searchParams;
+    let id = params.get('id');
+    let url;
+    if(id){
+        url = `http://127.0.0.1:8000/tasks-list/?id=${id}`
+    }else{
+        url = `http://127.0.0.1:8000/tasks-list/`
+    }
 
     // fetching tasks on page load
-    const url = `http://127.0.0.1:8000/tasks/${project_id}`
     fetch(url)
     .then(response => response.json())
     .then((data) => {
+        console.log(data)
         $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#taskTable').DataTable({
            
@@ -26,30 +32,6 @@ $(document).ready(() =>{
         hidePagination(table,table.rows().count())
         data.tasks.forEach((task) =>{
             let convertedTaskDuedate = moment(task.task_duedate).format('DD/MM/YYYY')
-            if(task.is_staff === true){
-                let taskId = task.task_id
-                let taskRow = table.row.add([
-                    '',
-                    `${task.task_title}`,
-                    `${task.task_description}`,
-                    `${convertedTaskDuedate}`,
-                    `${task.task_priority}`,
-                    `${task.task_status}`,
-                    `
-                    <button class="btn btn-success btn-sm">
-                    <a href="/task/sub-task/${taskId}/" class="text-white"><i class="fas fa-list"></i></a>
-                    </button>
-                    <button class="btn btn-primary btn-sm" my-1 text-white">
-                    <a class="text-white" href="/project/task-detail/${taskId}"><i class="fas fa-eye"></i></a>
-                    </button>
-                    `
-                ]).node()
-                $(taskRow).attr('data-task-id',taskId)
-                table = $('#taskTable').DataTable();
-                table.draw()
-                taskLength = data.tasks.length
-                hidePagination(table,taskLength)
-            }else{
                 let taskId = task.task_id
                 let taskRow = table.row.add([
                     `${task.task_title}`,
@@ -79,7 +61,6 @@ $(document).ready(() =>{
                 table.draw()
                 taskLength = data.tasks.length
                 hidePagination(table,taskLength)
-            }
 
             //custom filtering
             $('select[name="filterStatus"]').on('change',function(){

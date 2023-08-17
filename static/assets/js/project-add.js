@@ -129,6 +129,7 @@ $(document).ready(() => {
                     let projectId = project.project_id
                     let projectRow = table.row.add([
                         `${project.project_title}`,
+                        `${project.project_description}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -156,7 +157,7 @@ $(document).ready(() => {
                     // Call changePagination with the updated total number of tasks
                     projectTablePagination(table,total)
                     $('select[name="filterProjectStatus"]').val('').change()
-                    table.column(6).search('').draw()
+                    table.column(8).search('').draw()
                     showProjectTablePagination(table,table.rows)
                 },
     

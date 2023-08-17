@@ -70,6 +70,7 @@ $(document).ready(() =>{
                         const rowIndex = table.row(`tr[id=project-row-${editedProject.project_id}]`).index();
                         table.row(rowIndex).data([
                             `${editedProject.project_title}`,
+                            `${editedProject.project_description}`,
                             `${convertedStartdate}`,
                             `${convertedEnddate}`,
                             `${editedProject.duration}`,
