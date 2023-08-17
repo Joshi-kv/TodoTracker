@@ -20,7 +20,7 @@
           <li class="breadcrumb-item active"><a href="{% url 'home:index' %}">Home</a></li>          
           <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>     
           <li class="breadcrumb-item"><a href="{% url 'home:list-page' project.id %}">Lists</a></li>     
-          <li class="breadcrumb-item"><a href="{% url 'home:issue-page' project.id %}">Issues</a></li>     
+          <li class="breadcrumb-item"><a href="{% url 'home:issue-page' list.id %}">Issues</a></li>     
           <li class="breadcrumb-item"><a class="active" href="{% url 'home:issue-detail' project.id %}">Issue detail</a></li>     
         </ol>
       </nav>
