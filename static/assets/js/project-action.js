@@ -60,6 +60,7 @@ $(document).ready(() =>{
                     'project_status':project_status,
                 },
                 success:function(response){
+                    console.log(response);
                     if(response.status === 'updated'){
                         let editedProject = response.project
                         let table = $('#projectTable').DataTable()

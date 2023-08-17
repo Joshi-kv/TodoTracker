@@ -34,7 +34,6 @@ function format(d) {
 const urlParams = new URLSearchParams(window.location.search);
 const filterOption = urlParams.get('filter');
 $(document).ready(function() {
-    console.log(filterOption);
       // fetching tasks on page load
     const url = 'http://127.0.0.1:8000/project-list/'
     fetch(url)
@@ -47,7 +46,7 @@ $(document).ready(function() {
                   targets: 0,
                   className: 'dt-control',
             },{
-                targets:[1,2,3,4,5],
+                targets:[1,3,4,5,6],
                 visible:false,
             }
             
@@ -71,14 +70,17 @@ $(document).ready(function() {
         table.column
         if(data.projects.length > 0) {
           length = data.projects.length
-            $('.dataTables_empty').hide()
+            $('.dataTables_empty').show()
+            console.log(data.projects)
             data.projects.forEach((project) => {
                 if(project.is_staff){
+                    let convertedCreatedDate = moment(project.created_at).format('DD/MM/YYYY')
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectRow = table.row.add([
                         `${project.project_title}`,
                         `${project.project_description}`,
+                        `${convertedCreatedDate}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -106,11 +108,13 @@ $(document).ready(function() {
                 
                     
                 }else{
+                    let convertedCreatedDate = moment(project.created_at).format('DD/MM/YYYY')
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectRow = table.row.add([
                         `${project.project_title}`,
                         `${project.project_description}`,
+                        `${convertedCreatedDate}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -150,21 +154,21 @@ $(document).ready(function() {
                
                if(filterOption == 'totalprojects'){
                 $('select[name="filterProjectStatus"]').val('').change()
-                    table.column(6).search('').draw()
+                    table.column(8).search('').draw()
                     hidePagination(table,table.rows({search:'applied'}).count())
                }else{
                 $('select[name="filterProjectStatus"]').val(filterOption).change()
-                table.column(7).search(filterOption).draw()
+                table.column(8).search(filterOption).draw()
                 hidePagination(table,table.rows({search:'applied'}).count()) 
                }
             }else{
                 $('select[name="filterProjectStatus"]').val('Pending').change()
-                table.column(7).search('Pending').draw()
+                table.column(8).search('Pending').draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
             }
             $('select[name="filterProjectStatus"]').on('change',function(){
                 let status = $(this).val()
-                table.column(7).search(status).draw()
+                table.column(8).search(status).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(status == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
@@ -172,49 +176,52 @@ $(document).ready(function() {
             })
             $('select[name="filterProjectType"]').on('change',function(){
                 let type = $(this).val()
-                table.column(6).search(type).draw()
+                table.column(7).search(type).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(type == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
                 }
             })
 
-            // //filter date range
-            // $('#dateSearch').off().on('click',function(){
-            //     $.ajax({
-            //         url:'/date-range-filter-project',
-            //         type:'get',
-            //         dataType:'json',
-            //         data:{
-            //             project_id:project_id,
-            //             start_date:$('#project_start_date').val(),
-            //             end_date:$('#projct_end_date').val(),
-            //         },
-            //         success:function(response){
-            //             if(response.tasks.length > 0){
-            //                 let date = []
-            //                 response.tasks.forEach((task) => {
-            //                     table = $('#projectTable').DataTable()                        
-            //                     let convertedDueDate = moment(task.task_duedate).format('DD/MM/YYYY')
-            //                     date.push('(?=.*' + convertedDueDate + ')');
-            //                 })
-            //                 table.column(2).search(date.join('|'),true,false,true).draw()
-            //                 if(date){
-            //                     hidePagination(table,table.rows({search:'applied'}).count())
-            //                 }else{
-            //                     hidePagination(table,table.rows({search:'applied'}).count())
-            //                 }
-            //                 $('#no-data').hide()
-            //                 $('tbody').show()
-            //             }else{
-            //                 $('#no-data').show()
-            //                 $('tbody').hide()
-            //                 table = $('#taskTable').DataTable()  
-            //                 table.column(2).search('').draw()
-            //             }
-            //         }
-            //     })
-            // })
+            //filter date range
+            $('#dateSearchProject').off().on('click',function(){
+                $.ajax({
+                    url:'/project-date-range-filter',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        start_date:$('#project_start_date').val(),
+                        end_date:$('#project_end_date').val(),
+                    },
+                    success:function(response){
+                        if(response.projects.length > 0){
+                            let date = []
+                            response.projects.forEach((project) => {
+                                console.log(project)
+                                table = $('#projectTable').DataTable()                        
+                                let convertedCreatedDate = moment(project.created_at).format('DD/MM/YYYY')
+                                date.push('(?=.*' + convertedCreatedDate + ')');
+                            })
+                            table.column(2).search(date.join('|'),true,false,true).draw()
+                            if(date){
+                                hidePagination(table,table.rows({search:'applied'}).count())
+                            }else{
+                                hidePagination(table,table.rows({search:'applied'}).count())
+                            }
+                            $('select[name="filterProjectStatus"]').val('').change()
+                            table.column(8).search('').draw()
+                            hidePagination(table,table.rows({search:'applied'}).count())
+                            $('.dataTables_empty').hide()
+                            $('tbody').show()
+                        }else{
+                            $('.dataTables_empty').show()
+                            $('tbody').hide()
+                            table = $('#projectTable').DataTable()  
+                            table.column(2).search('').draw()
+                        }
+                    }
+                })
+            })
 
         }else{
             $('.dataTables_empty').show()
@@ -241,14 +248,16 @@ $(document).ready(function() {
     function clearFilters() {
         table.column(5).search('').draw() // Clear status filter
         table.column(6).search('').draw() // Clear priority filter
-        // table.column(2).search('').draw() // Clear date filter
+        table.column(2).search('').draw() // Clear date filter
         table.draw() 
     }
 
     //function to clear filter
     $('#clearFilterBtn').on('click',function(){
-        $('#filterProjectStatus').val('')
+        $('#filterProjectStatus').val('').change()
         $('#filterProjectType').val('')
+        $('#project_start_date').val('')
+        $('#project_end_date').val('')
         hidePagination(table,table.rows({search:'applied'}).count())
     clearFilters()
     })

@@ -1468,6 +1468,19 @@ collapsed
   width: 100%!important;
 }
 
-td.dt-control:before {
-  margin-right: 8px;
-  }
+table.dataTable td.dt-control {
+  text-align:start !important;
+  cursor: pointer;
+}
+td.dt-control:before{
+  margin-right: 10px;
+}
+th{
+  width: 150px;
+  text-align: center;
+}
+td {
+  width: 150px;
+  text-align: start;
+  padding: 5px;
+}

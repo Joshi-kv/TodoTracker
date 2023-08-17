@@ -1029,6 +1029,7 @@ class ProjectListView(View) :
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
+                    'created_at': project.created_at,
                     'project_description': project.project_description,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
@@ -1046,6 +1047,7 @@ class ProjectListView(View) :
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
+                    'created_at': project.created_at,
                     'project_description': project.project_description,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
@@ -1118,6 +1120,7 @@ class ProjectCreateView(View) :
         context = {
             'project_id':new_project.id,
             'project_title':new_project.project_title,
+            'created_at': new_project.created_at,
             'project_description':new_project.project_description,
             'project_startdate':new_project.start_date,
             'project_enddate':new_project.end_date,
@@ -1181,14 +1184,15 @@ class ProjectDateRangeFilter(View) :
     def get(self,request) : 
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
-        
+        print(start_date, end_date)
         #filtering tasks using date range by range orm method
-        projects = Project.objects.filter(start_date__range=(start_date,end_date))
+        projects = Project.objects.filter(created_at__range=(start_date,end_date)).exclude(project_status="Deactivated")
         context = []
         for project in projects : 
             context.append({
                 'project_id':project.id,
                 'project_title':project.project_title,
+                'created_at':project.created_at,
                 'project_descritpion':project.project_description,
                 'project_start_date':project.start_date,
                 'project_end_date':project.end_date,
@@ -1243,6 +1247,7 @@ class UpdateProjectView(View) :
             context = {
                 'project_id': project_update.id,
                 'project_title': project_update.project_title,
+                'created_at': project_update.created_at,
                 'project_description': project_update.project_description,
                 'project_start_date': project_update.start_date,
                 'project_end_date': project_update.end_date,
@@ -1271,6 +1276,7 @@ class UpdateProjectView(View) :
             context = {
                 'project_id': project_update.id,
                 'project_title': project_update.project_title,
+                'created_at': project_update.created_at,
                 'project_description': project_update.project_description,
                 'project_start_date': project_update.start_date,
                 'project_end_date': project_update.end_date,

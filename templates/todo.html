@@ -73,8 +73,9 @@
                 </div>
                 {% if request.user.is_staff %}
                   <div class="col-12">
-                    <label for="inputAddress" class="form-label">Priority</label>
+                    <label for="inputAddress" class="form-label">Assignee</label>
                     <select class="form-select" name="assignee" aria-label="Default select example" id="taskAssignee">
+                      <option value="" >Select Assignee</option>
                       {% for assignee in assignees  %}
                       <option value="{{assignee}}" >{{assignee}}</option>
                       {% endfor %}
