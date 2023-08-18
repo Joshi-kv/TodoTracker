@@ -1026,10 +1026,13 @@ class ProjectListView(View) :
             projects = Project.objects.all().exclude(project_status='Deactivated').order_by('-created_at')   
             context = []
             for project in projects : 
+                assignees = [assignee.username for assignee in project.assignee.all()]
+                print(assignees)
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'created_at': project.created_at,
+                    'assignee':assignees,
                     'project_description': project.project_description,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
@@ -1044,10 +1047,12 @@ class ProjectListView(View) :
             projects = Project.objects.filter(assignee=request.user).exclude(project_status='Deactivated').order_by('-created_at')      
             context = []
             for project in projects : 
+                assignees = [assignee.username for assignee in project.assignee.all()]
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
                     'created_at': project.created_at,
+                    'assignee':assignees,
                     'project_description': project.project_description,
                     'project_startdate': project.start_date,
                     'project_enddate': project.end_date,
@@ -1670,7 +1675,6 @@ class TodoPageView(LoginRequiredMixin,View) :
                 list = List.objects.filter(project__in=project)
                 return render(request, 'todo.html',{'current_user':current_user,'projects':project,'lists':list})
     
-        return render(request, 'todo.html',{'current_user':current_user,})
     
 #task detail page view 
 class TaskDetailPageView(View) : 

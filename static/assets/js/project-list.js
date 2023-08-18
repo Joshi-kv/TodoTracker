@@ -9,19 +9,23 @@ function format(d) {
         '<dl>' +
         '<dt>Start Date:</dt>' +
         '<dd>' +
-        d[2] +
+        d[4] +
         '</dd>' +
         '<dt>End Date:</dt>' +
         '<dd>' +
-        d[3] +
+        d[5] +
         '</dd>' +
         '<dt>Duration:</dt>' +
         '<dd>' +
-        d[4] +
+        d[6] +
         '</dd>' +
         '<dt>Estimated Hours:</dt>' +
         '<dd>' +
-        d[5] +
+        d[7] +
+        '</dd>' +
+        '<dt>Assignees:</dt>' +
+        '<dd>' +
+        d[3] +
         '</dd>' +
         '<dt>Project Description:</dt>' +
         '<dd>'+
@@ -46,7 +50,7 @@ $(document).ready(function() {
                   targets: 0,
                   className: 'dt-control',
             },{
-                targets:[1,3,4,5,6],
+                targets:[1,3,4,5,6,7],
                 visible:false,
             }
             
@@ -81,6 +85,7 @@ $(document).ready(function() {
                         `${project.project_title}`,
                         `${project.project_description}`,
                         `${convertedCreatedDate}`,
+                        `${project.assignee}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -115,6 +120,7 @@ $(document).ready(function() {
                         `${project.project_title}`,
                         `${project.project_description}`,
                         `${convertedCreatedDate}`,
+                        `${project.assignee}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -154,21 +160,29 @@ $(document).ready(function() {
                
                if(filterOption == 'totalprojects'){
                 $('select[name="filterProjectStatus"]').val('').change()
-                    table.column(8).search('').draw()
+                    table.column(9).search('').draw()
                     hidePagination(table,table.rows({search:'applied'}).count())
                }else{
                 $('select[name="filterProjectStatus"]').val(filterOption).change()
-                table.column(8).search(filterOption).draw()
+                table.column(9).search(filterOption).draw()
                 hidePagination(table,table.rows({search:'applied'}).count()) 
                }
             }else{
                 $('select[name="filterProjectStatus"]').val('Pending').change()
-                table.column(8).search('Pending').draw()
+                table.column(9).search('Pending').draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
             }
+            $('select[name="filterAssignee"]').on('change',function(){
+                let assignee = $(this).val()
+                table.column(3).search(assignee).draw()
+                hidePagination(table,table.rows({search:'applied'}).count())
+                if(assignee == ''){
+                    hidePagination(table,table.rows({search:'applied'}).count())
+                }
+            })
             $('select[name="filterProjectStatus"]').on('change',function(){
                 let status = $(this).val()
-                table.column(8).search(status).draw()
+                table.column(9).search(status).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(status == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
@@ -176,7 +190,7 @@ $(document).ready(function() {
             })
             $('select[name="filterProjectType"]').on('change',function(){
                 let type = $(this).val()
-                table.column(7).search(type).draw()
+                table.column(8).search(type).draw()
                 hidePagination(table,table.rows({search:'applied'}).count())
                 if(type == ''){
                     hidePagination(table,table.rows({search:'applied'}).count())
@@ -209,7 +223,7 @@ $(document).ready(function() {
                                 hidePagination(table,table.rows({search:'applied'}).count())
                             }
                             $('select[name="filterProjectStatus"]').val('').change()
-                            table.column(8).search('').draw()
+                            table.column(9).search('').draw()
                             hidePagination(table,table.rows({search:'applied'}).count())
                             $('.dataTables_empty').hide()
                             $('tbody').show()
@@ -246,9 +260,10 @@ $(document).ready(function() {
 
     //function to clear filter
     function clearFilters() {
-        table.column(5).search('').draw() // Clear status filter
-        table.column(6).search('').draw() // Clear priority filter
+        table.column(9).search('').draw() // Clear status filter
+        table.column(7).search('').draw() // Clear type filter
         table.column(2).search('').draw() // Clear date filter
+        table.column(3).search('').draw() // Clear assignee filter
         table.draw() 
     }
 
@@ -256,6 +271,7 @@ $(document).ready(function() {
     $('#clearFilterBtn').on('click',function(){
         $('#filterProjectStatus').val('').change()
         $('#filterProjectType').val('')
+        $('#filterAssignee').val('')
         $('#project_start_date').val('')
         $('#project_end_date').val('')
         hidePagination(table,table.rows({search:'applied'}).count())
