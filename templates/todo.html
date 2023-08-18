@@ -147,25 +147,6 @@
                   <button class="btn btn-sm btn-primary mt-4 me-5 search-btn " id="dateSearch">Search</button>
                   {% comment %} <span><button class="btn btn-sm btn-info mx-5 my-0 refresh-btn text-white text-bold " id="refresh"><i class="fa-sharp fa-solid fa-rotate-right"></i></button></span> {% endcomment %}
                 </div>
-                <div class="col-md-2">
-                  <label for="">Status : </label>
-                  <select class="form-select dataTables_filter me-5" id="filterStatus" name="filterStatus" aria-label="Default select example" >
-                      <option value=''>Show all</option>
-                      <option value="Upcoming" >Upcoming</option>
-                      <option value="In progress">In progress</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Pending">Pending</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                  <label for="">Priority : </label>
-                  <select class="form-select dataTables_filter me-5" id="filterPriority" name="filterPriority" aria-label="Default select example" >
-                      <option value=''>Show all</option>
-                      <option value="High priority" >High priority</option>
-                      <option value="Medium priority" >Medium priority</option>
-                      <option value="Low priority" >Low priority</option>
-                    </select>
-                </div>
                 <div class="col-md-2 mt-4">
                   <button class="btn btn-primary btn-sm" id="clearFilterBtn">Clear Filter</button>
                 </div>
@@ -178,8 +159,23 @@
                     <th scope="col">Task Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Due Date</th>
-                    <th scope="col">Priority</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                      <select class="form-select dataTables_filter me-5" id="filterPriority" name="filterPriority" aria-label="Default select example" >
+                        <option value=''>Priority</option>
+                        <option value="High priority" >High priority</option>
+                        <option value="Medium priority" >Medium priority</option>
+                        <option value="Low priority" >Low priority</option>
+                      </select>
+                    </th>
+                    <th scope="col">
+                      <select class="form-select dataTables_filter me-5" id="filterStatus" name="filterStatus" aria-label="Default select example" >
+                        <option value=''>Status</option>
+                        <option value="Upcoming" >Upcoming</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                      </select>
+                    </th>
                     <th scope="col">Actions</th>					
                   </tr>
                   <tr>

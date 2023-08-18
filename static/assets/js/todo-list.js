@@ -4,6 +4,7 @@ $(document).ready(() =>{
     let pathname = window.location.href
     let params = new URL(pathname).searchParams;
     let id = params.get('id');
+    let filterOption = params.get('filter');
     let url;
     if(id){
         url = `http://127.0.0.1:8000/tasks-list/?id=${id}`
@@ -21,7 +22,7 @@ $(document).ready(() =>{
            
             "order":[2,'asc'],//sorting data based on ascending order order of date and month
             "columnDefs": [{
-                "targets": [0,1,5], 
+                "targets": [0,1,5,3,4], 
                 "orderable": false 
             }, {
                 "targets": 2, 
@@ -57,6 +58,23 @@ $(document).ready(() =>{
                 taskLength = data.tasks.length
                 hidePagination(table,taskLength)
 
+                if(filterOption){
+               
+                    if(filterOption == 'totaltasks'){
+                     $('select[name="filterStatus"]').val('').change()
+                         table.column(4).search('').draw()
+                         hidePagination(table,table.rows({search:'applied'}).count())
+                    }else{
+                     $('select[name="filterStatus"]').val(filterOption).change()
+                     table.column(4).search(filterOption).draw()
+                     hidePagination(table,table.rows({search:'applied'}).count()) 
+                    }
+                 }else{
+                     $('select[name="filterStatus"]').val('Pending').change()
+                     table.column(4).search('Pending').draw()
+                     hidePagination(table,table.rows({search:'applied'}).count())
+                 }
+            
             //custom filtering
             $('select[name="filterStatus"]').on('change',function(){
                 let status = $(this).val()

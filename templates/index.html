@@ -247,19 +247,21 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Total Tasks </span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="fa-solid fa-rectangle-list"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6 id='totalTask'>0</h6>
-
+                <a href="{% url 'home:todo-page' %}?filter=totaltasks">
+                  <div class="card-body">
+                    <h5 class="card-title">Total Tasks </span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-rectangle-list"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id='totalTask'>0</h6>
+  
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a>
 
               </div>
             </div><!-- End Sales Card -->
@@ -282,18 +284,20 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Completed Tasks</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6 id="completedTask">0</h6>
+                <a href="{% url 'home:todo-page' %}?filter=Completed">
+                  <div class="card-body">
+                    <h5 class="card-title">Completed Tasks</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-circle-check"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="completedTask">0</h6>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a>
 
               </div>
             </div><!-- End Revenue Card -->
@@ -317,21 +321,23 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Pending Tasks</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="fa-solid fa-clock-rotate-left fa-flip-horizontal"></i>
+                <a href="{% url 'home:todo-page' %}?filter=Pending">
+                  <div class="card-body">
+                    <h5 class="card-title">Pending Tasks</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-clock-rotate-left fa-flip-horizontal"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="pendingTask">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
                     </div>
-                    <div class="ps-3">
-                      <h6 id="pendingTask">0</h6>
-                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-
-                    </div>
+  
                   </div>
-
-                </div>
+                </a>
               </div>
 
             </div><!-- End Customers Card -->
@@ -355,21 +361,23 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">In progress Tasks</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="fa-solid fa-bars-progress"></i>
+                <a href="{% url 'home:todo-page' %}?filter=In Progress">
+                  <div class="card-body">
+                    <h5 class="card-title">In progress Tasks</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-bars-progress"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="inProgressTask">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
                     </div>
-                    <div class="ps-3">
-                      <h6 id="inProgressTask">0</h6>
-                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-
-                    </div>
+  
                   </div>
-
-                </div>
+                </a>
               </div>
 
             </div><!-- End Customers Card -->
@@ -393,21 +401,23 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title">Upcoming Tasks</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="fa-solid fa-business-time "></i>
+                <a href="{% url 'home:todo-page' %}?filter=Upcoming">
+                  <div class="card-body">
+                    <h5 class="card-title">Upcoming Tasks</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-business-time "></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6 id="upcomingTask">0</h6>
+                        {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
+  
+                      </div>
                     </div>
-                    <div class="ps-3">
-                      <h6 id="upcomingTask">0</h6>
-                      {% comment %} <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> {% endcomment %}
-
-                    </div>
+  
                   </div>
-
-                </div>
+                </a>
               </div>
 
             </div><!-- End Customers Card -->

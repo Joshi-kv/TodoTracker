@@ -214,10 +214,10 @@ $(document).ready(function() {
                             $('.dataTables_empty').hide()
                             $('tbody').show()
                         }else{
-                            $('.dataTables_empty').show()
-                            $('tbody').hide()
-                            table = $('#projectTable').DataTable()  
-                            table.column(2).search('').draw()
+                            alertify.set('notifier', 'position', 'top-right');
+                            alertify.error('No projects created under this date range');
+                            // table = $('#projectTable').DataTable()  
+                            // table.column(2).search('').draw()
                         }
                     }
                 })
