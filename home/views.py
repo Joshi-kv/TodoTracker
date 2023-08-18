@@ -1740,6 +1740,7 @@ class TaskListView(View) :
                     context.append({
                         'task_id':task.id,
                         'list':task.list.list_name,
+                        'assignee':task.user.username,
                         'task_title':task.task_title,
                         'task_description':task.task_description,
                         'task_duedate':task.task_duedate,
@@ -1755,6 +1756,7 @@ class TaskListView(View) :
                     context.append({
                         'task_id':task.id,
                         'list':task.list.list_name,
+                        'assignee':task.user.username,
                         'task_title':task.task_title,
                         'task_description':task.task_description,
                         'task_duedate':task.task_duedate,
@@ -1771,6 +1773,7 @@ class TaskListView(View) :
                     context.append({
                         'task_id':task.id,
                         'list':task.list.list_name,
+                        'assignee':task.user.username,
                         'task_title':task.task_title,
                         'task_description':task.task_description,
                         'task_duedate':task.task_duedate,
@@ -1786,6 +1789,7 @@ class TaskListView(View) :
                     context.append({
                         'task_id':task.id,
                         'list':task.list.list_name,
+                        'assignee':task.user.username,
                         'task_title':task.task_title,
                         'task_description':task.task_description,
                         'task_duedate':task.task_duedate,
@@ -1999,6 +2003,7 @@ class UpdateTaskView(View) :
             'task_id':task_update.id,
             'task_title':task_update.task_title,
             'task_description':task_update.task_description,
+            'assignee':task_update.user.username,
             'task_duedate':task_update.task_duedate,
             'task_priority':task_update.task_priority,
             'task_status':task_update.task_status,

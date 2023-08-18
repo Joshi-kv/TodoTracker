@@ -80,17 +80,18 @@
                             const rowIndex = table.row(`tr[data-task-id="${updatedTask.task_id}"]`).index();
     
                             table.row(rowIndex).data([
-                                updatedTask.task_title,
-                                updatedTask.task_description,
-                                convertedTaskDuedate,
-                                updatedTask.task_priority,
-                                updatedTask.task_status,
+                                `${updatedTask.task_title}`,
+                                `${updatedTask.task_description}`,
+                                `${updatedTask.task_description}`,
+                                `${convertedTaskDuedate}`,
+                                `${updatedTask.task_priority}`,
+                                `${updatedTask.task_status}`,
                                 `
                                     <div class="d-flex">
-                                        <div class="mx-3">
-                                            <button class="btn btn-danger btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-primary btn-sm " id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
-                                            <button class="btn btn-primary btn-sm ">
+                                        <div >
+                                            <button class="btn btn-primary btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-danger btn-sm " id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                                            <button class="btn btn-info btn-sm ">
                                             <a class="text-white" href="/project/task-detail/${updatedTask.task_id}/"><i class="fas fa-eye"></i></a>
                                             </button>
                                             </div>

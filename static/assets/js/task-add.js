@@ -111,12 +111,13 @@ $(document).ready(() => {
                         let newRow = table.row.add([
                             `${task.task_title}`,
                             `${task.task_description}`,
+                            `${task.assignee}`,
                             `${convertedTaskDuedate}`,
                             `${task.task_priority}`,
                             `${task.task_status}`,
                             `
                             <div class="d-flex">
-                                <div class="mx-3">
+                                <div>
                                     <button class="btn btn-danger btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
                                     <button class="btn btn-primary btn-sm " id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
                                     <button class="btn btn-primary btn-sm ">

@@ -143,10 +143,22 @@
                   <label for="">End Date : </label>
                   <input class="form-control " id="endDate" type="date" name="endDate" >
                 </div>
+  
                 <div class="col-md-2">
                   <button class="btn btn-sm btn-primary mt-4 me-5 search-btn " id="dateSearch">Search</button>
                   {% comment %} <span><button class="btn btn-sm btn-info mx-5 my-0 refresh-btn text-white text-bold " id="refresh"><i class="fa-sharp fa-solid fa-rotate-right"></i></button></span> {% endcomment %}
                 </div>
+                {% if request.user.is_staff %}
+                <div class="col-md-2">
+                    <label for="inputAddress" class="form-label">Assignee :</label>
+                    <select class="form-select" name="filterAssignee" aria-label="Default select example" id="filterAssignee">
+                      <option value="" >select assignee </option>
+                      {% for assignee in assignees %}
+                      <option value="{{assignee}}" >{{assignee}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
                 <div class="col-md-2 mt-4">
                   <button class="btn btn-primary btn-sm" id="clearFilterBtn">Clear Filter</button>
                 </div>
@@ -158,6 +170,7 @@
                   <tr>
                     <th scope="col">Task Title</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Assignee</th>
                     <th scope="col">Due Date</th>
                     <th scope="col">
                       <select class="form-select dataTables_filter me-5" id="filterPriority" name="filterPriority" aria-label="Default select example" >
@@ -178,9 +191,9 @@
                     </th>
                     <th scope="col">Actions</th>					
                   </tr>
-                  <tr>
+                  {% comment %} <tr>
                     <td colspan='6' class="text-center" id="no-data" style='display:none'>No data available</td>
-                  </tr>
+                  </tr> {% endcomment %}
                 </thead>
               </table>
               <!-- End Table with stripped rows -->
@@ -233,7 +246,8 @@
                         <option value=''>select status of the task</option>
                         <option value="Upcoming" >Upcoming</option>
                         <option value="In progress">In progress</option>
-                        <option value="Completed">Completed</option>
+                        <option value="Completed">Completed</option> 
+                        <option value="Pending">Pending</option> 
                       </select>
                 </div>
                 
