@@ -19,6 +19,9 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>          
           <li class="breadcrumb-item"><a href="{% url 'home:project-page' %}">Projects</a></li>
+          {% if request.GET.id %}
+          <li class="breadcrumb-item"><a href="{% url 'home:project-detail' request.GET.id %}">Project Detail</a></li> 
+          {% endif %}
           <li class="breadcrumb-item active"><a class="active" href="{% url 'home:todo-page' %}">Tasks</a></li>
         </ol>
       </nav>
@@ -60,6 +63,9 @@
               <form class="row g-3" id="taskForm" method='post'>
                 {% csrf_token %}
                 <div class="col-12">
+                  <input type="hidden" name="project_id" value="{{request.GET.id}}" class="form-control" id="project_id">
+                </div>
+                <div class="col-12">
                   <label for="taskTitle" class="form-label">Task Title</label>
                   <input type="text" name="title" class="form-control" id="taskTitle">
                 </div>
@@ -68,20 +74,30 @@
                   <textarea class="form-control" name="description" placeholder="Description" id="taskDescription" style="height: 100px;"></textarea>
                 </div>
                 <div class="col-12">
-                  <label for="inputPassword4" class="form-label">Due Date</label>
-                  <input type="date" name="duedate" class="form-control">
+                  <label for="inputAddress" class="form-label">List</label>
+                  <select class="form-select" name="list" aria-label="Default select example" id="taskList">
+                      <option value="" >select list</option>
+                      {% for list in lists  %}
+                      <option value="{{list.id}}" >{{list}}</option> 
+                      {% endfor %}
+                  </select>
                 </div>
-                {% if request.user.is_staff %}
+                {% if assignees %}
                   <div class="col-12">
                     <label for="inputAddress" class="form-label">Assignee</label>
                     <select class="form-select" name="assignee" aria-label="Default select example" id="taskAssignee">
-                      <option value="" >Select Assignee</option>
-                      {% for assignee in assignees  %}
-                      <option value="{{assignee}}" >{{assignee}}</option>
+                      <option value="" >select assignee for task</option>
+                      {% for assignee in assignees %}
+                      <option value="{{assignee.id}}" >{{assignee}}</option>
                       {% endfor %}
                   </select>
                 </div>
                 {% endif %}
+                
+                <div class="col-12">
+                  <label for="inputPassword4" class="form-label">Due Date</label>
+                  <input type="date" name="duedate" class="form-control">
+                </div>
                 
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Priority</label>

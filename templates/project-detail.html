@@ -60,12 +60,12 @@
                             <button class="btn btn-primary m-1 "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
                             <button class="btn btn-success m-1" data-bs-target="#editProjectModal" data-bs-toggle="modal">Edit Project</button>
                             <button class="btn btn-warning text-white m-1" data-bs-target="#addAssigneeModal" data-bs-toggle="modal">Add Assignees</button>
-                            <button class="btn btn-info m-1"><a href="{% url 'home:todo-page' %}?id={{project.id}}" class="text-white">View Tasks</a></button>
+                            <button class="btn btn-info m-1"><a href="{% url 'home:todo-page' %}?id={{project.id}}" class="text-white">Manage Tasks</a></button>
                         </div>
                         {% else %}
                         <div class="d-flex mt-3 justify-content-center  mx-5">
                           <button class="btn btn-primary m-1 "><a class="text-white" href="{% url 'home:list-page' project.id %}">Manage Lists</a></button>
-                          <button class="btn btn-info m-1"><a href="{% url 'home:todo-page' %}?id={{project.id}}" class="text-white">View Tasks</a></button>
+                          <button class="btn btn-info m-1"><a href="{% url 'home:todo-page' %}?id={{project.id}}" class="text-white">Manage Tasks</a></button>
                       </div>
                         {% endif %}
                     </div>

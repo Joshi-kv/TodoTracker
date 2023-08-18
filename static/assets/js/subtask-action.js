@@ -1,5 +1,5 @@
-let path = window.location.href.replace(/\/+$/, '');
-let taskId = path.substring(path.lastIndexOf('/') +1 )
+// let path = window.location.href.replace(/\/+$/, '');
+// let taskId = path.substring(path.lastIndexOf('/') +1 )
 
 $(document).ready(() =>{
     //task updation functions start
@@ -105,7 +105,7 @@ $(document).ready(() =>{
         let subTaskId = $('#deleteSubTaskModal').attr('sub-task-delete')
         $.ajax({
             type:'post',
-            url:`/task/delete-sub-task/${taskId}/`,
+            url:`/task/delete-sub-task/${task_id}/`,
             dataType:'json',
             data:{
                 csrfmiddlewaretoken:csrftoken,

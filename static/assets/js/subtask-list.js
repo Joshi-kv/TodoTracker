@@ -1,15 +1,17 @@
 let table;
 let taskLength; 
+// let pathname = window.location.href.replace(/\/+$/, '');
+// let task_id = pathname.substring(pathname.lastIndexOf('/') +1 )
 $(document).ready(() =>{
-    let pathname = window.location.href.replace(/\/+$/, '');
-    let task_id = pathname.substring(pathname.lastIndexOf('/') +1 )
 
+    console.log(task_id)
 
     // fetching tasks on page load
     const url = `http://127.0.0.1:8000/task/sub-task-list/${task_id}/`
     fetch(url)
     .then(response => response.json())
     .then((data) => {
+        console.log(data)
         $.fn.dataTable.moment( "DD/MM/YYYY" )
         table = $('#subTaskTable').DataTable({
             "ordering":false,

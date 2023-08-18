@@ -86,8 +86,15 @@
                                 updatedTask.task_priority,
                                 updatedTask.task_status,
                                 `
-                                <button class="btn btn-danger" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-primary my-1" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                                    <div class="d-flex">
+                                        <div class="mx-3">
+                                            <button class="btn btn-danger btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${updatedTask.task_id}"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-primary btn-sm " id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${updatedTask.task_id}"><i class="fas fa-trash"></i></button>
+                                            <button class="btn btn-primary btn-sm ">
+                                            <a class="text-white" href="/project/task-detail/${updatedTask.task_id}/"><i class="fas fa-eye"></i></a>
+                                            </button>
+                                            </div>
+                                    </div>
                                 `
                             ]).draw(false)
                         }

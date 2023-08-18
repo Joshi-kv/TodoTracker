@@ -1,5 +1,5 @@
-let pathname = window.location.href.replace(/\/+$/, '');
-let task_id = pathname.substring(pathname.lastIndexOf('/') +1 )
+// let pathname = window.location.href.replace(/\/+$/, '');
+// let task_id = pathname.substring(pathname.lastIndexOf('/') +1 )
 
 $(document).ready(() => {
 
@@ -98,6 +98,7 @@ $(document).ready(() => {
                     ]).node();
                     $(newRow).attr('data-sub-task-id',subTaskId)
                     $('#subTaskTable').prepend(newRow)
+                    $('.dataTables_empty').hide()
                     pagination(table,total)
                     alertify.set('notifier', 'position', 'top-right');
                     alertify.success('New task added successfully');

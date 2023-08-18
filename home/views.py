@@ -1645,13 +1645,30 @@ class TodoPageView(LoginRequiredMixin,View) :
     login_url = 'users:login'
     def get(self, request) : 
         user_model = request.user
+        project_id = request.GET.get('id')
         current_user = UserProfile.objects.get(user=user_model)
-        if user_model.is_staff :
-            if request.GET.get('id') : 
-                project = Project.objects.get(id=request.GET.get('id'))
+        if project_id : 
+            if user_model.is_staff :
+                project = Project.objects.get(id=project_id)
+                list = List.objects.filter(project=project)
                 assignee = project.assignee.filter(assigned_projects=project)
-                print(assignee)
-                return render(request, 'todo.html',{'current_user':current_user,'assignees':assignee,})
+                return render(request, 'todo.html',{'current_user':current_user,'assignees':assignee,'lists':list})
+            else : 
+                project = Project.objects.get(id=project_id)
+                list = List.objects.filter(project=project)
+                assignee = project.assignee.filter(assigned_projects=project)
+                return render(request, 'todo.html',{'current_user':current_user,'lists':list})
+        else :
+            if user_model.is_staff :  
+                project = Project.objects.all().exclude(project_status="Deactivated")
+                list = List.objects.all()
+                assignee = User.objects.all().exclude(is_staff=True)
+                return render(request, 'todo.html',{'current_user':current_user,'assignees':assignee,'projects':project,'lists':list})
+            else :
+                assigned_projects = user_model.assigned_projects.all()
+                project = Project.objects.filter(id__in=assigned_projects).exclude(project_status="Deactivated")
+                list = List.objects.filter(project__in=project)
+                return render(request, 'todo.html',{'current_user':current_user,'projects':project,'lists':list})
     
         return render(request, 'todo.html',{'current_user':current_user,})
     
@@ -1710,7 +1727,6 @@ class TaskFileAttachmentView(View) :
 class TaskListView(View) : 
     def get(self,request) : 
         project_id = request.GET.get('id')
-        print(project_id)
         user_obj = request.user
         if project_id : 
             if user_obj.is_staff == True : 
@@ -1777,44 +1793,106 @@ class TaskListView(View) :
     
 #view to create todo 
 class TodoCreateView(View) : 
-    def post(self,request,project_id) : 
-        user = request.user
-        project = project_id
-        task_title = request.POST.get('task_title')
-        task_description = request.POST.get('task_description')
-        task_duedate = request.POST.get('task_duedate')
-        task_status = request.POST.get('task_status')
-        task_priority = request.POST.get('task_priority')
-        
-        #creating new task
-        new_task = Todo.objects.create(
-            user=user,
-            project=Project.objects.get(id=project),
-            task_title=task_title,
-            task_description=task_description,
-            task_duedate=task_duedate,
-            task_status=task_status,
-            task_priority=task_priority
-        )
-        new_task.save()
-        context = {
-            'task_id':new_task.id,
-            'task_title':new_task.task_title,
-            'task_description':new_task.task_description,
-            'task_duedate':new_task.task_duedate,
-            'task_status':new_task.task_status,
-            'task_priority':new_task.task_priority,
-            'is_staff':user.is_staff,
-        }
-        
-        activity_log = ActivityLog.objects.create(
-            user = user,
-            activity=f'"{task_title}" task added'
-        )
-        activity_log.save()
-        
-        total_tasks = Todo.objects.filter(user=user).count()
-        return JsonResponse({'status':'success','task':context,'total':total_tasks})
+    def post(self,request) : 
+        if request.user.is_staff : 
+            project_id = request.POST.get('project_id')
+            list_id = request.POST.get('list')
+            user = request.POST.get('assignee')
+            task_title = request.POST.get('task_title')
+            task_description = request.POST.get('task_description')
+            task_duedate = request.POST.get('task_duedate')
+            task_status = request.POST.get('task_status')
+            task_priority = request.POST.get('task_priority')
+            
+                
+            project = Project.objects.get(id=project_id)
+            list = List.objects.get(id=list_id)
+            assignee = User.objects.get(id=user)
+                      
+            if project.project_status == 'On Hold' or project.project_status == 'Completed' : 
+                return JsonResponse({'status':'error'})    
+            else  :
+                    
+                #creating new task
+                new_task = Todo.objects.create(
+                    user=assignee,
+                    project=project,
+                    list=list,
+                    task_title=task_title,
+                    task_description=task_description,
+                    task_duedate=task_duedate,
+                    task_status=task_status,
+                    task_priority=task_priority
+                )
+                new_task.save()
+                context = {
+                    'task_id':new_task.id,
+                    'task_title':new_task.task_title,
+                    'assignee':new_task.user.username,
+                    'task_description':new_task.task_description,
+                    'task_duedate':new_task.task_duedate,
+                    'task_status':new_task.task_status,
+                    'task_priority':new_task.task_priority,
+                    'is_staff':assignee.is_staff,
+                }
+                
+                activity_log = ActivityLog.objects.create(
+                    user = user,
+                    activity=f'"{task_title}" task added'
+                )
+                activity_log.save()
+                
+                total_tasks = Todo.objects.filter(user=user).count()
+                return JsonResponse({'status':'success','task':context,'total':total_tasks})
+        else : 
+            project_id = request.POST.get('project_id')
+            list_id = request.POST.get('list')
+            user = request.user
+            task_title = request.POST.get('task_title')
+            task_description = request.POST.get('task_description')
+            task_duedate = request.POST.get('task_duedate')
+            task_status = request.POST.get('task_status')
+            task_priority = request.POST.get('task_priority')
+            
+                
+            project = Project.objects.get(id=project_id)
+            list = List.objects.get(id=list_id)
+                      
+            if project.project_status == 'On Hold' or project.project_status == 'Completed' : 
+                return JsonResponse({'status':'error'})    
+            else  :
+                    
+                #creating new task
+                new_task = Todo.objects.create(
+                    user=user,
+                    project=project,
+                    list=list,
+                    task_title=task_title,
+                    task_description=task_description,
+                    task_duedate=task_duedate,
+                    task_status=task_status,
+                    task_priority=task_priority
+                )
+                new_task.save()
+                context = {
+                    'task_id':new_task.id,
+                    'task_title':new_task.task_title,
+                    'assignee':new_task.user.username,
+                    'task_description':new_task.task_description,
+                    'task_duedate':new_task.task_duedate,
+                    'task_status':new_task.task_status,
+                    'task_priority':new_task.task_priority,
+                    'is_staff':user.is_staff,
+                }
+                
+                activity_log = ActivityLog.objects.create(
+                    user = user,
+                    activity=f'"{task_title}" task added'
+                )
+                activity_log.save()
+                
+                total_tasks = Todo.objects.filter(user=user).count()
+                return JsonResponse({'status':'success','task':context,'total':total_tasks})
     
 
 #view to filter tasks based on date range

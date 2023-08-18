@@ -77,11 +77,6 @@ $(document).ready(function() {
                                 </button>
                                 <button class="btn btn-sm btn-danger mx-2" id="deleteListBtn" data-list-delete="${list.list_id}" data-bs-toggle="modal" data-bs-target="#deleteListModal" >
                                 <i class="fas fa-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-info mx-2">
-                                <a href="" class="text-white"><i class="fas fa-list"></i></a>
-                                
-                                </button>
                                 <button class="btn btn-sm btn-warning mx-2">
                                 <a href="/project/lists/issues/${list.list_id}/" class="text-white"><i class="fas fa-triangle-exclamation"></i></a>
 

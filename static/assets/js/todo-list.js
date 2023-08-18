@@ -43,13 +43,8 @@ $(document).ready(() =>{
                     <div class="d-flex">
                         <div class="mx-3">
                             <button class="btn btn-primary btn-sm" id="editBtn" data-bs-target="#updateModal" data-bs-toggle="modal" data-edit="${task.task_id}"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm mt-2" id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
-                        </div>
-                        <div class="mx-3">
-                            <button class="btn btn-success btn-sm">
-                            <a href="/task/sub-task/${taskId}/" class="text-white"><i class="fas fa-list"></i></a>
-                            </button>
-                            <button class="btn btn-info btn-sm mt-2 text-white">
+                            <button class="btn btn-danger btn-sm " id="deleteBtn" data-bs-target="#deleteModal" data-bs-toggle="modal" data-delete="${task.task_id}"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-info btn-sm  text-white">
                             <a class="text-white" href="/project/task-detail/${taskId}/"><i class="fas fa-eye"></i></a>
                             </button>
                         </div>
