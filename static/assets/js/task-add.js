@@ -131,7 +131,10 @@ $(document).ready(() => {
                         table.draw()
                         alertify.set('notifier', 'position', 'top-right');
                         alertify.success('New task added successfully');
-        
+                        
+                        $('select[name="filterStatus]').val('').change()
+                        table.column(4).search('').draw()
+
                         // Call changePagination with the updated total number of tasks
                         pagination(table,total)
                         

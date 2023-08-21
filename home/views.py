@@ -1,3 +1,4 @@
+import csv
 import json
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -11,6 +12,7 @@ from django.template.loader import get_template
 from datetime import date
 from django.utils.text import slugify
 from django.db.models import Q
+import pandas as pd
 
 
 #view to render home page
@@ -1027,7 +1029,6 @@ class ProjectListView(View) :
             context = []
             for project in projects : 
                 assignees = [assignee.username for assignee in project.assignee.all()]
-                print(assignees)
                 context.append({
                     'project_id': project.id,
                     'project_title': project.project_title,
@@ -1126,6 +1127,7 @@ class ProjectCreateView(View) :
             'project_id':new_project.id,
             'project_title':new_project.project_title,
             'created_at': new_project.created_at,
+            'assignee':[assignee.username for assignee in new_project.assignee.all()],
             'project_description':new_project.project_description,
             'project_startdate':new_project.start_date,
             'project_enddate':new_project.end_date,
@@ -1198,6 +1200,7 @@ class ProjectDateRangeFilter(View) :
                 'project_id':project.id,
                 'project_title':project.project_title,
                 'created_at':project.created_at,
+                'assignee':[assignee.username for assignee in project.assignee.all()],
                 'project_descritpion':project.project_description,
                 'project_start_date':project.start_date,
                 'project_end_date':project.end_date,
@@ -1240,7 +1243,6 @@ class UpdateProjectView(View) :
         project_update = Project.objects.get(id=project_id)
         
         if project_status != None and project_type != None :  
-            print(project_status,project_type)
 
             #updating project
             project_update.id = project_id
@@ -1253,6 +1255,7 @@ class UpdateProjectView(View) :
                 'project_id': project_update.id,
                 'project_title': project_update.project_title,
                 'created_at': project_update.created_at,
+                'assignee':[assignee.username for assignee in project_update.assignee.all()],
                 'project_description': project_update.project_description,
                 'project_start_date': project_update.start_date,
                 'project_end_date': project_update.end_date,
@@ -1282,6 +1285,7 @@ class UpdateProjectView(View) :
                 'project_id': project_update.id,
                 'project_title': project_update.project_title,
                 'created_at': project_update.created_at,
+                'assignee':[assignee.username for assignee in project_update.assignee.all()],
                 'project_description': project_update.project_description,
                 'project_start_date': project_update.start_date,
                 'project_end_date': project_update.end_date,
@@ -1307,7 +1311,58 @@ class ProjectDeleteView(View) :
         )
         activity_log.save()
         total_projects = Project.objects.all().exclude(project_status='Deactivated').count()
-        return JsonResponse({'status':'success','total':total_projects})       
+        return JsonResponse({'status':'success','total':total_projects}) 
+    
+class CheckProjectFileDuplicates(View) : 
+    def post(self,request) : 
+        project_excel_file = request.FILES.get('project_file')
+        read_file = pd.read_excel(project_excel_file)
+        read_file.to_csv('Project.csv',index=None,header=None)
+        df = pd.DataFrame(pd.read_csv('Project.csv'))
+        df
+
+        duplicates = []
+        
+        with open('Project.csv', 'r') as file : 
+            reader = csv.reader(file)
+            for row in reader :
+                print('check',row)
+                if Project.objects.filter(id=row[0]).exists() :
+                    duplicates.append(row)
+        if duplicates : 
+            return JsonResponse({'status': 'duplicates','duplicates': duplicates}) 
+        else : 
+            return JsonResponse({'status': 'success',})      
+
+#view to upload project file 
+class ProjectFileUploadView(View) :
+    def post(self,request) :        
+        with open('Project.csv', 'r') as file : 
+            reader = csv.reader(file)
+            for row in reader : 
+                print('upload',row)
+                assignee_username = row[9].split(',')
+                assignees_id = User.objects.filter(username__in=assignee_username).values_list('id',flat=True)
+                assignees = User.objects.filter(id__in=assignees_id)
+                print(assignees)
+                if Project.objects.filter(id=row[0]).exists(): 
+                    continue
+                else: 
+                    project = Project(
+                        id = row[0],
+                        project_title = row[1],
+                        project_description = row[2],
+                        project_type = row[3],
+                        project_status = row[4],
+                        start_date = row[5],
+                        end_date = row[6],
+                        duration = row[7],
+                        estimated_hours = row[8],
+                    )
+                    project.save()
+                    project.assignee.set(assignees)
+            return JsonResponse({'status': 'success'})
+            
 
 #view to render list view 
 class ListPageView(View) : 
@@ -1845,7 +1900,7 @@ class TodoCreateView(View) :
                 }
                 
                 activity_log = ActivityLog.objects.create(
-                    user = user,
+                    user = request.user,
                     activity=f'"{task_title}" task added'
                 )
                 activity_log.save()
@@ -1894,7 +1949,7 @@ class TodoCreateView(View) :
                 }
                 
                 activity_log = ActivityLog.objects.create(
-                    user = user,
+                    user = request.user,
                     activity=f'"{task_title}" task added'
                 )
                 activity_log.save()

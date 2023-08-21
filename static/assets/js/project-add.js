@@ -124,12 +124,15 @@ $(document).ready(() => {
                     let project = response.project;
                     let total = response.total
                     let table = $('#projectTable').DataTable()
+                    let convertedCreatedDate = moment(project.created_at).format('DD/MM/YYYY')
                     let convertedStartdate = moment(project.project_startdate).format('DD/MM/YYYY')
                     let convertedEnddate = moment(project.project_enddate).format('DD/MM/YYYY')
                     let projectId = project.project_id
                     let projectRow = table.row.add([
                         `${project.project_title}`,
                         `${project.project_description}`,
+                        `${convertedCreatedDate}`,
+                        `${project.assignee}`,
                         `${convertedStartdate}`,
                         `${convertedEnddate}`,
                         `${project.duration}`,
@@ -156,9 +159,9 @@ $(document).ready(() => {
     
                     // Call changePagination with the updated total number of tasks
                     projectTablePagination(table,total)
-                    $('select[name="filterProjectStatus"]').val('').change()
-                    table.column(8).search('').draw()
-                    showProjectTablePagination(table,table.rows)
+                    // $('select[name="filterProjectStatus"]').val('').change()
+                    // table.column(8).search('').draw()
+                    // showProjectTablePagination(table,table.rows)
                 },
     
             });

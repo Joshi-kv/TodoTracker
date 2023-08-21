@@ -1,42 +1,125 @@
-let table;
-let length;
+$('#projectUploadForm').validate({
+    rules:{
+        project_file:{
+            required:true,
+        },
+    },
+    errorElement: "div",
+    errorClass: "invalid-feedback",
+    highlight: function(element) {
+        $(element).addClass("is-invalid").removeClass("is-valid");
+    },
+    unhighlight: function(element) {
+        $(element).removeClass('is-invalid')
+    },
+    errorPlacement : function(error,element){
+        error.addClass(' text-danger')
+        error.insertBefore(element)
+    },
+})
 
-
-function format(d) {
-    return (
-        '<dl>' +
-        '<dt>Start Date:</dt>' +
-        '<dd>' +
-        d[4] +
-        '</dd>' +
-        '<dt>End Date:</dt>' +
-        '<dd>' +
-        d[5] +
-        '</dd>' +
-        '<dt>Duration:</dt>' +
-        '<dd>' +
-        d[6] +
-        '</dd>' +
-        '<dt>Estimated Hours:</dt>' +
-        '<dd>' +
-        d[7] +
-        '</dd>' +
-        '<dt>Assignees:</dt>' +
-        '<dd>' +
-        d[3] +
-        '</dd>' +
-        '<dt>Project Description:</dt>' +
-        '<dd>'+
-        d[1] + 
-        '</dd>' +
-        '</dl>'
-    );
+// fetching csrf token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const filterOption = urlParams.get('filter');
-$(document).ready(function() {
-      // fetching tasks on page load
+const csrftoken = getCookie('csrftoken')
+let changedFile;
+
+$('#projectFile').on('change', function(e){
+    changedFile = e.target.files[0]
+    console.log(changedFile)
+})
+
+$('#projectUploadForm').on('submit', function(e){
+    e.preventDefault()
+    // let file = $('#projectFile')[0].files[0]
+    // console.log(file)
+    let formData = new FormData()
+    formData.append('csrfmiddlewaretoken', csrftoken)
+    formData.append('project_file', changedFile)
+    
+    $.ajax({
+        type: 'POST',
+        url: `/check-duplicates/`,
+        dataType: 'json',
+        mimeType:'multipart/form-data',
+        contentType:false,
+        processData:false,
+        beforeSend:function(xhr){
+            xhr.setRequestHeader('X-CSRFToken',csrftoken)
+        },
+        data: formData,
+        success:function(response){
+            console.log(response)
+            if(response.status == 'duplicates'){
+                const confirmModal = new bootstrap.Modal($('#confirmModal'))
+                const confirmMessage = ` <b>${response.duplicates.length}</b> entries in the file already exists.Do you want to continue?` 
+                $('#confirmMessage').html(confirmMessage)
+                $('#uploadProjectModal').modal('toggle')
+                $('#projectUploadForm')[0].reset()
+                confirmModal.show()
+                $('#confirmUpload').click(function () {
+                    // table = $('#projectTable').DataTable()
+                    // table.remove()
+                    // Continue processing without duplicates
+                    $('#projectTable').empty()
+                    $('#projectTable').DataTable().destroy()
+                    confirmModal.hide();
+                    uploadProjectData(formData);
+                });           
+            }else{
+                $('#projectTable').empty()
+                $('#projectTable').DataTable().destroy()
+                uploadProjectData(formData);
+                $('#uploadProjectModal').modal('toggle')
+                $('#projectUploadForm')[0].reset()
+            }
+        }
+    })
+
+})
+
+function uploadProjectData(formData){
+
+    $.ajax({
+        type: 'POST',
+        url: `/upload-project/`,  
+        data: formData,
+        dataType: 'json',
+        mimeType: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        },
+        success:function(response){
+            console.log(response)
+            if(response.status == 'success'){
+                // table.destroy()
+                alertify.set('notifier', 'position', 'top-right');
+                alertify.success('Project file uploaded successfully');
+                populateProjectTable()
+            }
+        }
+    })
+}
+
+
+
+function populateProjectTable(){
     const url = 'http://127.0.0.1:8000/project-list/'
     fetch(url)
     .then(response => response.json())
@@ -229,40 +312,38 @@ $(document).ready(function() {
         }
         
     })
-
     function hidePagination(table,length){
-      if(length > 10){
-        $('#projectTable_length').show()
-        $('#projectTable_paginate').show()
-      }else{
-        $('#projectTable_length').hide()
-        $('#projectTable_paginate').hide()
+        if(length > 10){
+          $('#projectTable_length').show()
+          $('#projectTable_paginate').show()
+        }else{
+          $('#projectTable_length').hide()
+          $('#projectTable_paginate').hide()
+        }
+  
       }
-
-    }
-    $('select[name="projectTable_length"]').change(function(){
-      selected_length = $(this).val()
-      hidePagination(table, selected_length)
-    })
-
-    //function to clear filter
-    function clearFilters() {
-        table.column(9).search('').draw() // Clear status filter
-        table.column(7).search('').draw() // Clear type filter
-        table.column(2).search('').draw() // Clear date filter
-        table.column(3).search('').draw() // Clear assignee filter
-        table.draw() 
-    }
-
-    //function to clear filter
-    $('#clearFilterBtn').on('click',function(){
-        $('#filterProjectStatus').val('').change()
-        $('#filterProjectType').val('')
-        $('#filterAssignee').val('')
-        $('#project_start_date').val('')
-        $('#project_end_date').val('')
-        hidePagination(table,table.rows({search:'applied'}).count())
-    clearFilters()
-    })
-
-  })
+      $('select[name="projectTable_length"]').change(function(){
+        selected_length = $(this).val()
+        hidePagination(table, selected_length)
+      })
+  
+      //function to clear filter
+      function clearFilters() {
+          table.column(9).search('').draw() // Clear status filter
+          table.column(7).search('').draw() // Clear type filter
+          table.column(2).search('').draw() // Clear date filter
+          table.column(3).search('').draw() // Clear assignee filter
+          table.draw() 
+      }
+  
+      //function to clear filter
+      $('#clearFilterBtn').on('click',function(){
+          $('#filterProjectStatus').val('').change()
+          $('#filterProjectType').val('')
+          $('#filterAssignee').val('')
+          $('#project_start_date').val('')
+          $('#project_end_date').val('')
+          hidePagination(table,table.rows({search:'applied'}).count())
+      clearFilters()
+      })
+}

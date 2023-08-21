@@ -66,12 +66,15 @@ $(document).ready(() =>{
                         let table = $('#projectTable').DataTable()
                         let projectId = editedProject.project_id
                         console.log(projectId)
+                        let convertedCreatedDate = moment(editedProject.created_at).format('DD/MM/YYYY')
                         let convertedStartdate = moment(editedProject.project_start_date).format('DD/MM/YYYY')
                         let convertedEnddate = moment(editedProject.project_end_date).format('DD/MM/YYYY')
                         const rowIndex = table.row(`tr[id=project-row-${editedProject.project_id}]`).index();
                         table.row(rowIndex).data([
                             `${editedProject.project_title}`,
                             `${editedProject.project_description}`,
+                            `${convertedCreatedDate}`,
+                            `${editedProject.assignee}`,
                             `${convertedStartdate}`,
                             `${convertedEnddate}`,
                             `${editedProject.duration}`,
@@ -128,7 +131,7 @@ $(document).ready(() =>{
                     let total = response.total
                     
                     let table = $('#projectTable').DataTable()
-                    let deletedRow = table.row(`tr[data-project-id=${projectId}]`).index()
+                    let deletedRow = table.row(`tr[project-row-${projectId}]`).index()
                     table.row(deletedRow).remove().draw(false)
                     changeProjectTablePagination(table,total)
                     
