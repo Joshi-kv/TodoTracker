@@ -1326,7 +1326,6 @@ class CheckProjectFileDuplicates(View) :
         with open('Project.csv', 'r') as file : 
             reader = csv.reader(file)
             for row in reader :
-                print('check',row)
                 if Project.objects.filter(id=row[0]).exists() :
                     duplicates.append(row)
         if duplicates : 
@@ -1340,7 +1339,6 @@ class ProjectFileUploadView(View) :
         with open('Project.csv', 'r') as file : 
             reader = csv.reader(file)
             for row in reader : 
-                print('upload',row)
                 assignee_username = row[9].split(',')
                 assignees_id = User.objects.filter(username__in=assignee_username).values_list('id',flat=True)
                 assignees = User.objects.filter(id__in=assignees_id)
