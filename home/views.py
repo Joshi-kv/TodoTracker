@@ -1342,7 +1342,6 @@ class ProjectFileUploadView(View) :
                 assignee_username = row[9].split(',')
                 assignees_id = User.objects.filter(username__in=assignee_username).values_list('id',flat=True)
                 assignees = User.objects.filter(id__in=assignees_id)
-                print(assignees)
                 if Project.objects.filter(id=row[0]).exists(): 
                     continue
                 else: 

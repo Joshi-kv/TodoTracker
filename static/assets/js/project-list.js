@@ -239,11 +239,16 @@ $(document).ready(function() {
         $('#projectTable_paginate').hide()
       }
 
-    }
-    $('select[name="projectTable_length"]').change(function(){
-      selected_length = $(this).val()
-      hidePagination(table, selected_length)
+      $('select[name="projectTable_length"]').on('change',() =>{
+        if(length > $('select[name="projectTable_length"]').val() ){
+            $('.pagination').show()
+        }else{
+            $('.pagination').hide()
+        }
     })
+
+    }
+
 
     //function to clear filter
     function clearFilters() {

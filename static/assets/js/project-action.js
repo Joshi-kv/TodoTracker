@@ -131,7 +131,8 @@ $(document).ready(() =>{
                     let total = response.total
                     
                     let table = $('#projectTable').DataTable()
-                    let deletedRow = table.row(`tr[project-row-${projectId}]`).index()
+                    let deletedRow = table.row(`tr[id="project-row-${projectId}"]`).index()
+                    console.log(deletedRow)
                     table.row(deletedRow).remove().draw(false)
                     changeProjectTablePagination(table,total)
                     
